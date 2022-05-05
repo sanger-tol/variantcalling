@@ -36,6 +36,7 @@ ch_multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multi
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { INPUT_CHECK } from '../subworkflows/local/input_check'
+include { ILLUMINA_VC } from '../subworkflows/local/illumina_vc'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,6 +102,12 @@ workflow VARIANTCALLING {
     )
     multiqc_report = MULTIQC.out.report.toList()
     ch_versions    = ch_versions.mix(MULTIQC.out.versions)
+
+    // if meta.id == 'illumina':
+    ILLUMINA_VC (
+        params.fasta,
+        INPUT_CHECK.out.reads
+    )
 }
 
 /*
