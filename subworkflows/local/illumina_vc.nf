@@ -2,7 +2,7 @@
 // Sub-workflow to perform variant calling on illumina data
 //
 
-include { GATK4_CREATESEQUENCEDICTIONARY } from '../modules/nf-core/gatk4/createsequencedictionary/main'
+include { GATK4_CREATESEQUENCEDICTIONARY } from '../../modules/nf-core/modules/gatk4/createsequencedictionary/main'
 
 workflow ILLUMINA_VC {
     take:
