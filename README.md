@@ -72,6 +72,8 @@ We thank the following people for their extensive assistance in the development 
 
 <!-- TODO nf-core: If applicable, make list of people who have also contributed -->
 
+@DLBPointon - Illumina sub-workflow
+
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
