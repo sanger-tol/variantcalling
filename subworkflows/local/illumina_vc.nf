@@ -7,16 +7,15 @@ include { GATK4_CREATESEQUENCEDICTIONARY } from '../../modules/nf-core/modules/g
 workflow ILLUMINA_VC {
     take:
     reference_fasta     // channel: path/to/reference_fasta
-    mapped_cram         // channel: [ val(meta), [ reads ] ]
+    mapped_cram         // channel: [ val(meta), [ cram ] ]
 
     main:
-
     ch_versions = Channel.empty()
 
     //
     // gatk4 Create Dictionary for the Reference FASTA
     //
     GATK4_CREATESEQUENCEDICTIONARY ( reference_fasta )
-    ch_versions = ch_versions.mix(GATK4_CREATESEQUENCEDICTIONARY.out.versions.first())
+    ch_versions = ch_versions.mix(GATK4_CREATESEQUENCEDICTIONARY.out.versions)
 
 }
