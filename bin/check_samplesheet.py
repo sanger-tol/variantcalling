@@ -26,16 +26,14 @@ class RowChecker:
     """
 
     VALID_FORMATS = (
-        ".fq.gz",
-        ".fastq.gz",
+        ".cram",
     )
 
     def __init__(
         self,
         sample_col="sample",
-        first_col="fastq_1",
-        second_col="fastq_2",
-        single_col="single_end",
+        first_col="datatype",
+        second_col="datafile",
         **kwargs,
     ):
         """
@@ -44,20 +42,15 @@ class RowChecker:
         Args:
             sample_col (str): The name of the column that contains the sample name
                 (default "sample").
-            first_col (str): The name of the column that contains the first (or only)
-                FASTQ file path (default "fastq_1").
-            second_col (str): The name of the column that contains the second (if any)
-                FASTQ file path (default "fastq_2").
-            single_col (str): The name of the new column that will be inserted and
-                records whether the sample contains single- or paired-end sequencing
-                reads (default "single_end").
+            first_col (str): The name of the column that contains the datatype (default "datatype").
+            second_col (str): The name of the column that contains the CRAM
+                ile path (default "datafile").
 
         """
         super().__init__(**kwargs)
         self._sample_col = sample_col
         self._first_col = first_col
         self._second_col = second_col
-        self._single_col = single_col
         self._seen = set()
         self.modified = []
 
@@ -73,7 +66,6 @@ class RowChecker:
         self._validate_sample(row)
         self._validate_first(row)
         self._validate_second(row)
-        self._validate_pair(row)
         self._seen.add((row[self._sample_col], row[self._first_col]))
         self.modified.append(row)
 
@@ -84,41 +76,32 @@ class RowChecker:
         row[self._sample_col] = row[self._sample_col].replace(" ", "_")
 
     def _validate_first(self, row):
-        """Assert that the first FASTQ entry is non-empty and has the right format."""
-        assert len(row[self._first_col]) > 0, "At least the first FASTQ file is required."
-        self._validate_fastq_format(row[self._first_col])
+        """Assert that the first entry is non-empty and has the right format."""
+        assert len(row[self._first_col]) > 0, "The datatype is required."
+        row[self._first_col]
 
     def _validate_second(self, row):
-        """Assert that the second FASTQ entry has the right format if it exists."""
+        """Assert that the CRAM entry has the right format."""
         if len(row[self._second_col]) > 0:
-            self._validate_fastq_format(row[self._second_col])
+            self._validate_cram_format(row[self._second_col])
 
-    def _validate_pair(self, row):
-        """Assert that read pairs have the same file extension. Report pair status."""
-        if row[self._first_col] and row[self._second_col]:
-            row[self._single_col] = False
-            assert (
-                Path(row[self._first_col]).suffixes == Path(row[self._second_col]).suffixes
-            ), "FASTQ pairs must have the same file extensions."
-        else:
-            row[self._single_col] = True
 
-    def _validate_fastq_format(self, filename):
-        """Assert that a given filename has one of the expected FASTQ extensions."""
+    def _validate_cram_format(self, filename):
+        """Assert that a given filename has one of the expected CRAM extensions."""
         assert any(filename.endswith(extension) for extension in self.VALID_FORMATS), (
-            f"The FASTQ file has an unrecognized extension: {filename}\n"
+            f"The cram file has an unrecognized extension: {filename}\n"
             f"It should be one of: {', '.join(self.VALID_FORMATS)}"
         )
 
     def validate_unique_samples(self):
         """
-        Assert that the combination of sample name and FASTQ filename is unique.
+        Assert that the combination of sample name and cram filename is unique.
 
         In addition to the validation, also rename the sample if more than one sample,
-        FASTQ file combination exists.
+        cram file combination exists.
 
         """
-        assert len(self._seen) == len(self.modified), "The pair of sample name and FASTQ must be unique."
+        assert len(self._seen) == len(self.modified), "The sample name and cram must be unique."
         if len({pair[0] for pair in self._seen}) < len(self._seen):
             counts = Counter(pair[0] for pair in self._seen)
             seen = Counter()
@@ -158,8 +141,7 @@ def check_samplesheet(file_in, file_out):
     """
     Check that the tabular samplesheet has the structure expected by nf-core pipelines.
 
-    Validate the general shape of the table, expected columns, and each row. Also add
-    an additional column which records whether one or two FASTQ reads were found.
+    Validate the general shape of the table, expected columns, and each row. 
 
     Args:
         file_in (pathlib.Path): The given tabular samplesheet. The format can be either
@@ -171,16 +153,11 @@ def check_samplesheet(file_in, file_out):
         This function checks that the samplesheet follows the following structure,
         see also the `viral recon samplesheet`_::
 
-            sample,fastq_1,fastq_2
-            SAMPLE_PE,SAMPLE_PE_RUN1_1.fastq.gz,SAMPLE_PE_RUN1_2.fastq.gz
-            SAMPLE_PE,SAMPLE_PE_RUN2_1.fastq.gz,SAMPLE_PE_RUN2_2.fastq.gz
-            SAMPLE_SE,SAMPLE_SE_RUN1_1.fastq.gz,
-
-    .. _viral recon samplesheet:
-        https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/samplesheet/samplesheet_test_illumina_amplicon.csv
-
+            sample,datatype,datafile
+            SAMPLE,ILLUMINA,CRAM
+,
     """
-    required_columns = {"sample", "fastq_1", "fastq_2"}
+    required_columns = {"sample", "datatype", "datafile"}
     # See https://docs.python.org/3.9/library/csv.html#id3 to read up on `newline=""`.
     with file_in.open(newline="") as in_handle:
         reader = csv.DictReader(in_handle, dialect=sniff_format(in_handle))
