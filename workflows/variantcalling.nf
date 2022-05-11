@@ -60,6 +60,9 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/
 // Info required for completion email and summary
 def multiqc_report = []
 
+//
+// PROCESS: getDatatype
+//
 process getDatatype {
     input:
         tuple val(meta), path(cram)
@@ -116,8 +119,15 @@ workflow VARIANTCALLING {
     //multiqc_report = MULTIQC.out.report.toList()
     //ch_versions    = ch_versions.mix(MULTIQC.out.versions)
 
+    //
+    // Process to get datatype from cram: [[meta.id, meta.datatype],[cram]]
+    //
     getDatatype(INPUT_CHECK.out.cram)
 
+    //
+    // Branching structure containing
+    // MODULE: ILLUMINA_VC
+    //
     if (getDatatype.out.dtype =~ "illumina") {
         ILLUMINA_VC (
             params.fasta,
