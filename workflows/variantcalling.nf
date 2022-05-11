@@ -60,6 +60,19 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/
 // Info required for completion email and summary
 def multiqc_report = []
 
+process getDatatype {
+    input:
+        tuple val(meta), path(cram)
+
+    output:
+        val(meta.datatype), emit: dtype
+
+    script:
+        """
+        echo $meta.datatype
+        """
+}
+
 workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
@@ -103,11 +116,14 @@ workflow VARIANTCALLING {
     //multiqc_report = MULTIQC.out.report.toList()
     //ch_versions    = ch_versions.mix(MULTIQC.out.versions)
 
-    // TODO if meta.datatype === 'illumina'
-    ILLUMINA_VC (
-        params.fasta,
-        INPUT_CHECK.out.cram
-    )
+    getDatatype(INPUT_CHECK.out.cram)
+
+    if (getDatatype.out.dtype =~ "illumina") {
+        ILLUMINA_VC (
+            params.fasta,
+            INPUT_CHECK.out.cram
+        )
+    }
 }
 
 /*
@@ -122,7 +138,6 @@ workflow.onComplete {
     }
     NfcoreTemplate.summary(workflow, params, log)
 }
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     THE END
