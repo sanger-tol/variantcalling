@@ -30,8 +30,9 @@ def create_cram_channel(LinkedHashMap row) {
     // add path(s) of the cram file to the meta map
     def cram_meta = []
     if (!file(row.datafile).exists()) {
-        exit 1, "ERROR: Please check input samplesheet -> Read 1 cram file does not exist!\n${row.datafile}"
+        exit 1, "ERROR: Please check input samplesheet -> Cram file does not exist!\n${row.datafile}"
     }
+    cram_meta = [ meta, [ file(row.datafile) ] ]
     
     return cram_meta
 }
