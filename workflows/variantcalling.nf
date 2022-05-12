@@ -60,32 +60,30 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/
 // Info required for completion email and summary
 def multiqc_report = []
 
-//
-// PROCESS: getDatatype
-//
-process getDatatype {
-    input:
-        tuple val(meta), path(cram)
-
-    output:
-        val(meta.datatype), emit: dtype
-
-    script:
-        """
-        echo $meta.datatype
-        """
-}
-
 workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
 
     //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
+    // SUBWORKFLOW: Read in samplesheet, validate and stage input files via branch
     //
-    INPUT_CHECK (
-        ch_input
-    )
+    INPUT_CHECK ( ch_input )
+        .cram
+        .branch {
+            meta, cram ->
+                hic : meta.datatype == "hic"
+                    return [ meta, cram ]
+                illumina : meta.datatype == "illumina"
+                    return [ meta, cram ]
+                pacbio : meta.datatype == "pacbio"
+                    return [ meta, cram ]
+                clr : meta.datatype == "pacbio_clr"
+                    return [ meta, cram ]
+                ont : meta.datatype == "ont"
+                    return [ meta, cram ]
+        }
+        .set { ch_reads }
+
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
     //
@@ -120,20 +118,12 @@ workflow VARIANTCALLING {
     //ch_versions    = ch_versions.mix(MULTIQC.out.versions)
 
     //
-    // Process to get datatype from cram: [[meta.id, meta.datatype],[cram]]
-    //
-    getDatatype(INPUT_CHECK.out.cram)
-
-    //
-    // Branching structure containing
     // MODULE: ILLUMINA_VC
     //
-    if (getDatatype.out.dtype =~ "illumina") {
-        ILLUMINA_VC (
-            params.fasta,
-            INPUT_CHECK.out.cram
-        )
-    }
+    ILLUMINA_VC (
+        params.fasta,
+        ch_reads.illumina
+    )   
 }
 
 /*
