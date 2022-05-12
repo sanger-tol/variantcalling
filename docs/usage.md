@@ -27,11 +27,11 @@ sample,datatype,datafile
 ecoli_606,illumina,test/illumina/ecoli_606_mkdup_aligned.cram
 ```
 
-| Column    | Description |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `datatype` | The technology the data was generated with. Can be "illumina", "hic", "pacbio". |
-| `datafile` | Full path to a merged and aligned CRAM file that has also gone through mkdup. File should have the extension ".cram".|
+| Column     | Description                                                                                                                                                                            |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sample`   | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
+| `datatype` | The technology the data was generated with. Can be "illumina", "hic", "pacbio".                                                                                                        |
+| `datafile` | Full path to a merged and aligned CRAM file that has also gone through mkdup. File should have the extension ".cram".                                                                  |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
