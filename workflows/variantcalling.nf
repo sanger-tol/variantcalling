@@ -101,6 +101,14 @@ workflow VARIANTCALLING {
     )
     multiqc_report = MULTIQC.out.report.toList()
     ch_versions    = ch_versions.mix(MULTIQC.out.versions)
+
+    //
+    // MODULE: ILLUMINA_VC
+    //
+    ILLUMINA_VC (
+        params.fasta,
+        ch_reads.illumina
+    )
 }
 
 /*
