@@ -70,6 +70,7 @@ nf-core/variantcalling was originally written by @priyanka-surana.
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
+@DLBPointon / dp24 - Illumina variant calling sub-workflow
 <!-- TODO nf-core: If applicable, make list of people who have also contributed -->
 
 ## Contributions and Support
