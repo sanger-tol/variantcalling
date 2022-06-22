@@ -3,7 +3,7 @@
 if [ $# -eq 0 ]; then echo -e "Please provide a ToL ID. \nUsage: ./automate_io <tol_id> <tol_project>. \n<tol_id> must match the expected genome. \n<tol_project> defaults to 'darwin'."; exit 1; fi
 
 id=$1
-project=${2:-".sandbox_ps22"}
+project=$2
 data=/lustre/scratch124/tol/projects/$project/data
 
 if compgen -G $data/*/*/assembly/release/${id}.[0-9]/insdc/GCA*fasta.gz > /dev/null

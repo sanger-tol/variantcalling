@@ -9,7 +9,7 @@ include { SAMPLESHEET_CHECK } from '../../modules/local/samplesheet_check'
 
 workflow INPUT_CHECK {
     take:
-    inputs     // either [ file(params.input), file(params.fasta) ] or [ params.id, params.project ]
+    inputs     // either [ file(params.input), file(params.fasta) ] or [ params.input, params.project ]
 
     main:
     ch_versions = Channel.empty()
@@ -26,7 +26,7 @@ workflow INPUT_CHECK {
         genome      = ch_input.fasta
         samplesheet = ch_input.csv
         tol         = 0
-    } else if (params.id && params.project) {
+    } else if (params.input && params.project) {
         INPUT_TOL (ch_input.csv, ch_input.fasta)
         genome      = INPUT_TOL.out.fasta
         samplesheet = INPUT_TOL.out.csv

@@ -7,15 +7,15 @@
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-// WorkflowVariantcalling.initialise(params, log)
+WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.multiqc_config, params.fasta ]
+def checkPathParamList = [ params.multiqc_config, params.fasta ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
-if (params.input && params.fasta) { inputs = [ file(params.input), file(params.fasta) ] }
-else if (params.id && params.project) { inputs = [ params.id, params.project ] }
+if (params.input && params.fasta) { inputs = [ file(params.input, checkIfExists: true), file(params.fasta) ] }
+else if (params.input && params.project) { inputs = [ params.input, params.project ] }
 else { exit 1, 'Input not specified. Please include either a samplesheet or Tree of Life organism and project IDs' }
 
 /*
