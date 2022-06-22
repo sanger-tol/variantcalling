@@ -7,10 +7,10 @@
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-WorkflowVariantcalling.initialise(params, log)
+// WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.multiqc_config, params.fasta, params.id, params.project ]
+def checkPathParamList = [ params.input, params.multiqc_config, params.fasta ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
@@ -69,14 +69,14 @@ workflow VARIANTCALLING {
     //
     Channel.of ( inputs ).set { ch_input }
     INPUT_CHECK ( ch_input )
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+    // ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
     //
     // MODULE: Convert CRAM to BAM
     //
     ch_fasta = INPUT_CHECK.out.genome.collect()
     SAMTOOLS_VIEW ( INPUT_CHECK.out.aln, ch_fasta )
-    ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions)
+    // ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions)
 
     //
     // MODULE: Combine different versions.yml
@@ -94,7 +94,7 @@ workflow VARIANTCALLING {
     ch_multiqc_files = ch_multiqc_files.mix(ch_multiqc_custom_config.collect().ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    // ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
 
     MULTIQC ( ch_multiqc_files.collect() )
     multiqc_report = MULTIQC.out.report.toList()
