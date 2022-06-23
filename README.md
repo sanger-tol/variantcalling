@@ -3,6 +3,7 @@
 <!-- [![GitHub Actions CI Status](https://github.com/nf-core/variantcalling/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/variantcalling/actions?query=workflow%3A%22nf-core+CI%22) -->
 <!-- [![GitHub Actions Linting Status](https://github.com/nf-core/variantcalling/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/variantcalling/actions?query=workflow%3A%22nf-core+linting%22) -->
 <!-- [![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?logo=Amazon%20AWS)](https://nf-co.re/variantcalling/results) -->
+
 [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.6620604-1073c8)](https://doi.org/10.5281/zenodo.6620604)
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A522.04.0-23aa62.svg)](https://www.nextflow.io/)
@@ -21,16 +22,17 @@
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
 
-Before release, tests are run for the pipeline on a full-sized dataset on the Sanger HPC. This ensures that the pipeline runs, has sensible resource allocation defaults set to run on real-world datasets, and permits the persistent storage of results to benchmark between pipeline releases and other analysis sources. 
+Before release, tests are run for the pipeline on a full-sized dataset on the Sanger HPC. This ensures that the pipeline runs, has sensible resource allocation defaults set to run on real-world datasets, and permits the persistent storage of results to benchmark between pipeline releases and other analysis sources.
 
 ## Pipeline summary
 
 1. Input check
-    - Use ToL Organism and Project ID to create a samplesheet and get genome information
-    - Check samplesheet, genome and meta information
+
+   - Use ToL Organism and Project ID to create a samplesheet and get genome information
+   - Check samplesheet, genome and meta information
 
 2. Illumina Variant Calling
-    - GATK
+   - GATK
 
 ## Quick Start
 
@@ -77,7 +79,7 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 
 ## Citations
 
-If you use  sanger-tol/variantcalling for your analysis, please cite it using the following doi: [10.5281/zenodo.6620604](https://doi.org/10.5281/zenodo.6620604)
+If you use sanger-tol/variantcalling for your analysis, please cite it using the following doi: [10.5281/zenodo.6620604](https://doi.org/10.5281/zenodo.6620604)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 

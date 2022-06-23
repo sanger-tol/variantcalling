@@ -42,11 +42,11 @@ mMelMel3_T1,hic,/path/to/mMelMel3_hic.cram
 mMelMel3_T2,pacbio,/path/to/mMelMel3_pacbio.cram
 ```
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `datatype` | Type of sequencing data. Must be one of `hic`, `Illumina`, `pacbio`, or `ont`. |
-| `datafile` | Full path to read data file. Must be `bam` or `cram`. |
+| Column     | Description                                                                                                                                                                            |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sample`   | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
+| `datatype` | Type of sequencing data. Must be one of `hic`, `Illumina`, `pacbio`, or `ont`.                                                                                                         |
+| `datafile` | Full path to read data file. Must be `bam` or `cram`.                                                                                                                                  |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
