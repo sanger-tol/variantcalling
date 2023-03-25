@@ -7,18 +7,6 @@ import org.yaml.snakeyaml.Yaml
 class NfcoreTemplate {
 
     //
-    // Check AWS Batch related parameters have been specified correctly
-    //
-    public static void awsBatch(workflow, params) {
-        if (workflow.profile.contains('awsbatch')) {
-            // Check params.awsqueue and params.awsregion have been set if running on AWSBatch
-            assert (params.awsqueue && params.awsregion) : "Specify correct --awsqueue and --awsregion parameters on AWSBatch!"
-            // Check outdir paths to be S3 buckets if running on AWSBatch
-            assert params.outdir.startsWith('s3:')       : "Outdir not on S3 - specify S3 Bucket to run on AWSBatch!"
-        }
-    }
-
-    //
     //  Warn if a -profile or Nextflow config has not been provided to run the pipeline
     //
     public static void checkConfigProvided(workflow, log) {
