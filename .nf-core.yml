@@ -14,6 +14,8 @@ lint:
     - .github/CONTRIBUTING.md
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - .github/workflows/branch.yml
   nextflow_config:
     - manifest.name
     - manifest.homePage
