@@ -6,9 +6,6 @@ on:
   workflow_run:
     workflows: ["nf-core linting"]
 
-permissions:
-  pull-requests: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
