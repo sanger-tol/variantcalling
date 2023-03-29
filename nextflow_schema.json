@@ -40,9 +40,23 @@
         "reference_genome_options": {
             "title": "Reference genome options",
             "type": "object",
-            "fa_icon": "fas fa-dna",
             "description": "Reference genome related files and options required for the workflow.",
-            "properties": {}
+            "default": "",
+            "properties": {
+                "fasta": {
+                    "type": "string",
+                    "description": "Path to FASTA genome file."
+                },
+                "fai": {
+                    "type": "string",
+                    "description": "Path to the index file of the FASTA genome file."
+                },
+                "interval": {
+                    "type": "string",
+                    "description": "Interval bed file."
+                }
+            },
+            "required": ["fasta", "fai"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",
