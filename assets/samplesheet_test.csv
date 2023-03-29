@@ -1,0 +1,3 @@
+sample,datatype,datafile,indexfile
+sample1,pacbio,https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam,https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai
+sample2,pacbio,https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram,https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai

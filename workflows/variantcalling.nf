@@ -63,6 +63,9 @@ workflow VARIANTCALLING {
     INPUT_CHECK (
         ch_input
     )
+
+    INPUT_CHECK.out.reads.view()
+
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
     CUSTOM_DUMPSOFTWAREVERSIONS (

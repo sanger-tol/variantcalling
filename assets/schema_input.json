@@ -12,25 +12,22 @@
                 "pattern": "^\\S+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces"
             },
-            "fastq_1": {
+            "datatype": {
                 "type": "string",
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+$",
+                "errorMessage": "Data type, and must be one of: 'pacbio'"
             },
-            "fastq_2": {
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'",
-                "anyOf": [
-                    {
-                        "type": "string",
-                        "pattern": "^\\S+\\.f(ast)?q\\.gz$"
-                    },
-                    {
-                        "type": "string",
-                        "maxLength": 0
-                    }
-                ]
+            "datafile": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
+            },
+            "indexfile": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Data index file for reads cannot contain spaces and must have extension 'crai' or 'bai'"
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["sample", "datatype", "datafile", "indexfile"]
     }
 }
