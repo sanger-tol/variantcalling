@@ -18,7 +18,8 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 if (params.input)    { ch_input    = file(params.input)    } else { exit 1, 'Input samplesheet not specified!' }
 if (params.fasta)    { ch_fasta    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
 if (params.fai)      { ch_fai      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
-if (params.interval) { ch_interval = file(params.interval) } else {  ch_interval = Channel.empty }
+
+if (params.interval) { ch_interval = file(params.interval) }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
