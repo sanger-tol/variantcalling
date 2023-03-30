@@ -3,6 +3,7 @@
 //
 
 include { SAMTOOLS_VIEW } from '../../modules/nf-core/samtools/view/main'
+include { DEEPVARIANT } from '../modules/nf-core/deepvariant/main'
 
 workflow DEEPVARIANT_CALLER {
 
