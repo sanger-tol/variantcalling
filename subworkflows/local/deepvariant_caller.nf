@@ -16,7 +16,7 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = Channel.empty()
 
     SAMTOOLS_VIEW ( reads, fasta, [] )
-    ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
+    ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions )
 
     emit:
     cram     = SAMTOOLS_VIEW.out.cram            // channel: [ val(meta), /path/to/cram ]
