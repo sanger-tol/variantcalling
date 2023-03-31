@@ -19,12 +19,12 @@
             },
             "datafile": {
                 "type": "string",
-                "pattern": "^\\S+$",
+                "pattern": "^\\S+\\.(bam|cram)$",
                 "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
             },
             "indexfile": {
                 "type": "string",
-                "pattern": "^\\S+$",
+                "pattern": "^\\S+\\.(bai|crai)$",
                 "errorMessage": "Data index file for reads cannot contain spaces and must have extension 'crai' or 'bai'"
             }
         },
