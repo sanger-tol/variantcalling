@@ -198,7 +198,7 @@ def check_samplesheet(file_in, file_out):
 
     Example:
         This function checks that the samplesheet follows the following structure,
-        see also the `readmapping samplesheet`_::
+        see also the `variantcalling samplesheet`_::
 
             sample,datatype,datafile,library
             sample1,hic,/path/to/file1.cram,
