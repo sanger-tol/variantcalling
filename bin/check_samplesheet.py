@@ -206,7 +206,7 @@ def check_samplesheet(file_in, file_out):
             sample1,pacbio,/path/to/file1.bam,
             sample1,ont,/path/to/file.fq.gz,
 
-    .. _readmapping samplesheet:
+    .. _variantcalling samplesheet:
         https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/samplesheet.csv
 
     """
