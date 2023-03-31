@@ -1,0 +1,27 @@
+Changes in module 'nf-core/deepvariant'
+--- modules/nf-core/deepvariant/meta.yml
++++ modules/nf-core/deepvariant/meta.yml
+@@ -38,6 +38,10 @@
+       type: file
+       description: Index of reference fasta file
+       pattern: "*.fai"
++  - gzi:
++      type: file
++      description: Index of reference fasta file
++      pattern: "*.gzi"
+ 
+ output:
+   - meta:
+
+--- modules/nf-core/deepvariant/main.nf
++++ modules/nf-core/deepvariant/main.nf
+@@ -13,6 +13,7 @@
+     tuple val(meta), path(input), path(index), path(intervals)
+     path(fasta)
+     path(fai)
++    path(gzi)
+ 
+     output:
+     tuple val(meta), path("${prefix}.vcf.gz") ,  emit: vcf
+
+************************************************************
