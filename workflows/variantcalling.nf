@@ -11,13 +11,22 @@ WorkflowVariantcalling.initialise(params, log)
 
 // TODO nf-core: Add all file path parameters for the pipeline to the list below
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval ]
+def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, params.interval ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
 if (params.input)    { ch_input    = file(params.input)    } else { exit 1, 'Input samplesheet not specified!' }
+
 if (params.fasta)    { ch_fasta    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
 if (params.fai)      { ch_fai      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
+
+if (params.gzi) {
+    ch_gzi = file(params.gzi)
+} else if ( params.fasta.endsWith('fasta.gz') ) { 
+    exit 1, 'Reference fasta index gzi file not specified for fasta.gz file!' 
+}else {
+    ch_gzi = null
+}
 
 if (params.interval) { ch_interval = file(params.interval) } else { ch_interval = null }
 /*
@@ -75,6 +84,7 @@ workflow VARIANTCALLING {
         INPUT_CHECK.out.reads,
         ch_fasta,
         ch_fai,
+        ch_gzi,
         ch_interval
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)

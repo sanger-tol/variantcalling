@@ -11,6 +11,7 @@ workflow DEEPVARIANT_CALLER {
     reads    // [ val(meta), data, index ]
     fasta    // path to reference fasta file
     fai      // path to reference fasta index file 
+    gzi
     interval // path to interval bed file
 
     main:
@@ -26,7 +27,11 @@ workflow DEEPVARIANT_CALLER {
         if (interval) { it.add ( interval ) } else { it.add( [] ) }
     }
 
-    DEEPVARIANT( cram_crai, fasta, fai )
+    if ( ! params.gzi ) {
+        gzi = []
+    }
+
+    DEEPVARIANT( cram_crai, fasta, fai, gzi )
     ch_versions = ch_versions.mix ( DEEPVARIANT.out.versions )
 
 
