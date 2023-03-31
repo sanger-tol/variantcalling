@@ -22,12 +22,9 @@ workflow DEEPVARIANT_CALLER {
      
     cram_crai = SAMTOOLS_VIEW.out.cram
                 .join(SAMTOOLS_VIEW.out.crai)
+                .map { it + [interval ?: []] }
 
-    cram_crai.map { 
-        if (interval) { it.add ( interval ) } else { it.add( [] ) }
-    }
-
-    if ( ! params.gzi ) {
+    if ( !gzi ) {
         gzi = []
     }
 
