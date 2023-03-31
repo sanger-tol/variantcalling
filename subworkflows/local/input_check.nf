@@ -12,7 +12,7 @@ workflow INPUT_CHECK {
     SAMPLESHEET_CHECK ( samplesheet )
         .csv
         .splitCsv ( header:true, sep:',' )
-        .map { create_data_channel(it) }
+        .map { [[id: it.sample, type: it.datatype], file(it.datafile), file(id.indexfile)] }
         .set { reads }
 
     emit:
