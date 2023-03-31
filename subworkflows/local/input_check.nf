@@ -12,20 +12,10 @@ workflow INPUT_CHECK {
     SAMPLESHEET_CHECK ( samplesheet )
         .csv
         .splitCsv ( header:true, sep:',' )
-        .map { create_data_channel(it) }
+        .map { [[id: it.sample, type: it.datatype], file(it.datafile), file(it.indexfile)] }
         .set { reads }
 
     emit:
     reads                                     // channel: [ val(meta), data, index ]
     versions = SAMPLESHEET_CHECK.out.versions // channel: [ versions.yml ]
-}
-
-// Function to get list of [ meta, data, index ]
-def create_data_channel(LinkedHashMap row) {
-    // create meta map
-    def meta = [:]
-    meta.id         = row.sample
-    meta.type       = row.datatype
-
-    return [ meta, file(row.datafile), file(row.indexfile) ]
 }

@@ -79,7 +79,7 @@ class RowChecker:
         self._validate_type(row)
         self._validate_data_file(row)
         self._validate_index_file(row)
-        self._seen.add((row[self._sample_col], row[self._file_col], row[self._index_col]))
+        self._seen.add((row[self._sample_col], row[self._file_col]))
         self.modified.append(row)
 
     def _validate_sample(self, row):
@@ -111,7 +111,6 @@ class RowChecker:
             raise AssertionError("bai index file should be given for bam file.")
         if row[self._file_col].endswith("cram") and not row[self._index_col].endswith("crai"):
             raise AssertionError("crai index file shuld be given for cram file.")
-        self._validate_index_format(row[self._index_col])
 
     def _validate_data_format(self, filename):
         """Assert that a given filename has one of the expected read data file extensions."""
@@ -121,17 +120,9 @@ class RowChecker:
                 f"It should be one of: {', '.join(self.DATA_VALID_FORMATS)}"
             )
 
-    def _validate_index_format(self, filename):
-        """Assert that a given filename has one of the expected read index file extensions."""
-        if not any(filename.endswith(extension) for extension in self.INDEX_VALID_FORMATS):
-            raise AssertionError(
-                f"The index file has an unrecognized extension: {filename}\n"
-                f"It should be one of: {', '.join(self.INDEX_VALID_FORMATS)}"
-            )
-
     def validate_unique_samples(self):
         """
-        Assert that the combination of sample name, data and index filename is unique.
+        Assert that the combination of sample name and data filename is unique.
 
         In addition to the validation, also rename all samples to have a suffix of _T{n}, where n is the
         number of times the same sample exist, but with different files, e.g., multiple runs per experiment.
@@ -198,15 +189,13 @@ def check_samplesheet(file_in, file_out):
 
     Example:
         This function checks that the samplesheet follows the following structure,
-        see also the `readmapping samplesheet`_::
+        see also the `variantcalling samplesheet`_::
 
-            sample,datatype,datafile,library
-            sample1,hic,/path/to/file1.cram,
-            sample1,illumina,/path/to/file2.cram,
-            sample1,pacbio,/path/to/file1.bam,
-            sample1,ont,/path/to/file.fq.gz,
+            sample,datatype,datafile,indexfile
+            sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bai
+            sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.crai
 
-    .. _readmapping samplesheet:
+    .. _variantcalling samplesheet:
         https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/samplesheet.csv
 
     """
