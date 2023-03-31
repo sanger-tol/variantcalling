@@ -21,8 +21,12 @@ workflow DEEPVARIANT_CALLER {
      
     cram_crai = SAMTOOLS_VIEW.out.cram
                 .join(SAMTOOLS_VIEW.out.crai)
-                .combine(Channel.fromPath(interval))
-    DEEPVARIANT( cram_crai, fasta, fai)
+
+    cram_crai.map { 
+        if (interval) { it.add ( interval ) } else { it.add( [] ) }
+    }
+
+    DEEPVARIANT( cram_crai, fasta, fai )
     ch_versions = ch_versions.mix ( DEEPVARIANT.out.versions )
 
 

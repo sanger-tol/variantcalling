@@ -19,7 +19,7 @@ if (params.input)    { ch_input    = file(params.input)    } else { exit 1, 'Inp
 if (params.fasta)    { ch_fasta    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
 if (params.fai)      { ch_fai      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
 
-if (params.interval) { ch_interval = file(params.interval) }
+if (params.interval) { ch_interval = file(params.interval) } else { ch_interval = null }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
