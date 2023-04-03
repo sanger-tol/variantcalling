@@ -28,11 +28,6 @@ class RowChecker:
         ".bam",
     )
 
-    INDEX_VALID_FORMATS = (
-        ".crai",
-        ".bai",
-    )
-
     VALID_DATATYPES = ("pacbio",)
 
     def __init__(
