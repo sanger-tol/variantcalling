@@ -9,9 +9,9 @@ workflow DEEPVARIANT_CALLER {
 
     take:
     reads    // [ val(meta), data, index ]
-    fasta    // path to reference fasta file
-    fai      // path to reference fasta index file 
-    gzi
+    fasta    // path to reference fasta file, either compressed or uncompressed
+    fai      // path to compressed or uncompressed reference fasta index file
+    gzi      // path to compressed fasta index file
     interval // path to interval bed file
 
     main:
