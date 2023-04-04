@@ -63,9 +63,11 @@ workflow VARIANTCALLING {
     INPUT_CHECK (
         ch_input
     )
-
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
+    //
+    // MODULE: Combine different version together
+    // 
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
