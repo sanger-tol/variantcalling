@@ -22,7 +22,7 @@ workflow DEEPVARIANT_CALLER {
      
     cram_crai = SAMTOOLS_VIEW.out.cram
                 .join(SAMTOOLS_VIEW.out.crai)
-                .map { reads + [interval ?: []] }
+                .map { filtered_reads -> filtered_reads + [interval ?: []] }
 
     if ( !gzi ) {
         gzi = []
