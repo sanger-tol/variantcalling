@@ -78,7 +78,7 @@ workflow VARIANTCALLING {
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
     //
-    // filter the reads and call deepvariant
+    // SUBWORKFLOW: filter the reads and call deepvariant
     //
     DEEPVARIANT_CALLER (
         INPUT_CHECK.out.reads,
@@ -89,6 +89,9 @@ workflow VARIANTCALLING {
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
 
+    //
+    // MODULE: Combine different version together
+    // 
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
