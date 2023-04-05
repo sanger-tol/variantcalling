@@ -15,19 +15,19 @@ def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, p
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
-if (params.input)    { input = file(params.input)       } else { exit 1, 'Input samplesheet not specified!' }
-if (params.fasta)    { fasta    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
-if (params.fai)      { fai      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
+if (params.input)    { input_file    = file(params.input)    } else { exit 1, 'Input samplesheet not specified!' }
+if (params.fasta)    { fasta_file    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
+if (params.fai)      { fai_file      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
 
 if (params.gzi) {
-    gzi = file(params.gzi)
+    gzi_file = file(params.gzi)
 } else if ( params.fasta.endsWith('fasta.gz') ) { 
     exit 1, 'Reference fasta index gzi file not specified for fasta.gz file!' 
 }else {
-    gzi = null
+    gzi_file = null
 }
 
-if (params.interval) { interval = file(params.interval) } else { interval = null }
+if (params.interval) { interval_file = file(params.interval) } else { interval_file = null }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
@@ -72,7 +72,7 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
     INPUT_CHECK (
-        input
+        input_file
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
@@ -81,10 +81,10 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER (
         INPUT_CHECK.out.reads,
-        fasta,
-        fai,
-        gzi,
-        interval
+        fasta_file,
+        fai_file,
+        gzi_file,
+        interval_file
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
 
