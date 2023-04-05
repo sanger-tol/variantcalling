@@ -124,7 +124,7 @@ class RowChecker:
 
         """
         if len(self._seen) != len(self.modified):
-            raise AssertionError("The combination of sample name, data and index file must be unique.")
+            raise AssertionError("The combination of sample name and data file must be unique.")
         seen = Counter()
         for row in self.modified:
             sample = row[self._sample_col]
