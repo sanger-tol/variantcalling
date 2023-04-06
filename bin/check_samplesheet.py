@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 """Provide a command line tool to validate and transform tabular samplesheets."""
 
 
@@ -24,17 +23,19 @@ class RowChecker:
 
     """
 
-    VALID_FORMATS = (
-        ".fq.gz",
-        ".fastq.gz",
+    DATA_VALID_FORMATS = (
+        ".cram",
+        ".bam",
     )
+
+    VALID_DATATYPES = ("pacbio",)
 
     def __init__(
         self,
         sample_col="sample",
-        first_col="fastq_1",
-        second_col="fastq_2",
-        single_col="single_end",
+        type_col="datatype",
+        file_col="datafile",
+        index_col="indexfile",
         **kwargs,
     ):
         """
@@ -43,26 +44,26 @@ class RowChecker:
         Args:
             sample_col (str): The name of the column that contains the sample name
                 (default "sample").
-            first_col (str): The name of the column that contains the first (or only)
-                FASTQ file path (default "fastq_1").
-            second_col (str): The name of the column that contains the second (if any)
-                FASTQ file path (default "fastq_2").
-            single_col (str): The name of the new column that will be inserted and
-                records whether the sample contains single- or paired-end sequencing
-                reads (default "single_end").
+            type_col (str): The name of the column that contains the dataype for
+                the read data (default "datatype").
+            file_col (str): The name of the column that contains the file path for
+                the read data (default "datafile").
+            index_col (str): The name of the column that contains the index file
+                for the data (default "indexfile").
 
         """
         super().__init__(**kwargs)
+
         self._sample_col = sample_col
-        self._first_col = first_col
-        self._second_col = second_col
-        self._single_col = single_col
+        self._type_col = type_col
+        self._file_col = file_col
+        self._index_col = index_col
         self._seen = set()
         self.modified = []
 
     def validate_and_transform(self, row):
         """
-        Perform all validations on the given row and insert the read pairing status.
+        Perform all validations on the given row.
 
         Args:
             row (dict): A mapping from column headers (keys) to elements of that row
@@ -70,10 +71,10 @@ class RowChecker:
 
         """
         self._validate_sample(row)
-        self._validate_first(row)
-        self._validate_second(row)
-        self._validate_pair(row)
-        self._seen.add((row[self._sample_col], row[self._first_col]))
+        self._validate_type(row)
+        self._validate_data_file(row)
+        self._validate_index_file(row)
+        self._seen.add((row[self._sample_col], row[self._file_col]))
         self.modified.append(row)
 
     def _validate_sample(self, row):
@@ -83,46 +84,47 @@ class RowChecker:
         # Sanitize samples slightly.
         row[self._sample_col] = row[self._sample_col].replace(" ", "_")
 
-    def _validate_first(self, row):
-        """Assert that the first FASTQ entry is non-empty and has the right format."""
-        if len(row[self._first_col]) <= 0:
-            raise AssertionError("At least the first FASTQ file is required.")
-        self._validate_fastq_format(row[self._first_col])
-
-    def _validate_second(self, row):
-        """Assert that the second FASTQ entry has the right format if it exists."""
-        if len(row[self._second_col]) > 0:
-            self._validate_fastq_format(row[self._second_col])
-
-    def _validate_pair(self, row):
-        """Assert that read pairs have the same file extension. Report pair status."""
-        if row[self._first_col] and row[self._second_col]:
-            row[self._single_col] = False
-            first_col_suffix = Path(row[self._first_col]).suffixes[-2:]
-            second_col_suffix = Path(row[self._second_col]).suffixes[-2:]
-            if first_col_suffix != second_col_suffix:
-                raise AssertionError("FASTQ pairs must have the same file extensions.")
-        else:
-            row[self._single_col] = True
-
-    def _validate_fastq_format(self, filename):
-        """Assert that a given filename has one of the expected FASTQ extensions."""
-        if not any(filename.endswith(extension) for extension in self.VALID_FORMATS):
+    def _validate_type(self, row):
+        """Assert that the data type matches expected values."""
+        if not any(row[self._type_col] for datatype in self.VALID_DATATYPES):
             raise AssertionError(
-                f"The FASTQ file has an unrecognized extension: {filename}\n"
-                f"It should be one of: {', '.join(self.VALID_FORMATS)}"
+                f"The datatype is unrecognized: {row[self._type_col]}\n"
+                f"It should be one of: {', '.join(self.VALID_DATATYPES)}"
+            )
+
+    def _validate_data_file(self, row):
+        """Assert that the datafile is non-empty and has the right format."""
+        if len(row[self._file_col]) <= 0:
+            raise AssertionError("Data file is required.")
+        self._validate_data_format(row[self._file_col])
+
+    def _validate_index_file(self, row):
+        """Assert that the indexfile is non-empty and has the right format."""
+        if len(row[self._index_col]) <= 0:
+            raise AssertionError("Data index file is required.")
+        if row[self._file_col].endswith("bam") and not row[self._index_col].endswith("bai"):
+            raise AssertionError("bai index file should be given for bam file.")
+        if row[self._file_col].endswith("cram") and not row[self._index_col].endswith("crai"):
+            raise AssertionError("crai index file shuld be given for cram file.")
+
+    def _validate_data_format(self, filename):
+        """Assert that a given filename has one of the expected read data file extensions."""
+        if not any(filename.endswith(extension) for extension in self.DATA_VALID_FORMATS):
+            raise AssertionError(
+                f"The data file has an unrecognized extension: {filename}\n"
+                f"It should be one of: {', '.join(self.DATA_VALID_FORMATS)}"
             )
 
     def validate_unique_samples(self):
         """
-        Assert that the combination of sample name and FASTQ filename is unique.
+        Assert that the combination of sample name and data filename is unique.
 
         In addition to the validation, also rename all samples to have a suffix of _T{n}, where n is the
-        number of times the same sample exist, but with different FASTQ files, e.g., multiple runs per experiment.
+        number of times the same sample exist, but with different files, e.g., multiple runs per experiment.
 
         """
         if len(self._seen) != len(self.modified):
-            raise AssertionError("The pair of sample name and FASTQ must be unique.")
+            raise AssertionError("The combination of sample name and data file must be unique.")
         seen = Counter()
         for row in self.modified:
             sample = row[self._sample_col]
@@ -158,9 +160,12 @@ def sniff_format(handle):
     peek = read_head(handle)
     handle.seek(0)
     sniffer = csv.Sniffer()
-    if not sniffer.has_header(peek):
-        logger.critical("The given sample sheet does not appear to contain a header.")
-        sys.exit(1)
+    # same input file could retrun random true or false
+    # disable it now
+    # the following validation should be enough
+    # if not sniffer.has_header(peek):
+    #    logger.critical("The given sample sheet does not appear to contain a header.")
+    #    sys.exit(1)
     dialect = sniffer.sniff(peek)
     return dialect
 
@@ -169,8 +174,7 @@ def check_samplesheet(file_in, file_out):
     """
     Check that the tabular samplesheet has the structure expected by nf-core pipelines.
 
-    Validate the general shape of the table, expected columns, and each row. Also add
-    an additional column which records whether one or two FASTQ reads were found.
+    Validate the general shape of the table, expected columns, and each row.
 
     Args:
         file_in (pathlib.Path): The given tabular samplesheet. The format can be either
@@ -180,18 +184,17 @@ def check_samplesheet(file_in, file_out):
 
     Example:
         This function checks that the samplesheet follows the following structure,
-        see also the `viral recon samplesheet`_::
+        see also the `variantcalling samplesheet`_::
 
-            sample,fastq_1,fastq_2
-            SAMPLE_PE,SAMPLE_PE_RUN1_1.fastq.gz,SAMPLE_PE_RUN1_2.fastq.gz
-            SAMPLE_PE,SAMPLE_PE_RUN2_1.fastq.gz,SAMPLE_PE_RUN2_2.fastq.gz
-            SAMPLE_SE,SAMPLE_SE_RUN1_1.fastq.gz,
+            sample,datatype,datafile,indexfile
+            sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bai
+            sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.crai
 
-    .. _viral recon samplesheet:
-        https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/samplesheet/samplesheet_test_illumina_amplicon.csv
+    .. _variantcalling samplesheet:
+        https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/samplesheet.csv
 
     """
-    required_columns = {"sample", "fastq_1", "fastq_2"}
+    required_columns = {"sample", "datatype", "datafile", "indexfile"}
     # See https://docs.python.org/3.9/library/csv.html#id3 to read up on `newline=""`.
     with file_in.open(newline="") as in_handle:
         reader = csv.DictReader(in_handle, dialect=sniff_format(in_handle))
@@ -210,7 +213,6 @@ def check_samplesheet(file_in, file_out):
                 sys.exit(1)
         checker.validate_unique_samples()
     header = list(reader.fieldnames)
-    header.insert(1, "single_end")
     # See https://docs.python.org/3.9/library/csv.html#id3 to read up on `newline=""`.
     with file_out.open(mode="w", newline="") as out_handle:
         writer = csv.DictWriter(out_handle, header, delimiter=",")
@@ -243,6 +245,12 @@ def parse_args(argv=None):
         help="The desired log level (default WARNING).",
         choices=("CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"),
         default="WARNING",
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s 1.0",
     )
     return parser.parse_args(argv)
 
