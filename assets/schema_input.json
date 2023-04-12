@@ -24,8 +24,8 @@
             },
             "indexfile": {
                 "type": "string",
-                "pattern": "^\\S+\\.(bai|crai)$",
-                "errorMessage": "Data index file for reads cannot contain spaces and must have extension 'crai' or 'bai'"
+                "pattern": "^\\S+\\.(bai|csi|crai)$",
+                "errorMessage": "Data index file for reads cannot contain spaces and must have extension 'bai', 'csi' or 'crai'"
             }
         },
         "required": ["sample", "datatype", "datafile", "indexfile"]
