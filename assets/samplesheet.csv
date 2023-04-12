@@ -1,3 +1,4 @@
 sample,datatype,datafile,indexfile
-sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bai
-sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.crai
+sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bam.bai
+sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.cram.crai
+sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi

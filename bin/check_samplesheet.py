@@ -102,8 +102,10 @@ class RowChecker:
         """Assert that the indexfile is non-empty and has the right format."""
         if len(row[self._index_col]) <= 0:
             raise AssertionError("Data index file is required.")
-        if row[self._file_col].endswith("bam") and not row[self._index_col].endswith("bai"):
-            raise AssertionError("bai index file should be given for bam file.")
+        if row[self._file_col].endswith("bam") and not (
+            row[self._index_col].endswith("bai") or row[self._index_col].endswith("csi")
+        ):
+            raise AssertionError("bai or csi index file should be given for bam file.")
         if row[self._file_col].endswith("cram") and not row[self._index_col].endswith("crai"):
             raise AssertionError("crai index file shuld be given for cram file.")
 
@@ -187,8 +189,9 @@ def check_samplesheet(file_in, file_out):
         see also the `variantcalling samplesheet`_::
 
             sample,datatype,datafile,indexfile
-            sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bai
-            sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.crai
+            sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bam.bai
+            sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.cram.crai
+            sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi
 
     .. _variantcalling samplesheet:
         https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/samplesheet.csv
