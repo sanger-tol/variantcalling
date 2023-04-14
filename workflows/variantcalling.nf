@@ -91,14 +91,10 @@ workflow VARIANTCALLING {
     ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
     
     //
-    // SUBWORKFLOW: filter the reads and call deepvariant
+    // SUBWORKFLOW: call deepvariant
     //
     DEEPVARIANT_CALLER (
-        INPUT_CHECK.out.reads,
-        fasta_file,
-        fai_file,
-        gzi_file,
-        interval_file
+        INPUT_FILTER_SPLIT.out.reads_fasta
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
 
