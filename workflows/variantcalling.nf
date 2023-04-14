@@ -43,9 +43,10 @@ if (params.interval) { interval_file = file(params.interval) } else { interval_f
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK } from '../subworkflows/local/input_check'
+include { INPUT_CHECK        } from '../subworkflows/local/input_check'
+include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
-include { INPUT_FILTER_SPLIT  } from '../subworkflows/local/input_filter_split'
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT NF-CORE MODULES/SUBWORKFLOWS
@@ -78,12 +79,14 @@ workflow VARIANTCALLING {
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
     //
-    // SUBWORKFLOW: split the input fasta file
+    // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
         fasta_file,
         fai_file,
-        gzi_file
+        gzi_file,
+        INPUT_CHECK.out.reads,
+        interval_file
     )
     ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
     

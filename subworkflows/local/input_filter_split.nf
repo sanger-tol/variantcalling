@@ -1,8 +1,9 @@
 //
-// Check input samplesheet and get read channels
+// Split input fasta file by sequence and filter the input reads
 //
 
 include { SAMTOOLS_FAIDX } from '../../modules/nf-core/samtools/faidx/main'
+include { SAMTOOLS_VIEW } from '../../modules/nf-core/samtools/view/main'
 
 workflow INPUT_FILTER_SPLIT {
 
@@ -10,6 +11,9 @@ workflow INPUT_FILTER_SPLIT {
     fasta    // path to reference fasta file, either compressed or uncompressed
     fai      // path to compressed or uncompressed reference fasta index file
     gzi      // path to compressed fasta index file
+
+    reads    // [ val(meta), data, index ]
+    interval // path to interval bed file
 
     main:
     ch_versions = Channel.empty()
@@ -24,11 +28,21 @@ workflow INPUT_FILTER_SPLIT {
     // index splitted fasta files
     SAMTOOLS_FAIDX ( splitted_fasta  )
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
-   
-    splitted_fasta.join( SAMTOOLS_FAIDX.out.fai ).view()
 
+
+    // filter reads
+    SAMTOOLS_VIEW ( reads, fasta, [] )
+    ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions )
+     
+    cram_crai_fasta = SAMTOOLS_VIEW.out.cram
+                        .join(SAMTOOLS_VIEW.out.crai)
+                        .map { filtered_reads -> filtered_reads + [interval ?: []] }
+                        .combine( splitted_fasta.join( SAMTOOLS_FAIDX.out.fai ) )
     
-    emit:        
-    versions   = ch_versions                       // channel: [ versions.yml ]
+    cram_crai_fasta.view()
+
+    emit:
+    reads_fasta    = cram_crai_fasta       // channel:[ val(meta), cram, crai, interval, val(meta), fasta, fai ]
+    versions       = ch_versions           // channel: [ versions.yml ]
 
 }
