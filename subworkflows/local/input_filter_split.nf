@@ -33,16 +33,16 @@ workflow INPUT_FILTER_SPLIT {
     // filter reads
     SAMTOOLS_VIEW ( reads, fasta, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions )
-     
-    cram_crai_fasta = SAMTOOLS_VIEW.out.cram
+    
+    // combine reads with splitted references
+    cram_crai_fasta_fai = SAMTOOLS_VIEW.out.cram
                         .join(SAMTOOLS_VIEW.out.crai)
                         .map { filtered_reads -> filtered_reads + [interval ?: []] }
                         .combine( splitted_fasta.join( SAMTOOLS_FAIDX.out.fai ) )
-    
-    cram_crai_fasta.view()
+
 
     emit:
-    reads_fasta    = cram_crai_fasta       // channel:[ val(meta), cram, crai, interval, val(meta), fasta, fai ]
-    versions       = ch_versions           // channel: [ versions.yml ]
+    reads_fasta    = cram_crai_fasta_fai    // channel:[ val(meta), cram, crai, interval, val(meta), fasta, fai ]
+    versions       = ch_versions            // channel: [ versions.yml ]
 
 }
