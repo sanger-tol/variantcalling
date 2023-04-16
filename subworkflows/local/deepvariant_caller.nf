@@ -2,7 +2,9 @@
 // call deepvariant
 //
 
-include { DEEPVARIANT }   from '../../modules/nf-core/deepvariant/main'
+include { DEEPVARIANT }         from '../../modules/nf-core/deepvariant/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF   }  from '../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF }   from '../../modules/nf-core/bcftools/concat/main'
 
 workflow DEEPVARIANT_CALLER {
 
@@ -36,8 +38,30 @@ workflow DEEPVARIANT_CALLER {
     DEEPVARIANT( cram_crai, fasta, fai, gzi )
     ch_versions = ch_versions.mix ( DEEPVARIANT.out.versions.first() )
 
+    // group the vcf files together by sample
+    DEEPVARIANT.out.vcf
+     .map{ [ it[0].sample, it[1] ] }
+     .groupTuple()
+     .map { [ [id: it[0]], it[1], [] ]}
+     .set{ vcf }
+    
+    // catcat vcf files
+    BCFTOOLS_CONCAT_VCF( vcf )
+    ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_VCF.out.versions.first() )
+
+    // group the g vcf files together by sample
+    DEEPVARIANT.out.gvcf
+     .map{ [ it[0].sample, it[1] ] }
+     .groupTuple()
+     .map { [ [ id: it[0] + '.g' ], it[1], [] ]}
+     .set{ g_vcf }
+    
+    // catcat g vcf files
+    BCFTOOLS_CONCAT_GVCF( g_vcf )
+    ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
+
     emit:
-    vcf      = DEEPVARIANT.out.vcf              // /path/to/vcf
-    gvcf     = DEEPVARIANT.out.gvcf             // /path/to/gvcf
-    versions = ch_versions                      // channel: [ versions.yml ]
+    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // /path/to/vcf
+    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf        // /path/to/gvcf
+    versions = ch_versions                         // channel: [ versions.yml ]
 }
