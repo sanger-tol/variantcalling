@@ -12,8 +12,13 @@ workflow DEEPVARIANT_CALLER {
     main:
     ch_versions = Channel.empty()
 
-    reads_fasta.map{ [ it[0], it[1], it[2], it[3] ] }
-            .set{ cram_crai }
+    reads_fasta.map{ 
+                    [ [ id: it[0].id + "_" + it[4], sample: it[0].id, type: it[0].type ], 
+                       it[1],
+                       it[2], 
+                       it[3] 
+                    ] }
+               .set{ cram_crai }
 
     reads_fasta.map{ [ it[5] ] }
             .set{ fasta }

@@ -31,10 +31,10 @@ workflow INPUT_FILTER_SPLIT {
     
 
     splitted_fasta
-     .map{ [ it[1].name, it[1] ] }
+     .map{ [ it[1].baseName, it[1] ] }
      .join( 
         SAMTOOLS_FAIDX.out.fai
-         .map{ [ it[1].baseName, it[1] ] } 
+         .map{ [ it[1].baseName - '.fasta', it[1] ] } 
       )
      .set{ fasta_fai }
 
