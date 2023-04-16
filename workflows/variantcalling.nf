@@ -9,7 +9,6 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 // Validate input parameters
 WorkflowVariantcalling.initialise(params, log)
 
-// TODO nf-core: Add all file path parameters for the pipeline to the list below
 // Check input path parameters to see if they exist
 def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, params.interval ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
@@ -19,6 +18,7 @@ if (params.input)    { input_file    = file(params.input)    } else { exit 1, 'I
 if (params.fasta)    { fasta_file    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
 if (params.fai)      { fai_file      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
 
+// check gzi beig given if compressed fasta given
 if (params.gzi) {
     gzi_file = file(params.gzi)
 } else if ( params.fasta.endsWith('fasta.gz') ) { 
@@ -27,7 +27,9 @@ if (params.gzi) {
     gzi_file = null
 }
 
+// optional field
 if (params.interval) { interval_file = file(params.interval) } else { interval_file = null }
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES

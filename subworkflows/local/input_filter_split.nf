@@ -23,20 +23,20 @@ workflow INPUT_FILTER_SPLIT {
      .fromPath(fasta)
      .splitFasta(file:true)
      .map{ [ [id: 'splitting_fasta'],  it ] }
-     .set{ splitted_fasta }
+     .set{ split_fasta }
 
-    // index splitted fasta files
-    SAMTOOLS_FAIDX ( splitted_fasta  )
+    // index split fasta files
+    SAMTOOLS_FAIDX ( split_fasta  )
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
     
-
-    splitted_fasta
+    // join fasta with corresponding fai file
+    split_fasta
      .map{ [ it[1].baseName, it[1] ] }
      .join( 
         SAMTOOLS_FAIDX.out.fai
          .map{ [ it[1].baseName - '.fasta', it[1] ] } 
       )
-     .set{ fasta_fai }
+     .set{ fasta_fai } // [ fasta_file_name, fasta, fai ]
 
     // filter reads
     SAMTOOLS_VIEW ( reads, fasta, [] )
@@ -49,7 +49,7 @@ workflow INPUT_FILTER_SPLIT {
                         .combine( fasta_fai )
 
     emit:
-    reads_fasta    = cram_crai_fasta_fai    // channel:[ val(meta), cram, crai, interval, val(meta), fasta, fai ]
+    reads_fasta    = cram_crai_fasta_fai    // channel:[ val(meta), cram, crai, interval, fasta_file_name, fasta, fai ]
     versions       = ch_versions            // channel: [ versions.yml ]
 
 }
