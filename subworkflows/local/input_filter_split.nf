@@ -4,6 +4,7 @@
 
 include { SAMTOOLS_FAIDX } from '../../modules/nf-core/samtools/faidx/main'
 include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
+include { CAT_CAT        } from '../../modules/nf-core/cat/cat/main'
 
 workflow INPUT_FILTER_SPLIT {
 
@@ -18,12 +19,35 @@ workflow INPUT_FILTER_SPLIT {
     main:
     ch_versions = Channel.empty()
 
-    // split the fasta file into files with one sequence each
+    // split the fasta file into files with one sequence each, group them by file size
     Channel
-     .fromPath(fasta)
-     .splitFasta(file:true)
-     .map{ [ [id: 'splitting_fasta'],  it ] }
-     .set{ split_fasta }
+     .fromPath( fasta )
+     .splitFasta( file:true )
+     .branch {
+        small: it.size() < 100000
+        large: it.size() >= 100000
+     }
+     .set { branched_fasta_files }
+     
+    // check the large split fasta files
+    branched_fasta_files.large
+     .map{ large_file -> [ [ id: large_file.baseName ], large_file ] }
+     .set{ ch_large_files }
+    
+    // check all the small split fasta files
+    branched_fasta_files.small
+     .collect()
+     .map{ small_files -> [ [ id : small_files[0].baseName.substring(0, small_files[0].baseName.lastIndexOf('.') ) + '.small' ], small_files ] }
+     .set{ ch_samll_files }
+    
+    // merge all small split fasta files together
+    CAT_CAT( ch_samll_files )
+    ch_versions = ch_versions.mix( CAT_CAT.out.versions )
+    
+    // concat large and merged samll fasta files together
+    Channel.empty()
+     .concat( CAT_CAT.out.file_out, ch_large_files )
+     .set{ split_fasta } 
 
     // index split fasta files
     SAMTOOLS_FAIDX ( split_fasta  )
