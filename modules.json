@@ -10,6 +10,11 @@
                         "git_sha": "582ff1755bdd205c65e2ba4c31e0a008dae299ec",
                         "installed_by": ["modules"]
                     },
+                    "cat/cat": {
+                        "branch": "master",
+                        "git_sha": "0f8a77ff00e65eaeebc509b8156eaa983192474b",
+                        "installed_by": ["modules"]
+                    },
                     "custom/dumpsoftwareversions": {
                         "branch": "master",
                         "git_sha": "7101db4432d3268b7fcb5b8f75fa0a022dc5561b",
