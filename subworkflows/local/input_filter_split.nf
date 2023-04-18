@@ -3,7 +3,7 @@
 //
 
 include { SAMTOOLS_FAIDX } from '../../modules/nf-core/samtools/faidx/main'
-include { SAMTOOLS_VIEW } from '../../modules/nf-core/samtools/view/main'
+include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
 
 workflow INPUT_FILTER_SPLIT {
 
@@ -31,10 +31,10 @@ workflow INPUT_FILTER_SPLIT {
     
     // join fasta with corresponding fai file
     split_fasta
-     .map{ [ it[1].baseName, it[1] ] }
+     .map{ meta, fasta -> [ fasta.baseName, fasta ] }
      .join( 
         SAMTOOLS_FAIDX.out.fai
-         .map{ [ it[1].baseName - '.fasta', it[1] ] } 
+         .map{ mata, fai -> [ fai.baseName - '.fasta', fai ] } 
       )
      .set{ fasta_fai } // [ fasta_file_name, fasta, fai ]
 

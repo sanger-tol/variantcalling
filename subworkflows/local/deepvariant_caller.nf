@@ -3,8 +3,8 @@
 //
 
 include { DEEPVARIANT }         from '../../modules/nf-core/deepvariant/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF   }  from '../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF }   from '../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF   }   from '../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF  }   from '../../modules/nf-core/bcftools/concat/main'
 
 workflow DEEPVARIANT_CALLER {
 
@@ -14,21 +14,20 @@ workflow DEEPVARIANT_CALLER {
     main:
     ch_versions = Channel.empty()
 
-    // [ val(meta), cram, crai, interval ]
-    reads_fasta.map{ 
-                    [ [ id: it[0].id + "_" + it[4], sample: it[0].id, type: it[0].type ], 
-                       it[1],
-                       it[2], 
-                       it[3] 
+    reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai ->
+                    [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.type ], 
+                       cram,
+                       crai, 
+                       interval 
                     ] }
-               .set{ cram_crai }
+               .set{ cram_crai } // [ val(meta), cram, crai, interval ]
 
     // fasta
-    reads_fasta.map{ [ it[5] ] }
+    reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai -> [ fasta ] }
             .set{ fasta }
 
     // fai
-    reads_fasta.map{ [ it[6] ] }
+    reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai -> [ fai ] }
             .set{ fai }
 
     // split fasta in compressed format, no gzi index file needed
@@ -40,9 +39,9 @@ workflow DEEPVARIANT_CALLER {
 
     // group the vcf files together by sample
     DEEPVARIANT.out.vcf
-     .map{ [ it[0].sample, it[1] ] }
+     .map{ meta, vcf -> [ meta.sample, vcf ] }
      .groupTuple()
-     .map { [ [id: it[0]], it[1], [] ]}
+     .map { sample, vcf -> [ [id: sample], vcf, [] ]}
      .set{ vcf }
     
     // catcat vcf files
@@ -51,9 +50,9 @@ workflow DEEPVARIANT_CALLER {
 
     // group the g vcf files together by sample
     DEEPVARIANT.out.gvcf
-     .map{ [ it[0].sample, it[1] ] }
+     .map{ meta, gvcf -> [ meta.sample, gvcf ] }
      .groupTuple()
-     .map { [ [ id: it[0] + '.g' ], it[1], [] ]}
+     .map { sample, gvcf ->  [ [ id: sample + '.g' ], gvcf, [] ]}
      .set{ g_vcf }
     
     // catcat g vcf files
