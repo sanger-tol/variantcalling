@@ -18,7 +18,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 ## Pipeline summary
 
-The pipleline takes sample reads (CRAM/BAM files and their index files) from a CSV file and the reference file in FASTA format.
+The pipleline takes sample reads (CRAM/BAM files and their index files) from a CSV file and the reference file in FASTA format, and then use DeepVariant tool to make variant calling.
 
 Streps involved:
 
