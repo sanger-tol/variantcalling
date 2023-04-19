@@ -30,6 +30,8 @@ if (params.gzi) {
 // optional field
 if (params.interval) { interval_file = file(params.interval) } else { interval_file = null }
 
+if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
@@ -88,7 +90,8 @@ workflow VARIANTCALLING {
         fai_file,
         gzi_file,
         INPUT_CHECK.out.reads,
-        interval_file
+        interval_file,
+        split_fasta_cutoff
     )
     ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
     

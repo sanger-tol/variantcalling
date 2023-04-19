@@ -16,6 +16,8 @@ workflow INPUT_FILTER_SPLIT {
     reads    // [ val(meta), data, index ]
     interval // path to interval bed file
 
+    split_fasta_cutoff // the minium file size when splitting fasta file
+
     main:
     ch_versions = Channel.empty()
 
@@ -24,8 +26,8 @@ workflow INPUT_FILTER_SPLIT {
      .fromPath( fasta )
      .splitFasta( file:true )
      .branch {
-        small: it.size() < 100000
-        large: it.size() >= 100000
+        small: it.size() < split_fasta_cutoff
+        large: it.size() >= split_fasta_cutoff
      }
      .set { branched_fasta_files }
      
