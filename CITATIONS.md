@@ -10,6 +10,15 @@
 
 ## Pipeline tools
 
+- [DeepVariant](https://rdcu.be/7Dhl)
+
+  > Ryan Poplin, Pi-Chuan Chang, David Alexander, Scott Schwartz, Thomas Colthurst, Alexander Ku, Dan Newburger, Jojo Dijamco, Nam Nguyen, Pegah T. Afshar, Sam S. Gross, Lizzie Dorfman, Cory Y. McLean, and Mark A. DePristo. A universal SNP and small-indel variant caller using deep neural networks. Nature Biotechnology 2018 Sep 24;36(10):983-987. doi: 10.1038/nbt.4235. PMID: 30247488.
+
+- [Samtools](https://pubmed.ncbi.nlm.nih.gov/33590861/)
+
+  > Danecek P, Bonfield JK, Liddle J, Marshall J, Ohan V, Pollard MO, Whitwham A, Keane T, McCarthy SA, Davies RM, Li H. Twelve years of SAMtools and BCFtools. Gigascience. 2021 Feb 16;10(2):giab008. doi: 10.1093/gigascience/giab008. PMID: 33590861; PMCID: PMC7931819.
+
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
