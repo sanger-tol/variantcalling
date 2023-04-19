@@ -10,7 +10,7 @@
 
 ## Introduction
 
-**sanger-tol/variantcalling** is a bioinformatics best-practice analysis pipeline for variant calling using [DeepVariant](https://github.com/google/deepvariant)
+**sanger-tol/variantcalling** is a bioinformatics best-practice analysis pipeline for variant calling using [DeepVariant](https://github.com/google/deepvariant).
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
 
@@ -65,6 +65,8 @@ We thank the following people for their extensive assistance in the development 
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
+
+For further information or help, don't hesitate to get in touch on the [Slack `#pipelines` channel](https://sangertreeoflife.slack.com/channels/pipelines). Please [create an issue](https://github.com/sanger-tol/variantcalling/issues/new/choose) on GitHub if you are not on the Sanger slack channel.
 
 ## Citations
 
