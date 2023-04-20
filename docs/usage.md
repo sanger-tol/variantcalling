@@ -25,7 +25,7 @@ sample1,pacbio,sample1_3.cram,sample1_3.cram.crai
 
 ### Full samplesheet
 
-A final samplesheet file consisting of both BAM and CRaM will look like this. Currently this pipeline only support Pacbio data type.
+A final samplesheet file consisting of both BAM and CRAM will look like this. Currently this pipeline only support Pacbio data type.
 
 ```console
 sample,datatype,datafile,indexfile
