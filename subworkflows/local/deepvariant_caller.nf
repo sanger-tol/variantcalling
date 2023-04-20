@@ -52,12 +52,13 @@ workflow DEEPVARIANT_CALLER {
     DEEPVARIANT.out.gvcf
      .map{ meta, gvcf -> [ meta.sample, gvcf ] }
      .groupTuple()
-     .map { sample, gvcf ->  [ [ id: sample + '.g' ], gvcf, [] ]}
+     .map { sample, gvcf ->  [ [ id: sample ], gvcf, [] ]}
      .set{ g_vcf }
     
     // catcat g vcf files
     BCFTOOLS_CONCAT_GVCF( g_vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
+
 
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // /path/to/vcf
