@@ -9,7 +9,6 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 // Validate input parameters
 WorkflowVariantcalling.initialise(params, log)
 
-// TODO nf-core: Add all file path parameters for the pipeline to the list below
 // Check input path parameters to see if they exist
 def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, params.interval ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
@@ -19,6 +18,7 @@ if (params.input)    { input_file    = file(params.input)    } else { exit 1, 'I
 if (params.fasta)    { fasta_file    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
 if (params.fai)      { fai_file      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
 
+// check gzi beig given if compressed fasta given
 if (params.gzi) {
     gzi_file = file(params.gzi)
 } else if ( params.fasta.endsWith('fasta.gz') ) { 
@@ -27,7 +27,11 @@ if (params.gzi) {
     gzi_file = null
 }
 
+// optional field
 if (params.interval) { interval_file = file(params.interval) } else { interval_file = null }
+
+if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
@@ -43,8 +47,10 @@ if (params.interval) { interval_file = file(params.interval) } else { interval_f
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK } from '../subworkflows/local/input_check'
+include { INPUT_CHECK        } from '../subworkflows/local/input_check'
+include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT NF-CORE MODULES/SUBWORKFLOWS
@@ -77,14 +83,23 @@ workflow VARIANTCALLING {
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
     //
-    // SUBWORKFLOW: filter the reads and call deepvariant
+    // SUBWORKFLOW: split the input fasta file and filter input reads
     //
-    DEEPVARIANT_CALLER (
-        INPUT_CHECK.out.reads,
+    INPUT_FILTER_SPLIT (
         fasta_file,
         fai_file,
         gzi_file,
-        interval_file
+        INPUT_CHECK.out.reads,
+        interval_file,
+        split_fasta_cutoff
+    )
+    ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
+    
+    //
+    // SUBWORKFLOW: call deepvariant
+    //
+    DEEPVARIANT_CALLER (
+        INPUT_FILTER_SPLIT.out.reads_fasta
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
 
