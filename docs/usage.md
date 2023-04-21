@@ -39,7 +39,7 @@ sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi
 | `sample`    | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
 | `datatype`  | Sequencing data type, currently only support Pacbio data.                                                                                                                              |
 | `datafile`  | The location for either BAM or CRAM file.                                                                                                                                             |
-| `indexfile` | The localtion for BAM/CRAM index file, BAI, CSI or CRAI file.                                                                                                                          |
+| `indexfile` | The location for BAM/CRAM index file, BAI, CSI or CRAI file.                                                                                                                          |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
