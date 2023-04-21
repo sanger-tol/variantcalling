@@ -11,14 +11,13 @@ Initial release of sanger-tol/variantcalling, created with the [nf-core](https:/
 
 This release with the following initial parameters:
 
-| Old parameter | New parameter         |
-| ------------- | --------------------- |
-|               | --input               |
-|               | --fasta               |
-|               | --fai                 |
-|               | --gzi                 |
-|               | --interval            |
-|               | --split_fasta_cutoff  |
+| Old parameter | New parameter        |
+| ------------- | -------------------- |
+|               | --input              |
+|               | --fasta              |
+|               | --fai                |
+|               | --gzi                |
+|               | --interval           |
+|               | --split_fasta_cutoff |
 
 ### `Dependencies`
-
