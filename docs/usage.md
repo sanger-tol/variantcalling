@@ -25,7 +25,7 @@ sample1,pacbio,sample1_3.cram,sample1_3.cram.crai
 
 ### Full samplesheet
 
-A final samplesheet file consisting of both BAM and CRAM will look like this. Currently this pipeline only support Pacbio data type.
+A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only support Pacbio data type.
 
 ```console
 sample,datatype,datafile,indexfile
@@ -61,6 +61,8 @@ work                # Directory containing the nextflow working files
 .nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
+
+The pipeline will split the intput fasta file into smaller files to run DeepVariant parallel. You can set the minimum split fasta file size from the command line. For example to set the minimum size as 10K using `--split_fasta_cutoff 10000`.
 
 ### Updating the pipeline
 
