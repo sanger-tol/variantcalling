@@ -1,22 +1,26 @@
 # sanger-tol/variantcalling: Citations
 
-## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
+## [nf-core](https://nf-co.re)
 
-> Ewels PA, Peltzer A, Fillinger S, Patel H, Alneberg J, Wilm A, Garcia MU, Di Tommaso P, Nahnsen S. The nf-core framework for community-curated bioinformatics pipelines. Nat Biotechnol. 2020 Mar;38(3):276-278. doi: 10.1038/s41587-020-0439-x. PubMed PMID: 32055031.
+> Ewels, Philip A., et al. “The Nf-Core Framework for Community-Curated Bioinformatics Pipelines.” Nature Biotechnology, vol. 38, no. 3, Feb. 2020, pp. 276–78, https://doi.org/10.1038/s41587-020-0439-x.
 
-## [Nextflow](https://pubmed.ncbi.nlm.nih.gov/28398311/)
+## [Nextflow](https://www.nextflow.io)
 
-> Di Tommaso P, Chatzou M, Floden EW, Barja PP, Palumbo E, Notredame C. Nextflow enables reproducible computational workflows. Nat Biotechnol. 2017 Apr 11;35(4):316-319. doi: 10.1038/nbt.3820. PubMed PMID: 28398311.
+> Di Tommaso, Paolo, et al. “Nextflow Enables Reproducible Computational Workflows.” Nature Biotechnology, vol. 35, no. 4, Apr. 2017, pp. 316–19, https://doi.org/10.1038/nbt.3820.
 
 ## Pipeline tools
 
-- [DeepVariant](https://rdcu.be/7Dhl)
+- [DeepVariant](https://github.com/google/deepvariant)
 
-  > Ryan Poplin, Pi-Chuan Chang, David Alexander, Scott Schwartz, Thomas Colthurst, Alexander Ku, Dan Newburger, Jojo Dijamco, Nam Nguyen, Pegah T. Afshar, Sam S. Gross, Lizzie Dorfman, Cory Y. McLean, and Mark A. DePristo. A universal SNP and small-indel variant caller using deep neural networks. Nature Biotechnology 2018 Sep 24;36(10):983-987. doi: 10.1038/nbt.4235. PMID: 30247488.
+  > Poplin, Ryan, et al. “A Universal SNP and Small-Indel Variant Caller Using Deep Neural Networks.” Nature Biotechnology, vol. 36, no. 10, 2018, pp. 983–987., https://doi.org/10.1038/nbt.4235.
 
-- [Samtools](https://pubmed.ncbi.nlm.nih.gov/33590861/)
+- [Samtools](https://www.htslib.org)
 
-  > Danecek P, Bonfield JK, Liddle J, Marshall J, Ohan V, Pollard MO, Whitwham A, Keane T, McCarthy SA, Davies RM, Li H. Twelve years of SAMtools and BCFtools. Gigascience. 2021 Feb 16;10(2):giab008. doi: 10.1093/gigascience/giab008. PMID: 33590861; PMCID: PMC7931819.
+  > Danecek, Petr, et al. “Twelve Years of SAMtools and BCFtools.” GigaScience, vol. 10, no. 2, Jan. 2021, https://doi.org/10.1093/gigascience/giab008.
+
+- [Bcftools](https://www.htslib.org)
+
+  > Danecek, Petr, et al. “Twelve Years of SAMtools and BCFtools.” GigaScience, vol. 10, no. 2, Jan. 2021, https://doi.org/10.1093/gigascience/giab008.
 
 ## Software packaging/containerisation tools
 
@@ -24,15 +28,18 @@
 
   > Anaconda Software Distribution. Computer software. Vers. 2-2.4.0. Anaconda, Nov. 2016. Web.
 
-- [Bioconda](https://pubmed.ncbi.nlm.nih.gov/29967506/)
+- [Bioconda](https://bioconda.github.io)
 
-  > Grüning B, Dale R, Sjödin A, Chapman BA, Rowe J, Tomkins-Tinch CH, Valieris R, Köster J; Bioconda Team. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods. 2018 Jul;15(7):475-476. doi: 10.1038/s41592-018-0046-7. PubMed PMID: 29967506.
+  > Grüning, Björn, et al. “Bioconda: sustainable and comprehensive software distribution for the life sciences.", Nature Methods, vol. 15, Jul. 2018, pp. 475-6, https://doi.org/10.1038/s41592-018-0046-7.
 
-- [BioContainers](https://pubmed.ncbi.nlm.nih.gov/28379341/)
+- [BioContainers](https://biocontainers.pro)
 
-  > da Veiga Leprevost F, Grüning B, Aflitos SA, Röst HL, Uszkoreit J, Barsnes H, Vaudel M, Moreno P, Gatto L, Weber J, Bai M, Jimenez RC, Sachsenberg T, Pfeuffer J, Alvarez RV, Griss J, Nesvizhskii AI, Perez-Riverol Y. BioContainers: an open-source and community-driven framework for software standardization. Bioinformatics. 2017 Aug 15;33(16):2580-2582. doi: 10.1093/bioinformatics/btx192. PubMed PMID: 28379341; PubMed Central PMCID: PMC5870671.
+  > da Veiga, Felipe, et al. “BioContainers: an open-source and community-driven framework for software standardization.", Bioinformatics, vol. 33, no. 16, Aug. 2017, pp. 2580-2, https://doi.org/10.1093/bioinformatics/btx192.
 
-- [Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)
+- [Docker](https://www.docker.com)
 
-- [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
-  > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.
+  > Merkel, Dirk, et al. “Docker: Lightweight Linux Containers for Consistent Development and Deployment.", Association for Computing Machinery, vol. 2014, no. 239, Mar. 2014.
+
+- [Singularity](https://docs.sylabs.io/guides/latest/user-guide/)
+
+  > Kurtzer, Gregory M., et al. “Singularity: Scientific containers for mobility of compute.", PLOS ONE, vol. 12, no. 5, May 2017, pp. e0177459, https://doi.org/10.1371/journal.pone.0177459.

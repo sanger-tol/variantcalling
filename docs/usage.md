@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The pipleline takes sample reads (CRAM/BAM files and their index files) from a CSV file and the reference file in FASTA format, and then use DeepVariant tool to make variant calling.
+The pipleline takes aligned sample reads (CRAM/BAM files and their index files) from a CSV file and a reference file in FASTA format, and then use DeepVariant to call variants.
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use the `input` parameter to specify the samplesheet location. It has to be a comma-separated file with at least 4 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
@@ -14,7 +14,7 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Multiple runs of the same sample
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. Below is an example for the same sample sequenced across 3 lanes:
 
 ```console
 sample,datatype,datafile,indexfile
@@ -25,7 +25,7 @@ sample1,pacbio,sample1_3.cram,sample1_3.cram.crai
 
 ### Full samplesheet
 
-A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only support Pacbio data type.
+A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only supports Pacbio aligned data.
 
 ```console
 sample,datatype,datafile,indexfile
@@ -37,9 +37,9 @@ sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi
 | Column      | Description                                                                                                                                                                            |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`    | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `datatype`  | Sequencing data type, currently only support Pacbio data.                                                                                                                              |
+| `datatype`  | Sequencing data type. Must be `pacbio`.                                                                                                                                                |
 | `datafile`  | The location for either BAM or CRAM file.                                                                                                                                              |
-| `indexfile` | The location for BAM/CRAM index file, BAI, CSI or CRAI file.                                                                                                                           |
+| `indexfile` | The location for BAM or CRAM index file – BAI, CSI or CRAI.                                                                                                                            |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
