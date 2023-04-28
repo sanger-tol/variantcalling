@@ -7,7 +7,7 @@
                 "nf-core": {
                     "bcftools/concat": {
                         "branch": "master",
-                        "git_sha": "582ff1755bdd205c65e2ba4c31e0a008dae299ec",
+                        "git_sha": "fa12afdf5874c1d11e4a20efe81c97935e8eea24",
                         "installed_by": ["modules"]
                     },
                     "cat/cat": {
@@ -28,12 +28,12 @@
                     },
                     "samtools/faidx": {
                         "branch": "master",
-                        "git_sha": "c8e35eb2055c099720a75538d1b8adb3fb5a464c",
+                        "git_sha": "371eff7748d769c2ddc8bd593773523a364a52fe",
                         "installed_by": ["modules"]
                     },
                     "samtools/view": {
                         "branch": "master",
-                        "git_sha": "154bbe00ffd75ceeedd69a7c9358b759a5991e49",
+                        "git_sha": "371eff7748d769c2ddc8bd593773523a364a52fe",
                         "installed_by": ["modules"]
                     }
                 }

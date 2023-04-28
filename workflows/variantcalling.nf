@@ -14,22 +14,21 @@ def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, p
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
-if (params.input)    { input_file    = file(params.input)    } else { exit 1, 'Input samplesheet not specified!' }
-if (params.fasta)    { fasta_file    = file(params.fasta)    } else { exit 1, 'Reference fasta not specified!' }
-if (params.fai)      { fai_file      = file(params.fai)      } else { exit 1, 'Reference fasta index not specified!' }
+if (params.input) { input_file = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+if (params.fasta) { fasta_file = file(params.fasta) } else { exit 1, 'Reference fasta not specified!' }
+if (params.fai)   { fai_file   = file(params.fai)   } else { exit 1, 'Reference fasta index not specified!' }
 
-// check gzi beig given if compressed fasta given
+// Check gzi being given if compressed fasta is provided
 if (params.gzi) {
     gzi_file = file(params.gzi)
 } else if ( params.fasta.endsWith('fasta.gz') ) { 
     exit 1, 'Reference fasta index gzi file not specified for fasta.gz file!' 
-}else {
+} else {
     gzi_file = null
 }
 
-// optional field
-if (params.interval) { interval_file = file(params.interval) } else { interval_file = null }
-
+// Check optional parameters
+if (params.interval)            { interval_file = file(params.interval)          } else { interval_file = null }
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
 /*
