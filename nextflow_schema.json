@@ -40,9 +40,33 @@
         "reference_genome_options": {
             "title": "Reference genome options",
             "type": "object",
-            "fa_icon": "fas fa-dna",
             "description": "Reference genome related files and options required for the workflow.",
-            "properties": {}
+            "default": "",
+            "properties": {
+                "fasta": {
+                    "type": "string",
+                    "description": "Path to FASTA genome file, either fasta or fast.gz"
+                },
+                "fai": {
+                    "type": "string",
+                    "description": "Path to the index file of the FASTA genome file."
+                },
+                "gzi": {
+                    "type": "string",
+                    "description": "Path to the gzi index file of  the FASTA genome file. Required if fasta in gz format."
+                },
+                "interval": {
+                    "type": "string",
+                    "description": "Interval bed file."
+                },
+                "split_fasta_cutoff": {
+                    "type": "integer",
+                    "default": 100000,
+                    "hidden": true,
+                    "description": "The minimum fasta file size when splitting the input fasta file by sequence."
+                }
+            },
+            "required": ["fasta", "fai"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",

@@ -16,7 +16,9 @@ lint:
     - lib/NfcoreTemplate.groovy
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/branch.yml
-
+    - LICENSE
+    - assets/email_template.html
+    - .github/ISSUE_TEMPLATE/bug_report.yml
   nextflow_config:
     - manifest.name
     - manifest.homePage
