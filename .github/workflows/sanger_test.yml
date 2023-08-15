@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Launch workflow via tower
-        uses: seqeralabs/action-tower-launch@2.0.0
+        uses: seqeralabs/action-tower-launch@2
         with:
           workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
           access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
