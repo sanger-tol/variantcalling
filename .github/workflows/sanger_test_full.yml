@@ -22,7 +22,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
 
       - name: Launch workflow via tower
-        uses: seqeralabs/action-tower-launch@v2
+        uses: seqeralabs/action-tower-launch@v2.0.0
         with:
           workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
           access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
@@ -35,3 +35,10 @@ jobs:
               "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ env.REVISION }}",
             }
           profiles: test_full,sanger,singularity,cleanup
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Tower debug log file
+          path: |
+            tower_action_*.log
+            tower_action_*.json
