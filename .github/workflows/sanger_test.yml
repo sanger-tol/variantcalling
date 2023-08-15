@@ -2,6 +2,9 @@ name: sanger-tol LSF tests
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - tower_action
 
 jobs:
   run-tower:
