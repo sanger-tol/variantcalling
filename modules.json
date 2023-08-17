@@ -1,5 +1,5 @@
 {
-    "name"      : "sanger-tol/variantcalling",
+    "name": "sanger-tol/variantcalling",
     "homePage": "https://github.com/sanger-tol/variantcalling",
     "repos": {
         "https://github.com/nf-core/modules.git": {
