@@ -23,7 +23,7 @@ jobs:
       # Action runs on the issue comment, so we don't get the PR by default
       # Use the gh cli to check out the PR
       - name: Checkout Pull Request
-        run: gh pr checkout 27
+        run: gh pr checkout 57
         env:
           GITHUB_TOKEN: ${{ secrets.sangertolsoft_access_token }}
 
