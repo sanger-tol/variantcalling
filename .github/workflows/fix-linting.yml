@@ -1,5 +1,8 @@
 name: Fix linting from a comment
 on:
+  push:
+    branches:
+      - new_tolsoft_details
   issue_comment:
     types: [created]
 
