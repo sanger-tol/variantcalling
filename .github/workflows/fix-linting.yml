@@ -9,10 +9,10 @@ on:
 jobs:
   deploy:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
-    if: >
-      contains(github.event.comment.html_url, '/pull/') &&
-      contains(github.event.comment.body, '@sanger-tolsoft fix linting') &&
-      github.repository == 'sanger-tol/variantcalling'
+    #if: >
+    #  contains(github.event.comment.html_url, '/pull/') &&
+    #  contains(github.event.comment.body, '@sanger-tolsoft fix linting') &&
+    #  github.repository == 'sanger-tol/variantcalling'
     runs-on: ubuntu-latest
     steps:
       # Use the @sanger-tol-bot token to check out so we can push later
