@@ -15,14 +15,14 @@ jobs:
       # Use the @sanger-tol-bot token to check out so we can push later
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.sangertol_bot_access_token }}
+          token: ${{ secrets.sangertolsoft_access_token }}
 
       # Action runs on the issue comment, so we don't get the PR by default
       # Use the gh cli to check out the PR
       - name: Checkout Pull Request
         run: gh pr checkout ${{ github.event.issue.number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.sangertol_bot_access_token }}
+          GITHUB_TOKEN: ${{ secrets.sangertolsoft_access_token }}
 
       - uses: actions/setup-node@v3
 
