@@ -8,7 +8,7 @@ jobs:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
-      contains(github.event.comment.body, '@sanger-tol-bot fix linting') &&
+      contains(github.event.comment.body, '@sanger-tolsoft fix linting') &&
       github.repository == 'sanger-tol/variantcalling'
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +47,7 @@ jobs:
         if: steps.prettier_status.outputs.result == 'fail'
         run: |
           git config user.email "tolsoft@sanger.ac.uk"
-          git config user.name "sanger-tol-bot"
+          git config user.name "sanger-tolsoft"
           git config push.default upstream
           git add .
           git status
