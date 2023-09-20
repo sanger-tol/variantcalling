@@ -22,9 +22,8 @@
                     },
                     "deepvariant": {
                         "branch": "master",
-                        "git_sha": "58b5e78506e66f7ecd610fa825890ed9fb98b793",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/deepvariant/deepvariant.diff"
+                        "git_sha": "ed67f2fadd6d2a155b296f728e6b1f8c92ddc1a6",
+                        "installed_by": ["modules"]
                     },
                     "samtools/faidx": {
                         "branch": "master",
