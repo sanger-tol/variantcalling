@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/sanger-tol/variantcalling/main/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/sanger-tol/variantcalling/master/nextflow_schema.json",
     "title": "sanger-tol/variantcalling pipeline parameters",
-    "description": "variant calling",
+    "description": "Variant calling pipeline for PacBio data using DeepVariant",
     "type": "object",
     "definitions": {
         "input_output_options": {
