@@ -32,7 +32,7 @@
                     },
                     "samtools/view": {
                         "branch": "master",
-                        "git_sha": "371eff7748d769c2ddc8bd593773523a364a52fe",
+                        "git_sha": "3ffae3598260a99e8db3207dead9f73f87f90d1f",
                         "installed_by": ["modules"]
                     }
                 }
