@@ -62,7 +62,7 @@ workflow INPUT_FILTER_SPLIT {
      .set { fasta_fai }
 
     // filter reads
-    SAMTOOLS_VIEW ( reads, fasta, [] )
+    SAMTOOLS_VIEW ( reads, [ [], fasta ], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
     
     // combine reads with splitted references
