@@ -49,7 +49,7 @@ workflow INPUT_FILTER_SPLIT {
      .set { split_fasta } 
 
     // index split fasta files
-    SAMTOOLS_FAIDX ( split_fasta )
+    SAMTOOLS_FAIDX ( split_fasta,  [[], []])
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
     
     // join fasta with corresponding fai file
@@ -62,7 +62,7 @@ workflow INPUT_FILTER_SPLIT {
      .set { fasta_fai }
 
     // filter reads
-    SAMTOOLS_VIEW ( reads, fasta, [] )
+    SAMTOOLS_VIEW ( reads, [ [], fasta ], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
     
     // combine reads with splitted references
