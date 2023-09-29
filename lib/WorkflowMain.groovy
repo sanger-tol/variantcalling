@@ -22,7 +22,7 @@ class WorkflowMain {
     //
     // Generate help string
     //
-    public static String help(workflow, params, log) {
+    public static String help(workflow, params) {
         def command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv --fasta reference.fa --fai reference.fai --outdir results -profile docker"
         def help_string = ''
         help_string += NfcoreTemplate.logo(workflow, params.monochrome_logs)
