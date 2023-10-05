@@ -82,6 +82,9 @@ workflow VARIANTCALLING {
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
 
+    //
+    // SUBWORKFLOW: merge the input reads by sample name
+    //
     INPUT_MERGE (
         fasta_file,
         fai_file,
