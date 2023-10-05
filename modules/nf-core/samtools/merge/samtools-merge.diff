@@ -1,0 +1,27 @@
+Changes in module 'nf-core/samtools/merge'
+--- modules/nf-core/samtools/merge/meta.yml
++++ modules/nf-core/samtools/merge/meta.yml
+@@ -43,6 +43,10 @@
+       type: file
+       description: Index of the reference file the CRAM was created with (optional)
+       pattern: "*.fai"
++  - gzi:
++      type: file
++      description: Index of the reference file the CRAM was created with (optional)
++      pattern: "*.gzi"
+ output:
+   - meta:
+       type: map
+
+--- modules/nf-core/samtools/merge/main.nf
++++ modules/nf-core/samtools/merge/main.nf
+@@ -11,6 +11,7 @@
+     tuple val(meta), path(input_files, stageAs: "?/*")
+     tuple val(meta2), path(fasta)
+     tuple val(meta3), path(fai)
++    tuple val(meta4), path(gzi)
+ 
+     output:
+     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
+
+************************************************************
