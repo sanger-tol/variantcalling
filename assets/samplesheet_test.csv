@@ -1,4 +1,5 @@
-sample,datatype,datafile,indexfile
-icCanRufa1_crai,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.cram,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.cram.crai
-icCanRufa1_bai,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam.bai
-icCanRufa1_csi,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam.csi
+sample,datatype,datafile
+icCanRufa1_cram,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.cram
+icCanRufa1_bam,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam
+icCanRufa1,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.cram
+icCanRufa1,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam
