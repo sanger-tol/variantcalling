@@ -47,6 +47,7 @@ if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
+include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
 
@@ -80,6 +81,15 @@ workflow VARIANTCALLING {
         input_file
     )
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+
+    INPUT_MERGE (
+        fasta_file,
+        fai_file,
+        gzi_file,
+        INPUT_CHECK.out.reads
+    )
+    ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
+
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
