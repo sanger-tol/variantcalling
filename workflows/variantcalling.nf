@@ -28,7 +28,8 @@ if (params.gzi) {
 }
 
 // Check optional parameters
-if (params.interval)            { interval_file = file(params.interval)          } else { interval_file = null }
+if (params.sort_input)          { sort_input    = params.sort_input              } else { sort_input    = false       }
+if (params.interval)            { interval_file = file(params.interval)          } else { interval_file = null        }
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
 /*
@@ -89,7 +90,8 @@ workflow VARIANTCALLING {
         fasta_file,
         fai_file,
         gzi_file,
-        INPUT_CHECK.out.reads
+        INPUT_CHECK.out.reads,
+        sort_input
     )
     ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
 
