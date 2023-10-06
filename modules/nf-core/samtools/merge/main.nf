@@ -17,6 +17,7 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     tuple val(meta), path("*.csi")         , optional:true, emit: csi
+    tuple val(meta), path("*.crai")        , optional:true, emit: crai
     path  "versions.yml"                                  , emit: versions
 
 
@@ -32,6 +33,7 @@ process SAMTOOLS_MERGE {
     samtools \\
         merge \\
         --threads ${task.cpus-1} \\
+        --write-index \\
         $args \\
         ${reference} \\
         ${prefix}.${file_type} \\

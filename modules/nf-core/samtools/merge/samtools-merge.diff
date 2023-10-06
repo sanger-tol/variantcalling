@@ -12,10 +12,21 @@ Changes in module 'nf-core/samtools/merge'
  output:
    - meta:
        type: map
+@@ -65,6 +69,10 @@
+       type: file
+       description: BAM index file (optional)
+       pattern: "*.csi"
++  - crai:
++      type: file
++      description: CRAM index file (optional)
++      pattern: "*.crai"
+ authors:
+   - "@drpatelh"
+   - "@yuukiiwa "
 
 --- modules/nf-core/samtools/merge/main.nf
 +++ modules/nf-core/samtools/merge/main.nf
-@@ -11,6 +11,7 @@
+@@ -11,11 +11,13 @@
      tuple val(meta), path(input_files, stageAs: "?/*")
      tuple val(meta2), path(fasta)
      tuple val(meta3), path(fai)
@@ -23,5 +34,19 @@ Changes in module 'nf-core/samtools/merge'
  
      output:
      tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
+     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
+     tuple val(meta), path("*.csi")         , optional:true, emit: csi
++    tuple val(meta), path("*.crai")        , optional:true, emit: crai
+     path  "versions.yml"                                  , emit: versions
+ 
+ 
+@@ -31,6 +33,7 @@
+     samtools \\
+         merge \\
+         --threads ${task.cpus-1} \\
++        --write-index \\
+         $args \\
+         ${reference} \\
+         ${prefix}.${file_type} \\
 
 ************************************************************
