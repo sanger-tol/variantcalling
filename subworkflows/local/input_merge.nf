@@ -18,46 +18,39 @@ workflow INPUT_MERGE {
     
     // sort input reads if asked
     if ( sort_input ) {
-
       SAMTOOLS_SORT( reads )
       ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
       sorted_reads = SAMTOOLS_SORT.out.bam
-    } else {
-      
+    } else {     
       sorted_reads = reads
     }
-    
+
     // group input reads file by sample name
     sorted_reads
-     .map{ it -> [ it[0].sample, it[1] ] }
+     .map{ meta, bam_cram -> [ meta.sample, bam_cram ] }
      .groupTuple()
      .set{ merged_reads } 
-    
+
     // group input meta data together by sample name as well
     // use the first meta data for the combined reads
     reads
-     .map{ it -> [ it[0].sample, it[0] ] }
+     .map{ meta, bam_cram -> [ meta.sample, meta ] }
      .groupTuple()
-     .map { it -> [it[0], it[1][0]] }
+     .map { sample, meta_list -> [sample, meta_list[0]] }
      .join( merged_reads )
-     .map { it -> [ 
-          [ id: ( it[2].size() == 1 ) ? it[1].sample : it[1].sample + '_combined',
-            type: it[1].type 
+     .map { sample, meta, bam_cram_list -> [ 
+          [ id: ( bam_cram_list.size() == 1 ) ? sample : sample + '_combined',
+            type: meta.type 
           ], 
-            it[2] 
+            bam_cram_list 
           ]}
      .set { merged_reads_with_meta }
 
     // call samtool merge
-    fasta
-      .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
-      .set { ch_fasta }
-    fai
-      .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-      .set { ch_fai }
-    gzi
-      .map { gzi -> [ [ 'id': gzi.baseName ], gzi ] }
-      .set { ch_gzi }
+    ch_fasta = fasta.map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
+    ch_fai = fai.map { fai -> [ [ 'id': fai.baseName ], fai ] }.first()
+    ch_gzi = gzi.map { gzi -> [ [ 'id': gzi.baseName ], gzi ] }.first()
+
     SAMTOOLS_MERGE( merged_reads_with_meta, 
                     ch_fasta,
                     ch_fai,
