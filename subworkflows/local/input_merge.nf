@@ -44,6 +44,7 @@ workflow INPUT_MERGE {
     bam      = SAMTOOLS_MERGE.out.bam
     cram     = SAMTOOLS_MERGE.out.cram 
     csi      = SAMTOOLS_MERGE.out.csi
+    crai     = SAMTOOLS_MERGE.out.crai
     versions = SAMTOOLS_MERGE.out.versions // channel: [ versions.yml ]
 
 }
