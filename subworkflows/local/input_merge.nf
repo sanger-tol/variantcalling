@@ -54,11 +54,16 @@ workflow INPUT_MERGE {
     )
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions )
 
+    SAMTOOLS_MERGE.out.bam
+      .join(SAMTOOLS_MERGE.out.csi)
+      .concat(
+        SAMTOOLS_MERGE.out.cram
+         .join(SAMTOOLS_MERGE.out.crai)
+      )
+    .set{ indexed_merged_reads };
+
     emit:
-    bam      = SAMTOOLS_MERGE.out.bam
-    cram     = SAMTOOLS_MERGE.out.cram 
-    csi      = SAMTOOLS_MERGE.out.csi
-    crai     = SAMTOOLS_MERGE.out.crai
+    indexed_merged_reads = indexed_merged_reads
     versions = ch_versions // channel: [ versions.yml ]
 
 }
