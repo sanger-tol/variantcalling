@@ -40,13 +40,5 @@ Changes in module 'nf-core/samtools/merge'
      path  "versions.yml"                                  , emit: versions
  
  
-@@ -31,6 +33,7 @@
-     samtools \\
-         merge \\
-         --threads ${task.cpus-1} \\
-+        --write-index \\
-         $args \\
-         ${reference} \\
-         ${prefix}.${file_type} \\
 
 ************************************************************
