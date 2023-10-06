@@ -25,7 +25,12 @@ workflow INPUT_MERGE {
      .groupTuple()
      .map { it -> [it[0], it[1][0]] }
      .join( merged_reads )
-     .map { it -> [ it[1] , it [2] ]}
+     .map { it -> [ 
+          [ id: ( it[2].size() == 1 ) ? it[1].sample : it[1].sample + '_combined',
+            type: it[1].type 
+          ], 
+            it[2] 
+          ]}
      .set { merged_reads_with_meta }
 
     // call samtool merge
@@ -38,7 +43,7 @@ workflow INPUT_MERGE {
     emit:
     bam      = SAMTOOLS_MERGE.out.bam
     cram     = SAMTOOLS_MERGE.out.cram 
-    csi      = SAMTOOLS_MERGE.out.csi 
+    csi      = SAMTOOLS_MERGE.out.csi
     versions = SAMTOOLS_MERGE.out.versions // channel: [ versions.yml ]
 
 }
