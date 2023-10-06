@@ -103,7 +103,7 @@ workflow VARIANTCALLING {
         fasta_file,
         fai_file,
         gzi_file,
-        INPUT_CHECK.out.reads,
+        INPUT_MERGE.out.indexed_merged_reads,
         interval_file,
         split_fasta_cutoff
     )
