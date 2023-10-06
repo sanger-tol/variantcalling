@@ -18,10 +18,12 @@ workflow INPUT_MERGE {
     
     // sort input reads if asked
     if ( sort_input ) {
+
       SAMTOOLS_SORT( reads )
       ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
       sorted_reads = SAMTOOLS_SORT.out.bam
     } else {
+      
       sorted_reads = reads
     }
     
@@ -47,10 +49,19 @@ workflow INPUT_MERGE {
      .set { merged_reads_with_meta }
 
     // call samtool merge
+    fasta
+      .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
+      .set { ch_fasta }
+    fai
+      .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+      .set { ch_fai }
+    gzi
+      .map { gzi -> [ [ 'id': gzi.baseName ], gzi ] }
+      .set { ch_gzi }
     SAMTOOLS_MERGE( merged_reads_with_meta, 
-                    [ [], fasta ],
-                    [ [], fai ],
-                    [ [], gzi ]
+                    ch_fasta,
+                    ch_fai,
+                    ch_gzi
     )
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions )
 

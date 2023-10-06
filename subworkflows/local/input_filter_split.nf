@@ -19,8 +19,7 @@ workflow INPUT_FILTER_SPLIT {
     ch_versions = Channel.empty()
 
     // split the fasta file into files with one sequence each, group them by file size
-    Channel
-     .fromPath ( fasta )
+    fasta
      .splitFasta ( file:true )
      .branch {
         small: it.size() < split_fasta_cutoff
@@ -62,13 +61,16 @@ workflow INPUT_FILTER_SPLIT {
      .set { fasta_fai }
 
     // filter reads
-    SAMTOOLS_VIEW ( reads, [ [], fasta ], [] )
+    fasta
+      .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
+      .set { ch_fasta }
+    SAMTOOLS_VIEW ( reads, ch_fasta, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
     
     // combine reads with splitted references
     SAMTOOLS_VIEW.out.cram
      .join ( SAMTOOLS_VIEW.out.crai )
-     .map { filtered_reads -> filtered_reads + [interval ?: []] }
+     .combine(interval)
      .combine ( fasta_fai )
      .set { cram_crai_fasta_fai }
 

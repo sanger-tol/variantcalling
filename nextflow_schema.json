@@ -70,7 +70,7 @@
                     "description": "The minimum fasta file size when splitting the input fasta file by sequence."
                 }
             },
-            "required": ["fasta", "fai"]
+            "required": ["fasta"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",
