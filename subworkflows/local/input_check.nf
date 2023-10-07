@@ -12,7 +12,10 @@ workflow INPUT_CHECK {
     SAMPLESHEET_CHECK ( samplesheet )
         .csv
         .splitCsv ( header:true, sep:',' )
-        .map { [[id: it.sample, sample: it.sample.replaceAll(/_T\d+$/, ''), type: it.datatype], file(it.datafile)] }
+        .map { [
+            [ id: it.sample, sample: it.sample.replaceAll(/_T\d+$/, ''), type: it.datatype ], 
+            file(it.datafile)
+            ] }
         .set { reads }
         
     emit:

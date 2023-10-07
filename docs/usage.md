@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The pipleline takes aligned sample reads (CRAM/BAM files and their index files) from a CSV file and a reference file in FASTA format, and then use DeepVariant to call variants.
+The pipeline takes aligned sample reads (CRAM/BAM files) from a CSV file and a reference file in FASTA format, and then use DeepVariant to call variants.
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use the `input` parameter to specify the samplesheet location. It has to be a comma-separated file with at least 4 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use the `input` parameter to specify the samplesheet location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
@@ -17,21 +17,22 @@ You will need to create a samplesheet with information about the samples you wou
 The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. Below is an example for the same sample sequenced across 3 lanes:
 
 ```console
-sample,datatype,datafile,indexfile
-sample1,pacbio,sample1_1.cram,sample1_1.cram.crai
-sample1,pacbio,sample1_2.cram,sample1_3.cram.crai
-sample1,pacbio,sample1_3.cram,sample1_3.cram.crai
+sample,datatype,datafile
+sample1,pacbio,sample1_1.cram
+sample1,pacbio,sample1_2.cram
+sample1,pacbio,sample1_3.cram
 ```
+If the given BAM/CRAM files are not sorted, you need to add `--sort_input` in the run command to sort them before merging the files together from the same samples.
 
 ### Full samplesheet
 
 A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only supports Pacbio aligned data.
 
 ```console
-sample,datatype,datafile,indexfile
-sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bam.bai
-sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.cram.crai
-sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi
+sample,datatype,datafile
+sample1,pacbio,/path/to/data/file/file1.bam
+sample2,pacbio,/path/to/data/file/file2.cram
+sample3,pacbio,/path/to/data/file/file3.bam
 ```
 
 | Column      | Description                                                                                                                                                                            |
@@ -39,7 +40,6 @@ sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi
 | `sample`    | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
 | `datatype`  | Sequencing data type. Must be `pacbio`.                                                                                                                                                |
 | `datafile`  | The location for either BAM or CRAM file.                                                                                                                                              |
-| `indexfile` | The location for BAM or CRAM index file – BAI, CSI or CRAI.                                                                                                                            |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
@@ -62,7 +62,7 @@ work                # Directory containing the nextflow working files
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
-The pipeline will split the intput fasta file into smaller files to run DeepVariant parallel. You can set the minimum split fasta file size from the command line. For example to set the minimum size as 10K using `--split_fasta_cutoff 10000`.
+The pipeline will split the input fasta file into smaller files to run DeepVariant parallel. You can set the minimum split fasta file size from the command line. For example to set the minimum size as 10K using `--split_fasta_cutoff 10000`.
 
 ### Updating the pipeline
 

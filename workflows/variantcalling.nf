@@ -78,7 +78,7 @@ workflow VARIANTCALLING {
         .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
         .set { ch_genome }
 
-       SAMTOOLS_FAIDX ( ch_genome,  [[], []])
+       SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
        
        SAMTOOLS_FAIDX.out.fai

@@ -18,11 +18,15 @@ workflow INPUT_MERGE {
     
     // sort input reads if asked
     if ( sort_input ) {
+  
       SAMTOOLS_SORT( reads )
       ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
       sorted_reads = SAMTOOLS_SORT.out.bam
+
     } else {     
+
       sorted_reads = reads
+
     }
 
     // group input reads file by sample name
@@ -58,6 +62,7 @@ workflow INPUT_MERGE {
     )
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions )
 
+    // concat merged bam or cram together along with their index file
     SAMTOOLS_MERGE.out.bam
       .join(SAMTOOLS_MERGE.out.csi)
       .concat(
