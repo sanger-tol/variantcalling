@@ -22,6 +22,7 @@ sample1,pacbio,sample1_1.cram
 sample1,pacbio,sample1_2.cram
 sample1,pacbio,sample1_3.cram
 ```
+
 If the given BAM/CRAM files are not sorted, you need to add `--sort_input` in the run command to sort them before merging the files together from the same samples.
 
 ### Full samplesheet
@@ -35,11 +36,11 @@ sample2,pacbio,/path/to/data/file/file2.cram
 sample3,pacbio,/path/to/data/file/file3.bam
 ```
 
-| Column      | Description                                                                                                                                                                            |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`    | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `datatype`  | Sequencing data type. Must be `pacbio`.                                                                                                                                                |
-| `datafile`  | The location for either BAM or CRAM file.                                                                                                                                              |
+| Column     | Description                                                                                                                                                                            |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sample`   | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
+| `datatype` | Sequencing data type. Must be `pacbio`.                                                                                                                                                |
+| `datafile` | The location for either BAM or CRAM file.                                                                                                                                              |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
