@@ -69,7 +69,7 @@ workflow INPUT_FILTER_SPLIT {
     // combine reads with splitted references
     SAMTOOLS_VIEW.out.cram
      .join ( SAMTOOLS_VIEW.out.crai )
-     .combine(interval)
+     .combine(interval.ifEmpty([[]]))
      .combine ( fasta_fai )
      .set { cram_crai_fasta_fai }
 
