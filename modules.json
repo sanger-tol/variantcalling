@@ -32,7 +32,7 @@
                     },
                     "samtools/merge": {
                         "branch": "master",
-                        "git_sha": "0460d316170f75f323111b4a2c0a2989f0c32013",
+                        "git_sha": "516189e968feb4ebdd9921806988b4c12b4ac2dc",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/samtools/merge/samtools-merge.diff"
                     },
