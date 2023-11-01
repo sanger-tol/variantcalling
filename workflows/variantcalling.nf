@@ -10,7 +10,7 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, params.interval ]
+def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
@@ -18,8 +18,17 @@ if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, '
 if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
 
 // Check optional parameters
-if (params.fai)     { ch_fai   = Channel.fromPath(params.fai)         } else { ch_fai      = Channel.empty() }
-if (params.gzi)     { ch_gzi   = Channel.fromPath(params.gzi)         } else { ch_gzi      = Channel.empty() }
+if (params.fai){
+    if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
+        ||
+        ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
+    ){
+      exit 1, 'Reference fasta and its index file format not matched!'
+    }
+    ch_fai   = Channel.fromPath(params.fai)
+} else { 
+    ch_fai      = Channel.empty() 
+}
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
 if (params.sort_input)          { sort_input    = params.sort_input              } else { sort_input    = false       }
@@ -72,7 +81,7 @@ workflow VARIANTCALLING {
     //
     // check reference fasta index given or not
     //
-    if( params.fai == null || ( params.fasta.endsWith('fasta.gz') && params.gzi == null ) ){ 
+    if( params.fai == null ){ 
    
        ch_fasta
         .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
@@ -80,15 +89,23 @@ workflow VARIANTCALLING {
 
        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
-       
+
        SAMTOOLS_FAIDX.out.fai
         .map{ mata, fai -> fai }
         .set{ ch_fai }
-  
+
        SAMTOOLS_FAIDX.out.gzi
         .map{ meta, gzi -> gzi }
         .set{ ch_gzi }
 
+       if( params.fasta.endsWith('.gz') ){
+            ch_index = ch_gzi
+       }else{
+            ch_index = ch_fai
+       }
+
+    }else{
+       ch_index = ch_fai
     }
 
     //
@@ -104,8 +121,7 @@ workflow VARIANTCALLING {
     //
     INPUT_MERGE (
         ch_fasta,
-        ch_fai,
-        ch_gzi,
+        ch_index,
         INPUT_CHECK.out.reads,
         sort_input
     )
@@ -117,8 +133,6 @@ workflow VARIANTCALLING {
     //
     INPUT_FILTER_SPLIT (
         ch_fasta,
-        ch_fai,
-        ch_gzi,
         INPUT_MERGE.out.indexed_merged_reads,
         ch_interval,
         split_fasta_cutoff

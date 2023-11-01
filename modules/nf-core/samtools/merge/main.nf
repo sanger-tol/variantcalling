@@ -2,7 +2,7 @@ process SAMTOOLS_MERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda 'modules/nf-core/samtools/merge/environment.yml'
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/samtools:1.17--h00cdaf9_0' :
         'biocontainers/samtools:1.17--h00cdaf9_0' }"
@@ -11,7 +11,6 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path(input_files, stageAs: "?/*")
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    tuple val(meta4), path(gzi)
 
     output:
     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam

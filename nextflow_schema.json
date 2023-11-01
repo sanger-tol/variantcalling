@@ -49,15 +49,11 @@
             "properties": {
                 "fasta": {
                     "type": "string",
-                    "description": "Path to FASTA genome file, either fasta or fast.gz"
+                    "description": "Path to FASTA genome file, either fasta or fast.gz."
                 },
                 "fai": {
                     "type": "string",
-                    "description": "Path to the index file of the FASTA genome file."
-                },
-                "gzi": {
-                    "type": "string",
-                    "description": "Path to the gzi index file of  the FASTA genome file. Required if fasta in gz format."
+                    "description": "Path to the index file of the FASTA genome file, either fai or gzi."
                 },
                 "interval": {
                     "type": "string",

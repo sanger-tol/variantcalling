@@ -9,8 +9,6 @@ include { CAT_CAT        } from '../../modules/nf-core/cat/cat/main'
 workflow INPUT_FILTER_SPLIT {
     take:
     fasta              // file: /path/to/genome.fasta or /path/to/genome.fasta.gz
-    fai                // file: /path/to/genome.*.fai
-    gzi                // file: /path/to/genome.fasta.gz.gzi or null
     reads              // [ val(meta), data, index ]
     interval           // file: /path/to/intervals.bed
     split_fasta_cutoff // val(min_file_size)

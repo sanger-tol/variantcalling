@@ -43,10 +43,6 @@ input:
       type: file
       description: Index of the reference file the CRAM was created with (optional)
       pattern: "*.fai"
-  - gzi:
-      type: file
-      description: Index of the reference file the CRAM was created with (optional)
-      pattern: "*.gzi"
 output:
   - meta:
       type: map
