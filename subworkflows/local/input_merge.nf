@@ -10,50 +10,45 @@ workflow INPUT_MERGE {
     fasta              // file: /path/to/genome.fasta or /path/to/genome.fasta.gz
     fai                // file: /path/to/genome.*.fai or /path/to/genome.fasta.gz.gzi
     reads              // channel: [ val(meta), data ]
-    sort_input         // bollean: true or false
 
     main:
     ch_versions = Channel.empty()
-    
-    // sort input reads if asked
-    if ( sort_input ) {
-  
-      SAMTOOLS_SORT( reads )
-      ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
-      sorted_reads = SAMTOOLS_SORT.out.bam
 
-    } else {     
+    // group input meta data together by sample name
+    reads
+     .map{ meta, bam_cram -> [ meta.sample, meta ] }
+     .groupTuple()
+     .set{ grouped_reads_meta }
 
-      sorted_reads = reads
-
-    }
+    // sort input reads
+    SAMTOOLS_SORT( reads )
+    ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
+    sorted_reads = SAMTOOLS_SORT.out.bam
 
     // group input reads file by sample name
     sorted_reads
      .map{ meta, bam_cram -> [ meta.sample, bam_cram ] }
      .groupTuple()
-     .set{ merged_reads } 
+     .set{ grouped_reads } 
 
-    // group input meta data together by sample name as well
+    // join grouped reads and meta
     // use the first meta data for the combined reads
-    reads
-     .map{ meta, bam_cram -> [ meta.sample, meta ] }
-     .groupTuple()
+    grouped_reads_meta 
      .map { sample, meta_list -> [sample, meta_list[0]] }
-     .join( merged_reads )
+     .join( grouped_reads )
      .map { sample, meta, bam_cram_list -> [ 
           [ id: ( bam_cram_list.size() == 1 ) ? sample : sample + '_combined',
             type: meta.type 
           ], 
             bam_cram_list 
           ]}
-     .set { merged_reads_with_meta }
+     .set { grouped_reads_with_meta }
 
     // call samtool merge
     ch_fasta = fasta.map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
     ch_fai = fai.map { fai -> [ [ 'id': fai.baseName ], fai ] }.first()
 
-    SAMTOOLS_MERGE( merged_reads_with_meta, 
+    SAMTOOLS_MERGE( grouped_reads_with_meta, 
                     ch_fasta,
                     ch_fai
     )

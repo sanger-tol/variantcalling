@@ -23,8 +23,6 @@ sample1,pacbio,sample1_2.cram
 sample1,pacbio,sample1_3.cram
 ```
 
-If the given BAM/CRAM files are not sorted, you need to add `--sort_input` in the run command to sort them before merging the files together from the same samples.
-
 ### Full samplesheet
 
 A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only supports Pacbio aligned data.

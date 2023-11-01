@@ -31,7 +31,6 @@ if (params.fai){
 }
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
-if (params.sort_input)          { sort_input    = params.sort_input              } else { sort_input    = false       }
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
 /*
@@ -123,7 +122,6 @@ workflow VARIANTCALLING {
         ch_fasta,
         ch_index,
         INPUT_CHECK.out.reads,
-        sort_input
     )
     ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
 
