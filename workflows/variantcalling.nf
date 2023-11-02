@@ -25,10 +25,11 @@ if (params.fai){
     ){
       exit 1, 'Reference fasta and its index file format not matched!'
     }
-    ch_fai   = Channel.fromPath(params.fai)
+    ch_fai = Channel.fromPath(params.fai)
 } else { 
-    ch_fai      = Channel.empty() 
+    ch_fai = Channel.empty()
 }
+
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
