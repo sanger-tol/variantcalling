@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Provide a command line tool to validate and transform tabular samplesheets."""
+"""Provide a command line tool to validate tabular samplesheets."""
 
 
 import argparse
@@ -55,9 +55,9 @@ class RowChecker:
         self._type_col = type_col
         self._file_col = file_col
         self._seen = set()
-        self.modified = []
+        self.validated = []
 
-    def validate_and_transform(self, row):
+    def validate(self, row):
         """
         Perform all validations on the given row.
 
@@ -70,7 +70,7 @@ class RowChecker:
         self._validate_type(row)
         self._validate_data_file(row)
         self._seen.add((row[self._sample_col], row[self._file_col]))
-        self.modified.append(row)
+        self.validated.append(row)
 
     def _validate_sample(self, row):
         """Assert that the sample name exists and convert spaces to underscores."""
@@ -105,17 +105,9 @@ class RowChecker:
         """
         Assert that the combination of sample name and data filename is unique.
 
-        In addition to the validation, also rename all samples to have a suffix of _T{n}, where n is the
-        number of times the same sample exist, but with different files, e.g., multiple runs per experiment.
-
         """
-        if len(self._seen) != len(self.modified):
+        if len(self._seen) != len(self.validated):
             raise AssertionError("The combination of sample name and data file must be unique.")
-        seen = Counter()
-        for row in self.modified:
-            sample = row[self._sample_col]
-            seen[sample] += 1
-            row[self._sample_col] = f"{sample}_T{seen[sample]}"
 
 
 def read_head(handle, num_lines=10):
@@ -195,7 +187,7 @@ def check_samplesheet(file_in, file_out):
         checker = RowChecker()
         for i, row in enumerate(reader):
             try:
-                checker.validate_and_transform(row)
+                checker.validate(row)
             except AssertionError as error:
                 logger.critical(f"{str(error)} On line {i + 2}.")
                 sys.exit(1)
@@ -205,7 +197,7 @@ def check_samplesheet(file_in, file_out):
     with file_out.open(mode="w", newline="") as out_handle:
         writer = csv.DictWriter(out_handle, header, delimiter=",")
         writer.writeheader()
-        for row in checker.modified:
+        for row in checker.validated:
             writer.writerow(row)
 
 

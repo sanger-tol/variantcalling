@@ -13,7 +13,7 @@ workflow INPUT_CHECK {
         .csv
         .splitCsv ( header:true, sep:',' )
         .map { [
-            [ id: it.sample, sample: it.sample.replaceAll(/_T\d+$/, ''), type: it.datatype ], 
+            [ id: it.sample, sample: it.sample, type: it.datatype ], 
             file(it.datafile)
             ] }
         .set { reads }
