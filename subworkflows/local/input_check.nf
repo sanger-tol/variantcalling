@@ -12,10 +12,13 @@ workflow INPUT_CHECK {
     SAMPLESHEET_CHECK ( samplesheet )
         .csv
         .splitCsv ( header:true, sep:',' )
-        .map { [[id: it.sample, type: it.datatype], file(it.datafile), file(it.indexfile)] }
+        .map { [
+            [ id: it.sample, sample: it.sample, type: it.datatype ], 
+            file(it.datafile)
+            ] }
         .set { reads }
-
+        
     emit:
-    reads                                     // channel: [ val(meta), data, index ]
+    reads                                     // channel: [ val(meta), data ]
     versions = SAMPLESHEET_CHECK.out.versions // channel: [ versions.yml ]
 }

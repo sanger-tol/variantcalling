@@ -9,8 +9,6 @@ include { CAT_CAT        } from '../../modules/nf-core/cat/cat/main'
 workflow INPUT_FILTER_SPLIT {
     take:
     fasta              // file: /path/to/genome.fasta or /path/to/genome.fasta.gz
-    fai                // file: /path/to/genome.*.fai
-    gzi                // file: /path/to/genome.fasta.gz.gzi or null
     reads              // [ val(meta), data, index ]
     interval           // file: /path/to/intervals.bed
     split_fasta_cutoff // val(min_file_size)
@@ -19,8 +17,7 @@ workflow INPUT_FILTER_SPLIT {
     ch_versions = Channel.empty()
 
     // split the fasta file into files with one sequence each, group them by file size
-    Channel
-     .fromPath ( fasta )
+    fasta
      .splitFasta ( file:true )
      .branch {
         small: it.size() < split_fasta_cutoff
@@ -62,13 +59,15 @@ workflow INPUT_FILTER_SPLIT {
      .set { fasta_fai }
 
     // filter reads
-    SAMTOOLS_VIEW ( reads, [ [], fasta ], [] )
+    ch_fasta = fasta.map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
+
+    SAMTOOLS_VIEW ( reads, ch_fasta, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
     
     // combine reads with splitted references
     SAMTOOLS_VIEW.out.cram
      .join ( SAMTOOLS_VIEW.out.crai )
-     .map { filtered_reads -> filtered_reads + [interval ?: []] }
+     .combine(interval.ifEmpty([[]]))
      .combine ( fasta_fai )
      .set { cram_crai_fasta_fai }
 
