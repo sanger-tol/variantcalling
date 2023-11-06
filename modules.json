@@ -22,7 +22,7 @@
                     },
                     "deepvariant": {
                         "branch": "master",
-                        "git_sha": "ed67f2fadd6d2a155b296f728e6b1f8c92ddc1a6",
+                        "git_sha": "516189e968feb4ebdd9921806988b4c12b4ac2dc",
                         "installed_by": ["modules"]
                     },
                     "samtools/faidx": {
