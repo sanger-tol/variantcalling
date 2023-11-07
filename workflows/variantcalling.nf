@@ -53,6 +53,7 @@ include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
+include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,7 +115,7 @@ workflow VARIANTCALLING {
     INPUT_CHECK (
         ch_input
     )
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
 
     //
     // SUBWORKFLOW: merge the input reads by sample name
@@ -124,7 +125,7 @@ workflow VARIANTCALLING {
         ch_index,
         INPUT_CHECK.out.reads,
     )
-    ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
+    ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
 
 
     //
@@ -136,7 +137,7 @@ workflow VARIANTCALLING {
         ch_interval,
         split_fasta_cutoff
     )
-    ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
+    ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
     //
     // SUBWORKFLOW: call deepvariant
@@ -144,7 +145,24 @@ workflow VARIANTCALLING {
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta
     )
-    ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
+    ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
+
+    //
+    // combine all VCF files together
+    // 
+    DEEPVARIANT_CALLER.out.gvcf
+     .map{ meta, gvcf -> [  [ id: gvcf.baseName ], gvcf ] }
+     .concat( 
+        DEEPVARIANT_CALLER.out.vcf 
+         .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+      )
+     .set{ all_vcf }
+
+    //
+    // process VCF output files
+    //
+    PROCESS_VCF( all_vcf )
+    ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
 
     //
     // MODULE: Combine different version together
