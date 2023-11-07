@@ -7,20 +7,21 @@ include { VCFTOOLS as VCFTOOLS_HET       }   from '../../modules/nf-core/vcftool
 
 workflow PROCESS_VCF {
     take:
-    vcf    // [ val(meta), vcf ]
+    vcf               // [ val(meta), vcf ]
+    site_pi_positions // path to positions file to include or exclude
 
     main:
     ch_versions = Channel.empty()
 
     // call vcftools for per site nucleotide diversity
     VCFTOOLS_SITE_PI(
-      vcf, [], []
+      vcf, [], [], site_pi_positions
     )
     ch_versions = ch_versions.mix( VCFTOOLS_SITE_PI.out.versions )
 
     // call vcftools to calculate for heterozygosity
     VCFTOOLS_HET(
-      vcf, [], []
+      vcf, [], [], []
     )
     ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
 

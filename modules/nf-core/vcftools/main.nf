@@ -15,6 +15,7 @@ process VCFTOOLS {
     tuple val(meta), path(variant_file)
     path  bed
     path  diff_variant_file
+    path  positions_file
 
     output:
     tuple val(meta), path("*.vcf")                    , optional:true, emit: vcf
@@ -103,6 +104,12 @@ process VCFTOOLS {
     args_list.removeIf { it.contains('--gzdiff') }
     args_list.removeIf { it.contains('--diff-bcf') }
 
+    def positions_arg = (args.contains('--positions')) ? "--positions ${positions_file}"
+                      : (args.contains('--exclude-positions')) ? "--exclude-positions ${positions_file}" 
+                      : ''
+    args_list.removeIf { it.contains('--positions') }
+    args_list.removeIf { it.contains('--exclude-positions') }
+
     def input_file = ("$variant_file".endsWith(".vcf")) ? "--vcf ${variant_file}" :
         ("$variant_file".endsWith(".vcf.gz")) ? "--gzvcf ${variant_file}" :
         ("$variant_file".endsWith(".bcf")) ? "--bcf ${variant_file}" : ''
@@ -113,6 +120,7 @@ process VCFTOOLS {
         --out $prefix \\
         ${args_list.join(' ')} \\
         $bed_arg \\
+        $positions_arg \\
         $diff_variant_arg
 
     cat <<-END_VERSIONS > versions.yml

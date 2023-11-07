@@ -10,7 +10,7 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval ]
+def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval, params.include_positions, params.exclude_positions ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
@@ -33,6 +33,16 @@ if (params.fai){
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
+
+if ( (params.include_positions) && (params.exclude_positions) ){
+    exit 1, 'Only one positions file can be given to include or exclude!'
+}else if (params.include_positions){ 
+    ch_positions = Channel.fromPath(params.include_positions) 
+} else if (params.exclude_positions){
+    ch_positions = Channel.fromPath(params.exclude_positions) 
+} else { 
+    ch_positions = Channel.empty() 
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,7 +171,7 @@ workflow VARIANTCALLING {
     //
     // process VCF output files
     //
-    PROCESS_VCF( all_vcf )
+    PROCESS_VCF( all_vcf, ch_positions )
     ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
 
     //
