@@ -41,7 +41,7 @@ if ( (params.include_positions) && (params.exclude_positions) ){
 } else if (params.exclude_positions){
     ch_positions = Channel.fromPath(params.exclude_positions) 
 } else { 
-    ch_positions = Channel.empty() 
+    ch_positions = [] 
 }
 
 /*
