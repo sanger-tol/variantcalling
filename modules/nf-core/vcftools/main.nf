@@ -120,8 +120,8 @@ process VCFTOOLS {
         --out $prefix \\
         ${args_list.join(' ')} \\
         $bed_arg \\
-        $positions_arg \\
-        $diff_variant_arg
+        $diff_variant_arg \\
+        $positions_arg
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

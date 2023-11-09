@@ -1,13 +1,10 @@
 Changes in module 'nf-core/vcftools'
 --- modules/nf-core/vcftools/meta.yml
 +++ modules/nf-core/vcftools/meta.yml
-@@ -21,9 +21,10 @@
-   - bed:
+@@ -24,6 +24,10 @@
+   - diff_variant_file:
        type: file
-       description: bed file which can be used with different arguments in vcftools (optional)
--  - diff_variant_file:
--      type: file
--      description: secondary variant file which can be used with the 'diff' suite of tools (optional)
+       description: secondary variant file which can be used with the 'diff' suite of tools (optional)
 +  - positions_file:
 +      type: file
 +      description: positions file to include or exclude a set of sites on the basis of a list of positions (optional)
@@ -39,13 +36,15 @@ Changes in module 'nf-core/vcftools'
      def input_file = ("$variant_file".endsWith(".vcf")) ? "--vcf ${variant_file}" :
          ("$variant_file".endsWith(".vcf.gz")) ? "--gzvcf ${variant_file}" :
          ("$variant_file".endsWith(".bcf")) ? "--bcf ${variant_file}" : ''
-@@ -113,6 +120,7 @@
+@@ -113,7 +120,8 @@
          --out $prefix \\
          ${args_list.join(' ')} \\
          $bed_arg \\
-+        $positions_arg \\
-         $diff_variant_arg
+-        $diff_variant_arg
++        $diff_variant_arg \\
++        $positions_arg
  
      cat <<-END_VERSIONS > versions.yml
+     "${task.process}":
 
 ************************************************************

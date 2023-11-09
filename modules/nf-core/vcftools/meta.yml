@@ -21,6 +21,9 @@ input:
   - bed:
       type: file
       description: bed file which can be used with different arguments in vcftools (optional)
+  - diff_variant_file:
+      type: file
+      description: secondary variant file which can be used with the 'diff' suite of tools (optional)
   - positions_file:
       type: file
       description: positions file to include or exclude a set of sites on the basis of a list of positions (optional)
