@@ -1,50 +1,22 @@
 Changes in module 'nf-core/vcftools'
---- modules/nf-core/vcftools/meta.yml
-+++ modules/nf-core/vcftools/meta.yml
-@@ -24,6 +24,10 @@
-   - diff_variant_file:
-       type: file
-       description: secondary variant file which can be used with the 'diff' suite of tools (optional)
-+  - positions_file:
-+      type: file
-+      description: positions file to include or exclude a set of sites on the basis of a list of positions (optional)
-+
- output:
-   - meta:
-       type: map
-
 --- modules/nf-core/vcftools/main.nf
 +++ modules/nf-core/vcftools/main.nf
-@@ -15,6 +15,7 @@
-     tuple val(meta), path(variant_file)
-     path  bed
-     path  diff_variant_file
-+    path  positions_file
+@@ -91,10 +91,15 @@
  
-     output:
-     tuple val(meta), path("*.vcf")                    , optional:true, emit: vcf
-@@ -103,6 +104,12 @@
-     args_list.removeIf { it.contains('--gzdiff') }
-     args_list.removeIf { it.contains('--diff-bcf') }
- 
-+    def positions_arg = (args.contains('--positions')) ? "--positions ${positions_file}"
-+                      : (args.contains('--exclude-positions')) ? "--exclude-positions ${positions_file}" 
-+                      : ''
+     def bed_arg  = (args.contains('--bed')) ? "--bed ${bed}" :
+         (args.contains('--exclude-bed')) ? "--exclude-bed ${bed}" :
+-        (args.contains('--hapcount')) ? "--hapcount ${bed}" : ''
++        (args.contains('--hapcount')) ? "--hapcount ${bed}" :
++        (args.contains('--positions')) ? "--positions ${bed}" :
++        (args.contains('--exclude-positions')) ? "--exclude-positions ${bed}"  : ''
++
+     args_list.removeIf { it.contains('--bed') }
+     args_list.removeIf { it.contains('--exclude-bed') }
+     args_list.removeIf { it.contains('--hapcount') }
 +    args_list.removeIf { it.contains('--positions') }
 +    args_list.removeIf { it.contains('--exclude-positions') }
-+
-     def input_file = ("$variant_file".endsWith(".vcf")) ? "--vcf ${variant_file}" :
-         ("$variant_file".endsWith(".vcf.gz")) ? "--gzvcf ${variant_file}" :
-         ("$variant_file".endsWith(".bcf")) ? "--bcf ${variant_file}" : ''
-@@ -113,7 +120,8 @@
-         --out $prefix \\
-         ${args_list.join(' ')} \\
-         $bed_arg \\
--        $diff_variant_arg
-+        $diff_variant_arg \\
-+        $positions_arg
  
-     cat <<-END_VERSIONS > versions.yml
-     "${task.process}":
+     def diff_variant_arg = (args.contains('--diff')) ? "--diff ${diff_variant_file}" :
+         (args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :
 
 ************************************************************

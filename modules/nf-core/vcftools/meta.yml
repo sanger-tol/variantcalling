@@ -24,10 +24,6 @@ input:
   - diff_variant_file:
       type: file
       description: secondary variant file which can be used with the 'diff' suite of tools (optional)
-  - positions_file:
-      type: file
-      description: positions file to include or exclude a set of sites on the basis of a list of positions (optional)
-
 output:
   - meta:
       type: map
