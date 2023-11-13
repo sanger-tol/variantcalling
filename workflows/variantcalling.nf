@@ -158,20 +158,16 @@ workflow VARIANTCALLING {
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
 
     //
-    // combine all VCF files together
+    // convert VCF channel meta id 
     // 
-    DEEPVARIANT_CALLER.out.gvcf
-     .map{ meta, gvcf -> [  [ id: gvcf.baseName ], gvcf ] }
-     .concat( 
-        DEEPVARIANT_CALLER.out.vcf 
-         .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
-      )
-     .set{ all_vcf }
+    DEEPVARIANT_CALLER.out.vcf 
+     .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+     .set{ vcf }
 
     //
     // process VCF output files
     //
-    PROCESS_VCF( all_vcf, ch_positions )
+    PROCESS_VCF( vcf, ch_positions )
     ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
 
     //
