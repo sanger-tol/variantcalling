@@ -10,7 +10,7 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval ]
+def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval, params.include_positions, params.exclude_positions ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
@@ -34,6 +34,16 @@ if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { c
 
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
+if ( (params.include_positions) && (params.exclude_positions) ){
+    exit 1, 'Only one positions file can be given to include or exclude!'
+}else if (params.include_positions){ 
+    ch_positions = Channel.fromPath(params.include_positions) 
+} else if (params.exclude_positions){
+    ch_positions = Channel.fromPath(params.exclude_positions) 
+} else { 
+    ch_positions = [] 
+}
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     CONFIG FILES
@@ -53,6 +63,7 @@ include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
+include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,7 +125,7 @@ workflow VARIANTCALLING {
     INPUT_CHECK (
         ch_input
     )
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
 
     //
     // SUBWORKFLOW: merge the input reads by sample name
@@ -124,7 +135,7 @@ workflow VARIANTCALLING {
         ch_index,
         INPUT_CHECK.out.reads,
     )
-    ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
+    ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
 
 
     //
@@ -136,7 +147,7 @@ workflow VARIANTCALLING {
         ch_interval,
         split_fasta_cutoff
     )
-    ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
+    ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
     //
     // SUBWORKFLOW: call deepvariant
@@ -144,7 +155,20 @@ workflow VARIANTCALLING {
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta
     )
-    ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
+    ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
+
+    //
+    // convert VCF channel meta id 
+    // 
+    DEEPVARIANT_CALLER.out.vcf 
+     .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+     .set{ vcf }
+
+    //
+    // process VCF output files
+    //
+    PROCESS_VCF( vcf, ch_positions )
+    ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
 
     //
     // MODULE: Combine different version together

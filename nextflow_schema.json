@@ -60,6 +60,14 @@
                     "default": 100000,
                     "hidden": true,
                     "description": "The minimum fasta file size when splitting the input fasta file by sequence."
+                },
+                "include_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position."
+                },
+                "exclude_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
                 }
             },
             "required": ["fasta"]
