@@ -1,4 +1,15 @@
 Changes in module 'nf-core/vcftools'
+--- modules/nf-core/vcftools/meta.yml
++++ modules/nf-core/vcftools/meta.yml
+@@ -1,6 +1,7 @@
+ name: vcftools
+ description: A set of tools written in Perl and C++ for working with VCF files
+ keywords:
++  - VCFtools
+   - VCF
+   - sort
+ tools:
+
 --- modules/nf-core/vcftools/main.nf
 +++ modules/nf-core/vcftools/main.nf
 @@ -91,10 +91,15 @@
