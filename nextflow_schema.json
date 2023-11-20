@@ -28,6 +28,12 @@
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
                 },
+                "vector_db": {
+                    "type": "string",
+                    "default": "/Users/gq2/git3/variantcalling/assets/vectorDB.tar.gz",
+                    "description": "Path to directory or tar.gz archive for pre-built PacBio vector database.",
+                    "format": "file-path"
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",
@@ -50,6 +56,10 @@
                 "fai": {
                     "type": "string",
                     "description": "Path to the index file of the FASTA genome file, either fai or gzi."
+                },
+                "align": {
+                    "type": "boolean",
+                    "description": "Align the input reads to the reference"
                 },
                 "interval": {
                     "type": "string",

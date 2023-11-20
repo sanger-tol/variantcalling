@@ -60,10 +60,12 @@ if ( (params.include_positions) && (params.exclude_positions) ){
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
+include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
 include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,7 +77,8 @@ include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 // MODULE: Installed directly from nf-core/modules
 //
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
-include { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'
+include { SAMTOOLS_FAIDX              } from '../modules/nf-core/samtools/faidx/main'
+include { UNTAR                       } from '../modules/nf-core/untar/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,6 +129,31 @@ workflow VARIANTCALLING {
         ch_input
     )
     ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
+
+    //
+    // SUBWORKFLOW: align reads if required
+    //
+    if( params.align ){
+
+        if ( params.vector_db.endsWith( '.tar.gz' ) ) {
+
+            UNTAR ( [ [:], params.vector_db ] ).untar
+            | map { meta, file -> file }
+            | set { ch_vector_db }
+            ch_versions = ch_versions.mix ( UNTAR.out.versions )
+        } else {
+            Channel.fromPath ( params.vector_db )
+            | set { ch_vector_db }
+        }
+
+       ALIGN_PACBIO (
+           ch_fasta,
+           INPUT_CHECK.out.reads,
+           ch_vector_db
+       )
+       ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+    }
+
 
     //
     // SUBWORKFLOW: merge the input reads by sample name
