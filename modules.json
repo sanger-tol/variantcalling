@@ -88,7 +88,7 @@
                     },
                     "samtools/view": {
                         "branch": "master",
-                        "git_sha": "3ffae3598260a99e8db3207dead9f73f87f90d1f",
+                        "git_sha": "3f5420aa22e00bd030a2556dfdffc9e164ec0ec5",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/samtools/view/samtools-view.diff"
                     },
