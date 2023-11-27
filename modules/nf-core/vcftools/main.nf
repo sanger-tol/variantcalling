@@ -94,7 +94,6 @@ process VCFTOOLS {
         (args.contains('--hapcount')) ? "--hapcount ${bed}" :
         (args.contains('--positions')) ? "--positions ${bed}" :
         (args.contains('--exclude-positions')) ? "--exclude-positions ${bed}"  : ''
-
     args_list.removeIf { it.contains('--bed') }
     args_list.removeIf { it.contains('--exclude-bed') }
     args_list.removeIf { it.contains('--hapcount') }

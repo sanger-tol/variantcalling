@@ -99,7 +99,7 @@
                     },
                     "vcftools": {
                         "branch": "master",
-                        "git_sha": "8fc1d24c710ebe1d5de0f2447ec9439fd3d9d66a",
+                        "git_sha": "485558b40040fc3ace093d9084210125d8ba4c97",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/vcftools/vcftools.diff"
                     }
