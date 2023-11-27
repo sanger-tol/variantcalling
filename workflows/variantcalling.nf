@@ -46,12 +46,6 @@ if ( (params.include_positions) && (params.exclude_positions) ){
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CONFIG FILES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -65,7 +59,6 @@ include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
 include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
-
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,6 +115,7 @@ workflow VARIANTCALLING {
        ch_index = ch_fai
     }
 
+
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
@@ -129,6 +123,7 @@ workflow VARIANTCALLING {
         ch_input
     )
     ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
+
 
     //
     // SUBWORKFLOW: align reads if required
@@ -146,11 +141,12 @@ workflow VARIANTCALLING {
             | set { ch_vector_db }
         }
 
-       ALIGN_PACBIO (
-           ch_fasta,
-           INPUT_CHECK.out.reads,
-           ch_vector_db
-       )
+        ch_fasta.map{ fasta -> [[], fasta]}.set{fasta_meta}
+        ALIGN_PACBIO (
+            fasta_meta,
+            INPUT_CHECK.out.reads,
+            ch_vector_db
+        )
        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
     }
 
@@ -177,6 +173,7 @@ workflow VARIANTCALLING {
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
+
     //
     // SUBWORKFLOW: call deepvariant
     //
@@ -184,6 +181,7 @@ workflow VARIANTCALLING {
         INPUT_FILTER_SPLIT.out.reads_fasta
     )
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
+
 
     //
     // convert VCF channel meta id 
@@ -197,6 +195,7 @@ workflow VARIANTCALLING {
     //
     PROCESS_VCF( vcf, ch_positions )
     ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
+
 
     //
     // MODULE: Combine different version together
