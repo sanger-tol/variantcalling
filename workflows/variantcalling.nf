@@ -141,15 +141,20 @@ workflow VARIANTCALLING {
             | set { ch_vector_db }
         }
 
-        ch_fasta.map{ fasta -> [[], fasta]}.set{fasta_meta}
+        ch_fasta.map{ fasta -> [[], fasta] }.set{ fasta_meta }
         ALIGN_PACBIO (
             fasta_meta,
             INPUT_CHECK.out.reads,
             ch_vector_db
         )
        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
-    }
 
+       ch_aligned_reads = ALIGN_PACBIO.out.cram
+
+    } else {
+
+      ch_aligned_reads = INPUT_CHECK.out.reads
+    }
 
     //
     // SUBWORKFLOW: merge the input reads by sample name
@@ -157,7 +162,7 @@ workflow VARIANTCALLING {
     INPUT_MERGE (
         ch_fasta,
         ch_index,
-        INPUT_CHECK.out.reads,
+        ch_aligned_reads,
     )
     ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
 
