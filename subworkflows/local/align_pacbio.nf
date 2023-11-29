@@ -26,30 +26,23 @@ workflow ALIGN_PACBIO {
 
 
     // Align Fastq to Genome
-
     MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false )
     ch_versions = ch_versions.mix ( MINIMAP2_ALIGN.out.versions.first() )
 
 
     // Collect all alignment output by sample name
     MINIMAP2_ALIGN.out.bam
-    | map { meta, bam -> [['id': meta.id, 'datatype': meta.datatype], bam] }
+    | map { meta, bam -> [['id': meta.id, 'datatype': meta.datatype, 'sample': meta.sample ], bam] }
     | groupTuple ( by: [0] )
     | set { ch_bams }
-
 
     // Merge
     SAMTOOLS_MERGE ( ch_bams, [ [], [] ], [ [], [] ] )
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions.first() )
 
 
-    // Position sort BAM file
-    SAMTOOLS_SORT ( SAMTOOLS_MERGE.out.bam )
-    ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions.first() )
-
-
     // Convert merged BAM to CRAM and calculate indices and statistics
-    SAMTOOLS_SORT.out.bam
+    SAMTOOLS_MERGE.out.bam
     | map { meta, bam -> [ meta, bam, [] ] }
     | set { ch_sort }
 
