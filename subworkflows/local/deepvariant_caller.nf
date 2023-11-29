@@ -14,7 +14,7 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = Channel.empty()
 
     reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
-                     [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.type ], 
+                     [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ], 
                        cram,
                        crai, 
                        interval 
@@ -23,14 +23,14 @@ workflow DEEPVARIANT_CALLER {
 
     // fasta
     fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai -> 
-                             [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.type ], 
+                             [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ], 
                               fasta 
                              ] 
                            }
 
     // fai
     fai = reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai ->
-                           [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.type ],
+                           [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
                              fai 
                            ] 
                          }
