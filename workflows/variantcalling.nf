@@ -149,30 +149,31 @@ workflow VARIANTCALLING {
         )
        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
-       ch_aligned_reads = ALIGN_PACBIO.out.cram
+       ALIGN_PACBIO.out.cram
+        .join( ALIGN_PACBIO.out.crai )
+        .set{ ch_aligned_reads }
 
     } else {
 
-      ch_aligned_reads = INPUT_CHECK.out.reads
+        //
+        // SUBWORKFLOW: merge the input reads by sample name
+        //
+        INPUT_MERGE (
+            ch_fasta,
+            ch_index,
+            INPUT_CHECK.out.reads,
+        )
+        ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
+        ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
+
     }
-
-    //
-    // SUBWORKFLOW: merge the input reads by sample name
-    //
-    INPUT_MERGE (
-        ch_fasta,
-        ch_index,
-        ch_aligned_reads,
-    )
-    ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
-
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
         ch_fasta,
-        INPUT_MERGE.out.indexed_merged_reads,
+        ch_aligned_reads,
         ch_interval,
         split_fasta_cutoff
     )

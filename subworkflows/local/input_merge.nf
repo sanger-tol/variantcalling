@@ -38,7 +38,7 @@ workflow INPUT_MERGE {
      .join( grouped_reads )
      .map { sample, meta, bam_cram_list -> [ 
           [ id: ( bam_cram_list.size() == 1 ) ? sample : sample + '_combined',
-            type: meta.datatype 
+            datatype: meta.datatype 
           ], 
             bam_cram_list 
           ]}
