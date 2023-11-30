@@ -84,37 +84,31 @@ include { UNTAR                       } from '../modules/nf-core/untar/main'
 workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
+    ch_fasta
+     .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
+     .first()
+     .set { ch_genome }
 
     //
     // check reference fasta index given or not
     //
     if( params.fai == null ){ 
    
-       ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
-        .set { ch_genome }
-
        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
-       SAMTOOLS_FAIDX.out.fai
-        .map{ mata, fai -> fai }
-        .set{ ch_fai }
-
-       SAMTOOLS_FAIDX.out.gzi
-        .map{ meta, gzi -> gzi }
-        .set{ ch_gzi }
-
        if( params.fasta.endsWith('.gz') ){
-            ch_index = ch_gzi
+            ch_genome_index = SAMTOOLS_FAIDX.out.gzi
        }else{
-            ch_index = ch_fai
+            ch_genome_index = SAMTOOLS_FAIDX.out.fai
        }
 
     }else{
-       ch_index = ch_fai
+       ch_index
+        .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+        .first()
+        .set { ch_genome_index }
     }
-
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -136,14 +130,17 @@ workflow VARIANTCALLING {
             | map { meta, file -> file }
             | set { ch_vector_db }
             ch_versions = ch_versions.mix ( UNTAR.out.versions )
+
+
         } else {
+
             Channel.fromPath ( params.vector_db )
             | set { ch_vector_db }
+
         }
 
-        ch_fasta.map{ fasta -> [[], fasta] }.set{ fasta_meta }
         ALIGN_PACBIO (
-            fasta_meta,
+            ch_genome,
             INPUT_CHECK.out.reads,
             ch_vector_db
         )
@@ -159,8 +156,8 @@ workflow VARIANTCALLING {
         // SUBWORKFLOW: merge the input reads by sample name
         //
         INPUT_MERGE (
-            ch_fasta,
-            ch_index,
+            ch_genome,
+            ch_genome_index,
             INPUT_CHECK.out.reads,
         )
         ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )

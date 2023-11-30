@@ -36,6 +36,7 @@ workflow ALIGN_PACBIO {
     | groupTuple ( by: [0] )
     | set { ch_bams }
 
+
     // Merge
     SAMTOOLS_MERGE ( ch_bams, [ [], [] ], [ [], [] ] )
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions.first() )

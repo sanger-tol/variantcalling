@@ -7,8 +7,8 @@ include { SAMTOOLS_SORT }  from '../../modules/nf-core/samtools/sort'
 
 workflow INPUT_MERGE {
     take:
-    fasta              // file: /path/to/genome.fasta or /path/to/genome.fasta.gz
-    fai                // file: /path/to/genome.*.fai or /path/to/genome.fasta.gz.gzi
+    fasta              // channel: [ val(meta), /path/to/genome.fasta or /path/to/genome.fasta.gz ]
+    fai                // channel: [ val(meta), /path/to/genome.*.fai or /path/to/genome.fasta.gz.gzi ]
     reads              // channel: [ val(meta), data ]
 
     main:
@@ -45,12 +45,9 @@ workflow INPUT_MERGE {
      .set { grouped_reads_with_meta }
 
     // call samtool merge
-    ch_fasta = fasta.map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
-    ch_fai = fai.map { fai -> [ [ 'id': fai.baseName ], fai ] }.first()
-
     SAMTOOLS_MERGE( grouped_reads_with_meta, 
-                    ch_fasta,
-                    ch_fai
+                    fasta,
+                    fai
     )
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions )
 
