@@ -25,13 +25,13 @@ def create_data_channel ( LinkedHashMap row ) {
     // create meta map
     def meta    = [:]
     meta.id     = row.sample
-    meta.sample = row.sample
+    meta.sample = row.sample.split('_')[0..-2].join('_')
     meta.datatype   = row.datatype
 
     if ( meta.datatype == "pacbio" ) { 
         platform = "PACBIO"
     }
-    meta.read_group  = "\'@RG\\tID:" + row.datafile.split('/')[-1].split('\\.')[0] + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
+    meta.read_group  = "\'@RG\\tID:" + row.datafile.split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
 
     // add path(s) of the read file(s) to the meta map
     def data_meta = []
