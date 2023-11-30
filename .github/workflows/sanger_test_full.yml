@@ -32,8 +32,9 @@ jobs:
           parameters: |
             {
               "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ env.REVISION }}",
+              "align":  true,
             }
-          profiles: test_full,sanger,singularity,cleanup
+          profiles: test_full_align,sanger,singularity,cleanup
 
       - uses: actions/upload-artifact@v3
         with:
