@@ -52,7 +52,7 @@
                     },
                     "samtools/fasta": {
                         "branch": "master",
-                        "git_sha": "3f5420aa22e00bd030a2556dfdffc9e164ec0ec5",
+                        "git_sha": "6f4299292ef2c5b66e6829527b2647c301b77cc9",
                         "installed_by": ["modules"]
                     },
                     "samtools/fastq": {
