@@ -85,7 +85,7 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-     .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
+     .map { fasta -> [ [ 'id': fasta.baseName - '.fasta' - '.fa' ], fasta ] }
      .first()
      .set { ch_genome }
 
