@@ -30,7 +30,7 @@
                 },
                 "vector_db": {
                     "type": "string",
-                    "default": "/Users/gq2/git3/variantcalling/assets/vectorDB.tar.gz",
+                    "default": "${projectDir}/assets/vectorDB.tar.gz",
                     "description": "Path to directory or tar.gz archive for pre-built PacBio vector database.",
                     "format": "file-path"
                 },
