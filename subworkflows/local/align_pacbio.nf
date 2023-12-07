@@ -34,16 +34,6 @@ workflow ALIGN_PACBIO {
     MINIMAP2_ALIGN.out.bam
     | map { meta, bam -> [['id': meta.sample, 'datatype': meta.datatype, 'sample': meta.sample ], bam] }
     | groupTuple ( by: [0] )
-    | map { meta, bam_list -> 
-           [
-              [
-                'id': ( bam_list.size() == 1 ) ? meta.sample : meta.sample + '_combined',
-                'sample' : meta.sample,
-                'datatype': meta.datatype
-              ],
-              bam_list
-           ]
-          }
     | set { ch_bams }
         
 
