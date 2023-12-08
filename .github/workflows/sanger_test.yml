@@ -19,8 +19,9 @@ jobs:
           parameters: |
             {
               "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ github.sha }}",
+              "align":  true
             }
-          profiles: test,sanger,singularity,cleanup
+          profiles: test_align,sanger,singularity,cleanup
 
       - uses: actions/upload-artifact@v3
         with:

@@ -46,12 +46,6 @@ if ( (params.include_positions) && (params.exclude_positions) ){
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CONFIG FILES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -60,6 +54,7 @@ if ( (params.include_positions) && (params.exclude_positions) ){
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
+include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
@@ -75,7 +70,8 @@ include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 // MODULE: Installed directly from nf-core/modules
 //
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
-include { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'
+include { SAMTOOLS_FAIDX              } from '../modules/nf-core/samtools/faidx/main'
+include { UNTAR                       } from '../modules/nf-core/untar/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,35 +84,30 @@ include { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'
 workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
+    ch_fasta
+     .map { fasta -> [ [ 'id': fasta.baseName - '.fasta' - '.fa' ], fasta ] }
+     .first()
+     .set { ch_genome }
 
     //
     // check reference fasta index given or not
     //
     if( params.fai == null ){ 
    
-       ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }
-        .set { ch_genome }
-
        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
-       SAMTOOLS_FAIDX.out.fai
-        .map{ mata, fai -> fai }
-        .set{ ch_fai }
-
-       SAMTOOLS_FAIDX.out.gzi
-        .map{ meta, gzi -> gzi }
-        .set{ ch_gzi }
-
        if( params.fasta.endsWith('.gz') ){
-            ch_index = ch_gzi
+            ch_genome_index = SAMTOOLS_FAIDX.out.gzi
        }else{
-            ch_index = ch_fai
+            ch_genome_index = SAMTOOLS_FAIDX.out.fai
        }
 
     }else{
-       ch_index = ch_fai
+       ch_index
+        .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+        .first()
+        .set { ch_genome_index }
     }
 
     //
@@ -127,27 +118,64 @@ workflow VARIANTCALLING {
     )
     ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
 
-    //
-    // SUBWORKFLOW: merge the input reads by sample name
-    //
-    INPUT_MERGE (
-        ch_fasta,
-        ch_index,
-        INPUT_CHECK.out.reads,
-    )
-    ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
 
+    //
+    // SUBWORKFLOW: align reads if required
+    //
+    if( params.align ){
+
+        if ( params.vector_db.endsWith( '.tar.gz' ) ) {
+
+            UNTAR ( [ [:], params.vector_db ] ).untar
+            | map { meta, file -> file }
+            | set { ch_vector_db }
+            ch_versions = ch_versions.mix ( UNTAR.out.versions )
+
+
+        } else {
+
+            Channel.fromPath ( params.vector_db )
+            | set { ch_vector_db }
+
+        }
+
+        ALIGN_PACBIO (
+            ch_genome,
+            INPUT_CHECK.out.reads,
+            ch_vector_db
+        )
+       ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+
+       ALIGN_PACBIO.out.cram
+        .join( ALIGN_PACBIO.out.crai )
+        .set{ ch_aligned_reads }
+
+    } else {
+
+        //
+        // SUBWORKFLOW: merge the input reads by sample name
+        //
+        INPUT_MERGE (
+            ch_genome,
+            ch_genome_index,
+            INPUT_CHECK.out.reads,
+        )
+        ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
+        ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
+
+    }
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
         ch_fasta,
-        INPUT_MERGE.out.indexed_merged_reads,
+        ch_aligned_reads,
         ch_interval,
         split_fasta_cutoff
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
+
 
     //
     // SUBWORKFLOW: call deepvariant
@@ -156,6 +184,7 @@ workflow VARIANTCALLING {
         INPUT_FILTER_SPLIT.out.reads_fasta
     )
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
+
 
     //
     // convert VCF channel meta id 
@@ -169,6 +198,7 @@ workflow VARIANTCALLING {
     //
     PROCESS_VCF( vcf, ch_positions )
     ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
+
 
     //
     // MODULE: Combine different version together

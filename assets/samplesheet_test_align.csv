@@ -1,0 +1,4 @@
+sample,datatype,datafile
+icCanRufa1,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/genomic_data/icCanRufa1/pacbio/m64094_200730_174533.ccs.bc1010_BAK8A_OA--bc1010_BAK8A_OA_0_03.bam
+icCanRufa1,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/genomic_data/icCanRufa1/pacbio/m64094_200730_174533.ccs.bc1010_BAK8A_OA--bc1010_BAK8A_OA_0_02.bam
+icCanRufa1XXXXX,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/genomic_data/icCanRufa1/pacbio/m64094_200730_174533.ccs.bc1010_BAK8A_OA--bc1010_BAK8A_OA_0_02.bam

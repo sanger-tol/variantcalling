@@ -108,6 +108,11 @@ class RowChecker:
         """
         if len(self._seen) != len(self.validated):
             raise AssertionError("The combination of sample name and data file must be unique.")
+        seen = Counter()
+        for row in self.validated:
+            sample = row[self._sample_col]
+            seen[sample] += 1
+            row[self._sample_col] = f"{sample}_T{seen[sample]}"
 
 
 def read_head(handle, num_lines=10):
