@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The pipeline takes aligned sample reads (CRAM/BAM files) from a CSV file and a reference file in FASTA format, and then use DeepVariant to call variants.
+The pipeline takes aligned or unaliged sample reads (CRAM/BAM files) from a CSV file and a reference file in FASTA format, and then use DeepVariant to call variants.
 
 ## Samplesheet input
 
@@ -47,7 +47,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run sanger-tol/variantcalling --input samplesheet.csv --outdir <OUTDIR> --fasta genome.fasta.gz --fai genome.fasta.gz.fai --gzi genome.fasta.gz.gzi -profile docker
+nextflow run sanger-tol/variantcalling --input samplesheet.csv --outdir <OUTDIR> --fasta genome.fasta.gz -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -62,6 +62,8 @@ work                # Directory containing the nextflow working files
 ```
 
 The pipeline will split the input fasta file into smaller files to run DeepVariant parallel. You can set the minimum split fasta file size from the command line. For example to set the minimum size as 10K using `--split_fasta_cutoff 10000`.
+
+If the input BAM/CRAM files are not aligned, please add `--align` in your command.
 
 ### Updating the pipeline
 
