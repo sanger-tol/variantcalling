@@ -1,7 +1,14 @@
 ---
 title: Sanger-tol/Variantcalling Workflow
 ---
-%%{init: { 'gitGraph': {'mainBranchName': 'BAM/CRAM'}} }%%
+%%{ init: { 
+        'gitGraph': {'mainBranchName': 'BAM/CRAM'
+        },
+        'themeVariables': {
+            'commitLabelFontSize': '18px'
+        } 
+    } 
+}%%
       gitGraph TB:
         commit id: "START"
         branch Fasta order: 4
@@ -17,10 +24,10 @@ title: Sanger-tol/Variantcalling Workflow
         commit id: "PACBIO_SAMTOOLS_FILTER"
         commit id: "SAMTOOLS_FASTQ"
         commit id: "MINIMAP2_ALIGN"
-        commit id: "SAMTOOLS_MERGE_BY_SAMPLE 1" type: HIGHLIGHT tag: "output"
-        commit id: "SAMTOOLS_STATS" type: HIGHLIGHT tag: "output"
-        commit id: "SAMTOOLS_FLAGSTAT" type: HIGHLIGHT tag: "output"
-        commit id: "SAMTOOLS_IDXSTATS" type: HIGHLIGHT tag: "output"
+        commit id: "SAMTOOLS_MERGE_BY_SAMPLE 1" type: HIGHLIGHT
+        commit id: "SAMTOOLS_STATS" type: HIGHLIGHT
+        commit id: "SAMTOOLS_FLAGSTAT" type: HIGHLIGHT
+        commit id: "SAMTOOLS_IDXSTATS" type: HIGHLIGHT
         checkout BAM/CRAM
         merge UnAlignedReads
         checkout Fasta
@@ -37,13 +44,13 @@ title: Sanger-tol/Variantcalling Workflow
         checkout DeepVariant
         merge BAM/CRAM
         commit id: "DEEPVARIANT"
-        commit id: "BCFTOOLS_CONCAT_VCF" type: HIGHLIGHT tag: "output"
+        commit id: "BCFTOOLS_CONCAT_VCF" type: HIGHLIGHT
         branch "VCFtools" order: 7
-        commit id: "VCFTOOLS_SITE_PI" type: HIGHLIGHT tag: "output"
-        commit id: "VCFTOOLS_HET" type: HIGHLIGHT tag: "output"
+        commit id: "VCFTOOLS_SITE_PI" type: HIGHLIGHT
+        commit id: "VCFTOOLS_HET" type: HIGHLIGHT
         checkout DeepVariant
-        commit id: "BCFTOOLS_CONCAT_GVCF" type: HIGHLIGHT tag: "output"
+        commit id: "BCFTOOLS_CONCAT_GVCF" type: HIGHLIGHT
         checkout BAM/CRAM
         merge VCFtools
         merge DeepVariant
-        commit id: "DUMPSOFTWAREVERSIONS" type: HIGHLIGHT tag: "output"
+        commit id: "DUMPSOFTWAREVERSIONS" type: HIGHLIGHT
