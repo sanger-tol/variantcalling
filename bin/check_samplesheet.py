@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Provide a command line tool to validate and transform tabular samplesheets."""
+"""Provide a command line tool to validate tabular samplesheets."""
 
 
 import argparse
@@ -35,7 +35,6 @@ class RowChecker:
         sample_col="sample",
         type_col="datatype",
         file_col="datafile",
-        index_col="indexfile",
         **kwargs,
     ):
         """
@@ -48,8 +47,6 @@ class RowChecker:
                 the read data (default "datatype").
             file_col (str): The name of the column that contains the file path for
                 the read data (default "datafile").
-            index_col (str): The name of the column that contains the index file
-                for the data (default "indexfile").
 
         """
         super().__init__(**kwargs)
@@ -57,11 +54,10 @@ class RowChecker:
         self._sample_col = sample_col
         self._type_col = type_col
         self._file_col = file_col
-        self._index_col = index_col
         self._seen = set()
-        self.modified = []
+        self.validated = []
 
-    def validate_and_transform(self, row):
+    def validate(self, row):
         """
         Perform all validations on the given row.
 
@@ -73,9 +69,8 @@ class RowChecker:
         self._validate_sample(row)
         self._validate_type(row)
         self._validate_data_file(row)
-        self._validate_index_file(row)
         self._seen.add((row[self._sample_col], row[self._file_col]))
-        self.modified.append(row)
+        self.validated.append(row)
 
     def _validate_sample(self, row):
         """Assert that the sample name exists and convert spaces to underscores."""
@@ -98,17 +93,6 @@ class RowChecker:
             raise AssertionError("Data file is required.")
         self._validate_data_format(row[self._file_col])
 
-    def _validate_index_file(self, row):
-        """Assert that the indexfile is non-empty and has the right format."""
-        if len(row[self._index_col]) <= 0:
-            raise AssertionError("Data index file is required.")
-        if row[self._file_col].endswith("bam") and not (
-            row[self._index_col].endswith("bai") or row[self._index_col].endswith("csi")
-        ):
-            raise AssertionError("bai or csi index file should be given for bam file.")
-        if row[self._file_col].endswith("cram") and not row[self._index_col].endswith("crai"):
-            raise AssertionError("crai index file shuld be given for cram file.")
-
     def _validate_data_format(self, filename):
         """Assert that a given filename has one of the expected read data file extensions."""
         if not any(filename.endswith(extension) for extension in self.DATA_VALID_FORMATS):
@@ -121,14 +105,11 @@ class RowChecker:
         """
         Assert that the combination of sample name and data filename is unique.
 
-        In addition to the validation, also rename all samples to have a suffix of _T{n}, where n is the
-        number of times the same sample exist, but with different files, e.g., multiple runs per experiment.
-
         """
-        if len(self._seen) != len(self.modified):
+        if len(self._seen) != len(self.validated):
             raise AssertionError("The combination of sample name and data file must be unique.")
         seen = Counter()
-        for row in self.modified:
+        for row in self.validated:
             sample = row[self._sample_col]
             seen[sample] += 1
             row[self._sample_col] = f"{sample}_T{seen[sample]}"
@@ -162,7 +143,7 @@ def sniff_format(handle):
     peek = read_head(handle)
     handle.seek(0)
     sniffer = csv.Sniffer()
-    # same input file could retrun random true or false
+    # same input file could return random true or false
     # disable it now
     # the following validation should be enough
     # if not sniffer.has_header(peek):
@@ -188,16 +169,17 @@ def check_samplesheet(file_in, file_out):
         This function checks that the samplesheet follows the following structure,
         see also the `variantcalling samplesheet`_::
 
-            sample,datatype,datafile,indexfile
-            sample1,pacbio,/path/to/data/file/file1.bam,/path/to/index/file/file1.bam.bai
-            sample2,pacbio,/path/to/data/file/file2.cram,/path/to/index/file/file2.cram.crai
-            sample3,pacbio,/path/to/data/file/file3.bam,/path/to/index/file/file3.bam.csi
+            sample,datatype,datafile
+            sample1,pacbio,/path/to/data/file/file1.bam
+            sample2,pacbio,/path/to/data/file/file2.cram
+            sample3,pacbio,/path/to/data/file/file3-1.bam
+            sample3,pacbio,/path/to/data/file/file3-2.cram
 
     .. _variantcalling samplesheet:
         https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/samplesheet.csv
 
     """
-    required_columns = {"sample", "datatype", "datafile", "indexfile"}
+    required_columns = {"sample", "datatype", "datafile"}
     # See https://docs.python.org/3.9/library/csv.html#id3 to read up on `newline=""`.
     with file_in.open(newline="") as in_handle:
         reader = csv.DictReader(in_handle, dialect=sniff_format(in_handle))
@@ -210,7 +192,7 @@ def check_samplesheet(file_in, file_out):
         checker = RowChecker()
         for i, row in enumerate(reader):
             try:
-                checker.validate_and_transform(row)
+                checker.validate(row)
             except AssertionError as error:
                 logger.critical(f"{str(error)} On line {i + 2}.")
                 sys.exit(1)
@@ -220,7 +202,7 @@ def check_samplesheet(file_in, file_out):
     with file_out.open(mode="w", newline="") as out_handle:
         writer = csv.DictWriter(out_handle, header, delimiter=",")
         writer.writeheader()
-        for row in checker.modified:
+        for row in checker.validated:
             writer.writerow(row)
 
 

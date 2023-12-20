@@ -14,7 +14,11 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = Channel.empty()
 
     reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
-                     [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.type ], 
+                     [ [ id: meta.id + "_" + fasta_file_name,
+                         sample: meta.id,
+                         type: meta.datatype,
+                         fasta_file_name: fasta_file_name
+                       ], 
                        cram,
                        crai, 
                        interval 
@@ -22,13 +26,21 @@ workflow DEEPVARIANT_CALLER {
                .set { cram_crai }
 
     // fasta
-    fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai -> [ fasta ] }
+    fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai -> 
+                             [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ], 
+                              fasta 
+                             ] 
+                           }
 
     // fai
-    fai = reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai -> [ fai ] }
+    fai = reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai ->
+                           [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
+                             fai 
+                           ] 
+                         }
 
     // split fasta in compressed format, no gzi index file needed
-    gzi = []
+    gzi = [ [], [] ]
 
     // call deepvariant
     DEEPVARIANT ( cram_crai, fasta, fai, gzi )
@@ -36,9 +48,15 @@ workflow DEEPVARIANT_CALLER {
 
     // group the vcf files together by sample
     DEEPVARIANT.out.vcf
-     .map { meta, vcf -> [ meta.sample, vcf ] }
+     .map { meta, vcf -> [ 
+            [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
+                  + "." + meta.type
+                  + "." + meta.sample 
+            ],
+            vcf
+          ] }
      .groupTuple()
-     .map { sample, vcf -> [ [id: sample], vcf, [] ] }
+     .map { meta, vcf -> [ meta, vcf, [] ] }
      .set { vcf }
     
     // catcat vcf files
@@ -47,9 +65,15 @@ workflow DEEPVARIANT_CALLER {
 
     // group the g vcf files together by sample
     DEEPVARIANT.out.gvcf
-     .map { meta, gvcf -> [ meta.sample, gvcf ] }
+     .map { meta, gvcf -> [
+            [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
+                  + "." + meta.type
+                  + "." + meta.sample 
+            ],
+            gvcf 
+          ] }
      .groupTuple()
-     .map { sample, gvcf -> [ [ id: sample ], gvcf, [] ] }
+     .map { meta, gvcf -> [ meta, gvcf, [] ] }
      .set { g_vcf }
     
     // catcat g vcf files

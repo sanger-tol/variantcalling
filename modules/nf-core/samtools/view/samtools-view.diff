@@ -1,0 +1,22 @@
+Changes in module 'nf-core/samtools/view'
+--- modules/nf-core/samtools/view/main.nf
++++ modules/nf-core/samtools/view/main.nf
+@@ -19,6 +19,7 @@
+     tuple val(meta), path("*.bai"),  emit: bai,     optional: true
+     tuple val(meta), path("*.csi"),  emit: csi,     optional: true
+     tuple val(meta), path("*.crai"), emit: crai,    optional: true
++    tuple val(meta), path("*.unoutput"), emit: unoutput, optional: true
+     path  "versions.yml",            emit: versions
+ 
+     when:
+@@ -29,7 +30,7 @@
+     def args2 = task.ext.args2 ?: ''
+     def prefix = task.ext.prefix ?: "${meta.id}"
+     def reference = fasta ? "--reference ${fasta}" : ""
+-    def readnames = qname ? "--qname-file ${qname}": ""
++    def readnames = qname ? "--qname-file ${qname} --unoutput ${prefix}.unoutput": ""
+     def file_type = args.contains("--output-fmt sam") ? "sam" :
+                     args.contains("--output-fmt bam") ? "bam" :
+                     args.contains("--output-fmt cram") ? "cram" :
+
+************************************************************

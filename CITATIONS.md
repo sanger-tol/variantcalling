@@ -22,6 +22,22 @@
 
   > Danecek, Petr, et al. “Twelve Years of SAMtools and BCFtools.” GigaScience, vol. 10, no. 2, Jan. 2021, https://doi.org/10.1093/gigascience/giab008.
 
+- [Blast](https://pubmed.ncbi.nlm.nih.gov/20003500/)
+
+  > Camacho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, Madden TL. BLAST+: architecture and applications. BMC Bioinformatics. 2009 Dec 15;10:421. doi: 10.1186/1471-2105-10-421. PMID: 20003500; PMCID: PMC2803857.
+
+- [BWA-MEM2](https://ieeexplore.ieee.org/document/8820962)
+
+  > Vasimuddin Md, Misra S, Li H, Aluru S. Efficient Architecture-Aware Acceleration of BWA-MEM for Multicore Systems. 2019 IEEE International Parallel and Distributed Processing Symposium. 2019 May;314–24. doi: 10.1109/IPDPS.2019.00041.
+
+- [Minimap2](https://pubmed.ncbi.nlm.nih.gov/34623391/)
+
+  > Li H. New strategies to improve minimap2 alignment accuracy. Bioinformatics. 2021 Oct 8;37(23):4572–4. doi: 10.1093/bioinformatics/btab705. Epub ahead of print. PMID: 34623391; PMCID: PMC8652018.
+
+- [VCFTools](https://pubmed.ncbi.nlm.nih.gov/21653522/)
+
+  > Danecek P, Auton A, Abecasis G, et al.: The variant call format and VCFtools. Bioinformatics. 2011 Aug 1;27(15):2156-8. doi: 10.1093/bioinformatics/btr330. Epub 2011 Jun 7. PubMed PMID: 21653522; PubMed Central PMCID: PMC3137218.
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)

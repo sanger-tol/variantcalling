@@ -10,32 +10,39 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.gzi, params.interval ]
+def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval, params.include_positions, params.exclude_positions ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
-if (params.input) { input_file = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-if (params.fasta) { fasta_file = file(params.fasta) } else { exit 1, 'Reference fasta not specified!' }
-if (params.fai)   { fai_file   = file(params.fai)   } else { exit 1, 'Reference fasta index not specified!' }
-
-// Check gzi being given if compressed fasta is provided
-if (params.gzi) {
-    gzi_file = file(params.gzi)
-} else if ( params.fasta.endsWith('fasta.gz') ) { 
-    exit 1, 'Reference fasta index gzi file not specified for fasta.gz file!' 
-} else {
-    gzi_file = null
-}
+if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
 
 // Check optional parameters
-if (params.interval)            { interval_file = file(params.interval)          } else { interval_file = null }
+if (params.fai){
+    if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
+        ||
+        ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
+    ){
+      exit 1, 'Reference fasta and its index file format not matched!'
+    }
+    ch_fai = Channel.fromPath(params.fai)
+} else { 
+    ch_fai = Channel.empty()
+}
+
+if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
+
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CONFIG FILES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+if ( (params.include_positions) && (params.exclude_positions) ){
+    exit 1, 'Only one positions file can be given to include or exclude!'
+}else if (params.include_positions){ 
+    ch_positions = Channel.fromPath(params.include_positions) 
+} else if (params.exclude_positions){
+    ch_positions = Channel.fromPath(params.exclude_positions) 
+} else { 
+    ch_positions = [] 
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,8 +54,11 @@ if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
+include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
+include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
+include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,6 +70,8 @@ include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
 // MODULE: Installed directly from nf-core/modules
 //
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
+include { SAMTOOLS_FAIDX              } from '../modules/nf-core/samtools/faidx/main'
+include { UNTAR                       } from '../modules/nf-core/untar/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,35 +84,121 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
+    ch_fasta
+     .map { fasta -> [ [ 'id': fasta.baseName - '.fasta' - '.fa' ], fasta ] }
+     .first()
+     .set { ch_genome }
+
+    //
+    // check reference fasta index given or not
+    //
+    if( params.fai == null ){ 
+   
+       SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
+       ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+
+       if( params.fasta.endsWith('.gz') ){
+            ch_genome_index = SAMTOOLS_FAIDX.out.gzi
+       }else{
+            ch_genome_index = SAMTOOLS_FAIDX.out.fai
+       }
+
+    }else{
+       ch_index
+        .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+        .first()
+        .set { ch_genome_index }
+    }
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
     INPUT_CHECK (
-        input_file
+        ch_input
     )
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
+
+
+    //
+    // SUBWORKFLOW: align reads if required
+    //
+    if( params.align ){
+
+        if ( params.vector_db.endsWith( '.tar.gz' ) ) {
+
+            UNTAR ( [ [:], params.vector_db ] ).untar
+            | map { meta, file -> file }
+            | set { ch_vector_db }
+            ch_versions = ch_versions.mix ( UNTAR.out.versions )
+
+
+        } else {
+
+            Channel.fromPath ( params.vector_db )
+            | set { ch_vector_db }
+
+        }
+
+        ALIGN_PACBIO (
+            ch_genome,
+            INPUT_CHECK.out.reads,
+            ch_vector_db
+        )
+       ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+
+       ALIGN_PACBIO.out.cram
+        .join( ALIGN_PACBIO.out.crai )
+        .set{ ch_aligned_reads }
+
+    } else {
+
+        //
+        // SUBWORKFLOW: merge the input reads by sample name
+        //
+        INPUT_MERGE (
+            ch_genome,
+            ch_genome_index,
+            INPUT_CHECK.out.reads,
+        )
+        ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
+        ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
+
+    }
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
-        fasta_file,
-        fai_file,
-        gzi_file,
-        INPUT_CHECK.out.reads,
-        interval_file,
+        ch_fasta,
+        ch_aligned_reads,
+        ch_interval,
         split_fasta_cutoff
     )
-    ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
-    
+    ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
+
+
     //
     // SUBWORKFLOW: call deepvariant
     //
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta
     )
-    ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
+    ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
+
+
+    //
+    // convert VCF channel meta id 
+    // 
+    DEEPVARIANT_CALLER.out.vcf 
+     .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+     .set{ vcf }
+
+    //
+    // process VCF output files
+    //
+    PROCESS_VCF( vcf, ch_positions )
+    ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
+
 
     //
     // MODULE: Combine different version together

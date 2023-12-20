@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/sanger-tol/variantcalling/main/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/sanger-tol/variantcalling/master/nextflow_schema.json",
     "title": "sanger-tol/variantcalling pipeline parameters",
-    "description": "variant calling",
+    "description": "Variant calling pipeline for PacBio data using DeepVariant",
     "type": "object",
     "definitions": {
         "input_output_options": {
@@ -28,6 +28,12 @@
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
                 },
+                "vector_db": {
+                    "type": "string",
+                    "default": "${projectDir}/assets/vectorDB.tar.gz",
+                    "description": "Path to directory or tar.gz archive for pre-built PacBio vector database.",
+                    "format": "file-path"
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",
@@ -45,15 +51,15 @@
             "properties": {
                 "fasta": {
                     "type": "string",
-                    "description": "Path to FASTA genome file, either fasta or fast.gz"
+                    "description": "Path to FASTA genome file, either fasta or fast.gz."
                 },
                 "fai": {
                     "type": "string",
-                    "description": "Path to the index file of the FASTA genome file."
+                    "description": "Path to the index file of the FASTA genome file, either fai or gzi."
                 },
-                "gzi": {
-                    "type": "string",
-                    "description": "Path to the gzi index file of  the FASTA genome file. Required if fasta in gz format."
+                "align": {
+                    "type": "boolean",
+                    "description": "Align the input reads to the reference"
                 },
                 "interval": {
                     "type": "string",
@@ -64,9 +70,17 @@
                     "default": 100000,
                     "hidden": true,
                     "description": "The minimum fasta file size when splitting the input fasta file by sequence."
+                },
+                "include_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position."
+                },
+                "exclude_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
                 }
             },
-            "required": ["fasta", "fai"]
+            "required": ["fasta"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -209,7 +223,7 @@
                 "tracedir": {
                     "type": "string",
                     "description": "Directory to keep pipeline Nextflow logs and reports.",
-                    "default": "${params.outdir}/pipeline_info",
+                    "default": "${params.outdir}/pipeline_info/variantcalling",
                     "fa_icon": "fas fa-cogs",
                     "hidden": true
                 },
