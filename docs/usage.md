@@ -63,7 +63,7 @@ work                # Directory containing the nextflow working files
 
 The pipeline will split the input fasta file into smaller files to run DeepVariant parallel. You can set the minimum split fasta file size from the command line. For example to set the minimum size as 10K using `--split_fasta_cutoff 10000`.
 
-If the input BAM/CRAM files are not aligned, please add `--align` in your command.
+If the input BAM/CRAM files are not aligned, please add `--align` in your command. Please don't use this flag if the input files are already aligned because the current workflow will not align the aligned PacBio reads.
 
 ### Updating the pipeline
 
