@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the CI procedure to use "sanger-tol" rather than "nf-core" names.
 - Renamed Sanger related Github CI test workflows.
 - nf-core template was updated from 2.7 to 2.8.
-- Removed BAM/CRAM index files from the Sample sheets.
+- Removed BAM/CRAM index files from the sample sheets.
 - Made fasta index file optional from the inputs.
 - Imported PacBio readmapping sub-workflows from [sanger-tol/readmapping pipeline](https://github.com/sanger-tol/readmapping/). Therefore, the pipeline can run on unaligned BAM/CRAM samples now.
 - Use VCFtools to calculate per site nucleotide diversity.
