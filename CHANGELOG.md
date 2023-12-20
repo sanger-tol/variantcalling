@@ -49,7 +49,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
-## [[1.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/1.0.0)] - [2023-05-03]
+## [[1.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/1.0.0)] - Xia Yu - [2023-05-03]
 
 Initial release of sanger-tol/variantcalling, created with the [nf-core](https://nf-co.re/) tools.
 
