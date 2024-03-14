@@ -27,7 +27,6 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
-
 ## [[1.1.1](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.1)] - Shang Tang (patch 1) - [2024-02-02]
 
 ### Enhancements & fixes
