@@ -104,7 +104,7 @@ workflow VARIANTCALLING {
        }
 
     }else{
-       ch_index
+       ch_fai
         .map { fai -> [ [ 'id': fai.baseName ], fai ] }
         .first()
         .set { ch_genome_index }
