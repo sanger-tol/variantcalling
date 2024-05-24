@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.2.2](https://github.com/sanger-tol/readmapping/releases/tag/1.1.3)] - Shang Tang (patch 2) - [2024-05-24]
+
+### Enhancements & fixes
+
+- Fixed the bug in the filtering of multiple PacBio files
+
 ## [[1.1.2](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.2)] - Shang Tang (patch 2) - [2024-03-14]
 
 ### Enhancements & fixes
