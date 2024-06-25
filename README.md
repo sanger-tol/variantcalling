@@ -45,7 +45,7 @@ Steps involved:
    nextflow run sanger-tol/variantcalling -profile test,YOURPROFILE --outdir <OUTDIR>
 
    # for unaligned reads
-   nextflow run sanger-tol/variantcalling -profile test_align,YOURPROFILE --align --outdir <OUTDIR>
+   nextflow run sanger-tol/variantcalling -profile test_align,YOURPROFILE --outdir <OUTDIR>
 
    ```
 
