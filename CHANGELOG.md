@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[1.1.4](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.4)] - Shang Tang (patch 3) - [2024-12-05]
+## [[1.1.4](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.4)] - Shang Tang (patch 4) - [2024-12-05]
 
 ### Enhancements & fixes
 
