@@ -8,13 +8,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "blast"
     tag "blast/blastn"
+    tag "blast/makeblastdb"
 
     setup {
         run("BLAST_MAKEBLASTDB") {
             script "../../makeblastdb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test2'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 """
             }
         }
@@ -28,7 +29,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
@@ -37,8 +38,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
-                { assert process.out.versions }
+                { assert path(process.out.txt[0][1]).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -52,7 +53,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
@@ -61,8 +62,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.txt.get(0).get(1)).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
-                { assert process.out.versions }
+                { assert path(process.out.txt[0][1]).getText().contains("Query= MT192765.1 Severe acute respiratory syndrome coronavirus 2 isolate") },
+                { assert snapshot(process.out.versions).match("versions_zipped") }
             )
         }
 

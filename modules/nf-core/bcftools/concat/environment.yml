@@ -2,4 +2,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::blast=2.15.0
+  - bioconda::bcftools=1.20
