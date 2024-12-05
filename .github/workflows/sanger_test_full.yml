@@ -31,8 +31,7 @@ jobs:
           workdir: ${{ secrets.TOWER_WORKDIR_PARENT }}/work/${{ github.repository }}/work-${{ env.REVISION }}
           parameters: |
             {
-              "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ env.REVISION }}",
-              "align":  true,
+              "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ env.REVISION }}"
             }
           profiles: test_full_align,sanger,singularity,cleanup
 

@@ -44,4 +44,4 @@ jobs:
 
       - name: Run pipeline with unaligned test data
         run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test_align,docker --outdir ./results --align
+          nextflow run ${GITHUB_WORKSPACE} -profile test_align,docker --outdir ./results
