@@ -21,7 +21,7 @@ workflow INPUT_MERGE {
      .set{ grouped_reads_meta }
 
     // sort input reads
-    SAMTOOLS_SORT( reads )
+    SAMTOOLS_SORT( reads, fasta )
     ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
     sorted_reads = SAMTOOLS_SORT.out.bam
 
@@ -29,23 +29,23 @@ workflow INPUT_MERGE {
     sorted_reads
      .map{ meta, bam_cram -> [ meta.sample, bam_cram ] }
      .groupTuple()
-     .set{ grouped_reads } 
+     .set{ grouped_reads }
 
     // join grouped reads and meta
     // use the first meta data for the combined reads
-    grouped_reads_meta 
+    grouped_reads_meta
      .map { sample, meta_list -> [sample, meta_list[0]] }
      .join( grouped_reads )
-     .map { sample, meta, bam_cram_list -> [ 
+     .map { sample, meta, bam_cram_list -> [
           [ id: sample,
-            datatype: meta.datatype 
-          ], 
-            bam_cram_list 
+            datatype: meta.datatype
+          ],
+            bam_cram_list
           ]}
      .set { grouped_reads_with_meta }
 
     // call samtool merge
-    SAMTOOLS_MERGE( grouped_reads_with_meta, 
+    SAMTOOLS_MERGE( grouped_reads_with_meta,
                     fasta,
                     fai
     )
