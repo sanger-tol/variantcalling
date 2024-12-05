@@ -2,9 +2,9 @@
 // Call variants with Deepvariant
 //
 
-include { DEEPVARIANT                              }   from '../../modules/nf-core/deepvariant/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF   }   from '../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF  }   from '../../modules/nf-core/bcftools/concat/main'
+include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT }   from '../../modules/nf-core/deepvariant/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF    }   from '../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF   }   from '../../modules/nf-core/bcftools/concat/main'
 
 workflow DEEPVARIANT_CALLER {
     take:
@@ -18,47 +18,48 @@ workflow DEEPVARIANT_CALLER {
                          sample: meta.id,
                          type: meta.datatype,
                          fasta_file_name: fasta_file_name
-                       ], 
+                       ],
                        cram,
-                       crai, 
-                       interval 
+                       crai,
+                       interval
                      ] }
                .set { cram_crai }
 
     // fasta
-    fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai -> 
-                             [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ], 
-                              fasta 
-                             ] 
+    fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
+                             [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
+                              fasta
+                             ]
                            }
 
     // fai
     fai = reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai ->
                            [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
-                             fai 
-                           ] 
+                             fai
+                           ]
                          }
 
     // split fasta in compressed format, no gzi index file needed
     gzi = [ [], [] ]
+    par_bed = [ [], [] ]
 
     // call deepvariant
-    DEEPVARIANT ( cram_crai, fasta, fai, gzi )
+    DEEPVARIANT ( cram_crai, fasta, fai, gzi, par_bed )
     ch_versions = ch_versions.mix ( DEEPVARIANT.out.versions.first() )
 
     // group the vcf files together by sample
     DEEPVARIANT.out.vcf
-     .map { meta, vcf -> [ 
+     .map { meta, vcf -> [
             [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
                   + "." + meta.type
-                  + "." + meta.sample 
+                  + "." + meta.sample
             ],
             vcf
           ] }
      .groupTuple()
      .map { meta, vcf -> [ meta, vcf, [] ] }
      .set { vcf }
-    
+
     // catcat vcf files
     BCFTOOLS_CONCAT_VCF ( vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_VCF.out.versions.first() )
@@ -68,14 +69,14 @@ workflow DEEPVARIANT_CALLER {
      .map { meta, gvcf -> [
             [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
                   + "." + meta.type
-                  + "." + meta.sample 
+                  + "." + meta.sample
             ],
-            gvcf 
+            gvcf
           ] }
      .groupTuple()
      .map { meta, gvcf -> [ meta, gvcf, [] ] }
      .set { g_vcf }
-    
+
     // catcat g vcf files
     BCFTOOLS_CONCAT_GVCF ( g_vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
