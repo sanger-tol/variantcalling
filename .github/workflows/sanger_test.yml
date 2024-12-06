@@ -18,8 +18,7 @@ jobs:
           workdir: ${{ secrets.TOWER_WORKDIR_PARENT }}/work/${{ github.repository }}/work-${{ github.sha }}
           parameters: |
             {
-              "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ github.sha }}",
-              "align":  true
+              "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ github.sha }}"
             }
           profiles: test_align,sanger,singularity,cleanup
 

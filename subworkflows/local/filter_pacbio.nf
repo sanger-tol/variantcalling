@@ -77,7 +77,7 @@ workflow FILTER_PACBIO {
 
 
     // Convert BAM to FASTQ
-    SAMTOOLS_FASTQ ( SAMTOOLS_FILTER.out.unoutput, true )
+    SAMTOOLS_FASTQ ( SAMTOOLS_FILTER.out.unselected, true )
     ch_versions = ch_versions.mix ( SAMTOOLS_FASTQ.out.versions.first() )
 
 
