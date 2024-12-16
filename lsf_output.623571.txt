@@ -1,0 +1,3067 @@
+
+ N E X T F L O W   ~  version 24.10.1
+
+Launching `main.nf` [cranky_brattain] DSL2 - revision: b6056ba4d2
+
+
+
+------------------------------------------------------
+   _____                                _______    _
+  / ____|                              |__   __|  | |
+ | (___   __ _ _ __   __ _  ___ _ __  ___ | | ___ | |
+  \___ \ / _` | '_ \ / _` |/ _ \ '__||___|| |/ _ \| |
+  ____) | (_| | | | | (_| |  __/ |        | | (_) | |____
+ |_____/ \__,_|_| |_|\__, |\___|_|        |_|\___/|______|
+                      __/ |
+                     |___/
+  sanger-tol/variantcalling v1.1.4
+------------------------------------------------------
+Core Nextflow options
+  runName                   : cranky_brattain
+  containerEngine           : singularity
+  launchDir                 : /nfs/users/nfs_t/tc25/variantcalling
+  workDir                   : /nfs/users/nfs_t/tc25/variantcalling/work
+  projectDir                : /nfs/users/nfs_t/tc25/variantcalling
+  userName                  : tc25
+  profile                   : test_align,singularity,sanger
+  configFiles               : /nfs/users/nfs_t/tc25/variantcalling/nextflow.config
+
+Input/output options
+  input                     : /nfs/users/nfs_t/tc25/variantcalling/assets/samplesheet_test_align.csv
+  outdir                    : results
+
+Reference genome options
+  fasta                     : https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/assembly/GCA_947369205.1_OX376310.1_CANBKR010000003.1.fasta.gz
+  align                     : true
+
+Institutional config options
+  config_profile_name       : Test profile with alignment
+  config_profile_description: Minimal unaligned test dataset to check pipeline function
+  config_profile_contact    : Priyanka Surana (@priyanka-surana)
+  config_profile_url        : https://www.sanger.ac.uk
+
+Max job request options
+  max_cpus                  : 2
+  max_memory                : 6.GB
+  max_time                  : 6.h
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+------------------------------------------------------
+If you use sanger-tol/variantcalling for your analysis please cite:
+
+* The pipeline
+  https://doi.org/10.5281/zenodo.7890527
+
+* The nf-core framework
+  https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+  https://github.com/sanger-tol/variantcalling/blob/main/CITATIONS.md
+------------------------------------------------------
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX -
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK -
+[-        ] SAN…LLING:VARIANTCALLING:UNTAR -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX -
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK -
+[-        ] SAN…LLING:VARIANTCALLING:UNTAR -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX -
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK -
+[-        ] SAN…LLING:VARIANTCALLING:UNTAR -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT -
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 1 more processes waiting for tasks…
+
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX -
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK -
+[-        ] SAN…LLING:VARIANTCALLING:UNTAR -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT -
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 5 more processes waiting for tasks…
+
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX -
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK -
+[-        ] SAN…LLING:VARIANTCALLING:UNTAR -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT -
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX | 0 of 1
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK | 0 of 1
+[-        ] SAN…LLING:VARIANTCALLING:UNTAR | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (1)
+[-        ] SAN…IANTCALLING:SAMTOOLS_FAIDX | 0 of 1
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK | 0 of 1
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (2)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[-        ] SAN…UT_CHECK:SAMPLESHEET_CHECK | 0 of 1
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (3)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 0 of 1
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[-        ] SAN…INPUT_FILTER_SPLIT:CAT_CAT | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (4)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 0 of 1
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (4)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 0 of 1
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (4)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 0 of 1
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 0 of 1
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 0 of 1
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX -
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (4)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT -
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[-        ] SAN…ILTER_SPLIT:SAMTOOLS_FAIDX | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (5)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[-        ] SAN…ER_PACBIO:SAMTOOLS_CONVERT | 0 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (6)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[7a/5d781d] SAN…LS_CONVERT (icCanRufa1_T2) | 0 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (7)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 0 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (8)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 0 of 1
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[b5/7ccb3d] SAN…NVERT (icCanRufa1XXXXX_T1) | 0 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (8)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[b5/7ccb3d] SAN…NVERT (icCanRufa1XXXXX_T1) | 0 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (8)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[b5/7ccb3d] SAN…NVERT (icCanRufa1XXXXX_T1) | 0 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (8)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[b5/7ccb3d] SAN…NVERT (icCanRufa1XXXXX_T1) | 1 of 3
+[-        ] SAN…ER_PACBIO:SAMTOOLS_COLLATE | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (9)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[b5/7ccb3d] SAN…NVERT (icCanRufa1XXXXX_T1) | 1 of 3
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (9)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[b5/7ccb3d] SAN…NVERT (icCanRufa1XXXXX_T1) | 1 of 3
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 0 of 1
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (9)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 0 of 3
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (10)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 0 of 3
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (11)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 0 of 3
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA -
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (11)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTA | 0 of 1
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (12)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP -
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (12)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[-        ] SAN…ACBIO:FILTER_PACBIO:GUNZIP | 0 of 1
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (13)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 0 of 1
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (13)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 0 of 1
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (13)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 0 of 1
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN -
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (13)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 1 of 1
+[-        ] SAN…FILTER_PACBIO:BLAST_BLASTN | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (14)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 1 of 1
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (14)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[44/ac92e9] SAN…LS_COLLATE (icCanRufa1_T1) | 1 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 1
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 1 of 1
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (14)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[ee/44cb17] SAN…OOLS_FASTA (icCanRufa1_T1) | 1 of 2
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 1 of 1
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (15)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 1 of 2
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 1 of 1
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (15)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 2
+[09/7a99af] SAN…anRufa1_T1_other.fasta.gz) | 1 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (16)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 2
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 1 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (16)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 2
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 0 of 2
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (17)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 2
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 2
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 0 of 2
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER -
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (17)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 2
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 2
+[-        ] SAN…ILTER_PACBIO:PACBIO_FILTER | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (18)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[98/19289d] SAN…LLATE (icCanRufa1XXXXX_T1) | 2 of 3
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 2
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 2
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (18)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[31/29c13b] SAN…FASTA (icCanRufa1XXXXX_T1) | 2 of 3
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 2
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (19)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 2 of 3
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 2
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 2
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (19)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[2a/bda8a5] SAN…a1XXXXX_T1_other.fasta.gz) | 2 of 3
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 2
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (20)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 2 of 3
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 2
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (20)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4b/37aff4] SAN…AST_BLASTN (icCanRufa1_T1) | 1 of 3
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (21)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 1 of 3
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER -
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (21)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 1 of 3
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 1 of 1
+[-        ] SAN…TER_PACBIO:SAMTOOLS_FILTER | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (22)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 1 of 3
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 1 of 1
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (22)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 1 of 3
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 1 of 1
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (22)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[c2/a03117] SAN…BIO_FILTER (icCanRufa1_T1) | 1 of 2
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (23)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 1 of 2
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (23)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 1 of 2
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (23)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 2
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 0 of 2
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (24)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 2
+[1b/5c6659] SAN…ILTER (icCanRufa1XXXXX_T1) | 0 of 2
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ -
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (24)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 2
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 1 of 2
+[-        ] SAN…LTER_PACBIO:SAMTOOLS_FASTQ | 0 of 1
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (25)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[4d/59da2f] SAN…LASTN (icCanRufa1XXXXX_T1) | 2 of 3
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 2
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 1 of 2
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (25)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[da/b4be34] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 3
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 1 of 2
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (26)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 2 of 3
+[29/233357] SAN…OLS_FILTER (icCanRufa1_T1) | 1 of 2
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 0 of 1
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (26)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 2 of 3
+[1b/5c6659] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 2
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 0 of 2
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (27)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 2 of 3
+[1b/5c6659] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 2
+[87/54f35a] SAN…FASTQ (icCanRufa1XXXXX_T1) | 0 of 2
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN -
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (27)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[1b/5c6659] SAN…ILTER (icCanRufa1XXXXX_T1) | 2 of 3
+[87/54f35a] SAN…FASTQ (icCanRufa1XXXXX_T1) | 1 of 2
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN | 0 of 1
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (28)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 2 of 3
+[87/54f35a] SAN…FASTQ (icCanRufa1XXXXX_T1) | 1 of 2
+[-        ] SAN…LIGN_PACBIO:MINIMAP2_ALIGN | 0 of 1
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (29)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 2 of 3
+[87/54f35a] SAN…FASTQ (icCanRufa1XXXXX_T1) | 1 of 2
+[bb/28629e] SAN…ALIGN (icCanRufa1XXXXX_T1) | 0 of 1
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (29)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 2 of 3
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 2 of 2
+[bb/28629e] SAN…ALIGN (icCanRufa1XXXXX_T1) | 0 of 2
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (30)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 2 of 3
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 2 of 2
+[0c/027bc3] SAN…MAP2_ALIGN (icCanRufa1_T1) | 0 of 2
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (30)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[d8/c59240] SAN…OOLS_FASTQ (icCanRufa1_T1) | 2 of 3
+[bb/28629e] SAN…ALIGN (icCanRufa1XXXXX_T1) | 1 of 2
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (31)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 2 of 3
+[bb/28629e] SAN…ALIGN (icCanRufa1XXXXX_T1) | 1 of 2
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (31)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 2 of 3
+[bb/28629e] SAN…ALIGN (icCanRufa1XXXXX_T1) | 1 of 2
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (31)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 2 of 3
+[0c/027bc3] SAN…MAP2_ALIGN (icCanRufa1_T1) | 2 of 2
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (31)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[0c/027bc3] SAN…MAP2_ALIGN (icCanRufa1_T1) | 2 of 3
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (32)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 2 of 3
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (32)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 2 of 3
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE -
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (32)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[-        ] SAN…LIGN_PACBIO:SAMTOOLS_MERGE | 0 of 2
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (33)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[4f/b4f94b] SAN…LS_MERGE (icCanRufa1XXXXX) | 0 of 2
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (34)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 0 of 2
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (34)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 0 of 2
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW -
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (34)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[4f/b4f94b] SAN…LS_MERGE (icCanRufa1XXXXX) | 1 of 2
+[-        ] SAN…ONVERT_STATS:SAMTOOLS_VIEW | 0 of 1
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (35)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[4f/b4f94b] SAN…LS_MERGE (icCanRufa1XXXXX) | 1 of 2
+[43/a2c7a5] SAN…OLS_VIEW (icCanRufa1XXXXX) | 0 of 1
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (35)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[4f/b4f94b] SAN…LS_MERGE (icCanRufa1XXXXX) | 1 of 2
+[43/a2c7a5] SAN…OLS_VIEW (icCanRufa1XXXXX) | 0 of 1
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (35)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[43/a2c7a5] SAN…OLS_VIEW (icCanRufa1XXXXX) | 0 of 2
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (36)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 0 of 2
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (36)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 0 of 2
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS -
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT -
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS -
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW -
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (36)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS | 0 of 2
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT | 0 of 2
+[-        ] SAN…RT_STATS:SAMTOOLS_IDXSTATS | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (37)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS | 0 of 2
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT | 0 of 2
+[cb/18b047] SAN…IDXSTATS (icCanRufa1XXXXX) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (38)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS | 0 of 2
+[-        ] SAN…RT_STATS:SAMTOOLS_FLAGSTAT | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (39)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS | 0 of 2
+[12/00e009] SAN…OOLS_FLAGSTAT (icCanRufa1) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (40)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…NVERT_STATS:SAMTOOLS_STATS | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (41)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[-        ] SAN…FILTER_SPLIT:SAMTOOLS_VIEW | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (42)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[1a/3a98b3] SAN…SAMTOOLS_VIEW (icCanRufa1) | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (43)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (44)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 0 of 2
+Plus 6 more processes waiting for tasks…
+
+executor >  lsf (44)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[1a/3a98b3] SAN…SAMTOOLS_VIEW (icCanRufa1) | 1 of 2
+[-        ] SAN…VARIANT_CALLER:DEEPVARIANT | 0 of 1
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (45)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 0 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[1a/3a98b3] SAN…SAMTOOLS_VIEW (icCanRufa1) | 1 of 2
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 0 of 1
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (45)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 1 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[1a/3a98b3] SAN…SAMTOOLS_VIEW (icCanRufa1) | 1 of 2
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 0 of 1
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (45)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 1 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[1a/3a98b3] SAN…SAMTOOLS_VIEW (icCanRufa1) | 1 of 2
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 0 of 1
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (45)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 1 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 0 of 2
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (46)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 1 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[26/9c4f0e] SAN…1_CANBKR010000003.1.small) | 0 of 2
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (46)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 1 of 2
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 0 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 0 of 2
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[26/9c4f0e] SAN…1_CANBKR010000003.1.small) | 0 of 2
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (46)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[6b/7f074d] SAN…AMTOOLS_STATS (icCanRufa1) | 1 of 2
+[12/00e009] SAN…OOLS_FLAGSTAT (icCanRufa1) | 1 of 2
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[26/9c4f0e] SAN…1_CANBKR010000003.1.small) | 0 of 2
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (46)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[26/9c4f0e] SAN…1_CANBKR010000003.1.small) | 0 of 2
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (46)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[26/9c4f0e] SAN…1_CANBKR010000003.1.small) | 1 of 2
+Plus 5 more processes waiting for tasks…
+
+executor >  lsf (46)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[-        ] SAN…CALLER:BCFTOOLS_CONCAT_VCF | 0 of 2
+[-        ] SAN…ALLER:BCFTOOLS_CONCAT_GVCF | 0 of 2
+Plus 3 more processes waiting for tasks…
+
+executor >  lsf (47)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[-        ] SAN…CALLER:BCFTOOLS_CONCAT_VCF | 0 of 2
+[d8/56f848] SAN….1.pacbio.icCanRufa1XXXXX) | 0 of 2
+Plus 3 more processes waiting for tasks…
+
+executor >  lsf (48)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 0 of 2
+[d8/56f848] SAN….1.pacbio.icCanRufa1XXXXX) | 0 of 2
+Plus 3 more processes waiting for tasks…
+
+executor >  lsf (49)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 0 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 0 of 2
+Plus 3 more processes waiting for tasks…
+
+executor >  lsf (50)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 0 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 0 of 2
+Plus 3 more processes waiting for tasks…
+
+executor >  lsf (50)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 1 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…OCESS_VCF:VCFTOOLS_SITE_PI | 0 of 1
+[-        ] SAN…G:PROCESS_VCF:VCFTOOLS_HET | 0 of 1
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (51)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 1 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[-        ] SAN…OCESS_VCF:VCFTOOLS_SITE_PI | 0 of 1
+[58/479e14] SAN…ufa1XXXXX_deepvariant.vcf) | 0 of 1
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (52)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 1 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 0 of 1
+[58/479e14] SAN…ufa1XXXXX_deepvariant.vcf) | 0 of 1
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (52)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 1 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 0 of 1
+[58/479e14] SAN…ufa1XXXXX_deepvariant.vcf) | 1 of 1
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (52)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[ed/eac1be] SAN….1.pacbio.icCanRufa1XXXXX) | 1 of 2
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 0 of 1
+[58/479e14] SAN…ufa1XXXXX_deepvariant.vcf) | 1 of 1
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (52)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 0 of 2
+[58/479e14] SAN…ufa1XXXXX_deepvariant.vcf) | 1 of 2
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (53)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[8c/ba71ab] SAN…cCanRufa1_deepvariant.vcf) | 0 of 2
+[58/479e14] SAN…ufa1XXXXX_deepvariant.vcf) | 1 of 2
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (54)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[8c/ba71ab] SAN…cCanRufa1_deepvariant.vcf) | 0 of 2
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 1 of 2
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (54)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[8c/ba71ab] SAN…cCanRufa1_deepvariant.vcf) | 0 of 2
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 1 of 2
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (54)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[8c/ba71ab] SAN…cCanRufa1_deepvariant.vcf) | 1 of 2
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (54)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+Plus 1 more processes waiting for tasks…
+
+executor >  lsf (54)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+[-        ] SAN…USTOM_DUMPSOFTWAREVERSIONS | 0 of 1
+
+executor >  lsf (55)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+[e8/35eb57] SAN…M_DUMPSOFTWAREVERSIONS (1) | 0 of 1
+
+executor >  lsf (55)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+[e8/35eb57] SAN…M_DUMPSOFTWAREVERSIONS (1) | 0 of 1
+
+executor >  lsf (55)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+[e8/35eb57] SAN…M_DUMPSOFTWAREVERSIONS (1) | 1 of 1 ✔
+
+executor >  lsf (55)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+[e8/35eb57] SAN…M_DUMPSOFTWAREVERSIONS (1) | 1 of 1 ✔
+-[sanger-tol/variantcalling] Pipeline completed successfully-
+
+executor >  lsf (55)
+[9a/333a25] SAN…ANBKR010000003.1.fasta.gz) | 1 of 1 ✔
+[86/822650] SAN…amplesheet_test_align.csv) | 1 of 1 ✔
+[44/93d190] SAN…NG:UNTAR (vectorDB.tar.gz) | 1 of 1 ✔
+[5c/bce14c] SAN…LS_CONVERT (icCanRufa1_T1) | 3 of 3 ✔
+[db/60068f] SAN…LS_COLLATE (icCanRufa1_T2) | 3 of 3 ✔
+[b7/69d913] SAN…OOLS_FASTA (icCanRufa1_T2) | 3 of 3 ✔
+[76/26901c] SAN…anRufa1_T2_other.fasta.gz) | 3 of 3 ✔
+[21/002b2d] SAN…AST_BLASTN (icCanRufa1_T2) | 3 of 3 ✔
+[f4/0baf67] SAN…BIO_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[f3/375c5f] SAN…OLS_FILTER (icCanRufa1_T2) | 3 of 3 ✔
+[11/3169a7] SAN…OOLS_FASTQ (icCanRufa1_T2) | 3 of 3 ✔
+[ce/ac9a99] SAN…MAP2_ALIGN (icCanRufa1_T2) | 3 of 3 ✔
+[eb/119cda] SAN…AMTOOLS_MERGE (icCanRufa1) | 2 of 2 ✔
+[1a/c25aa8] SAN…SAMTOOLS_VIEW (icCanRufa1) | 2 of 2 ✔
+[bc/7d41ed] SAN…LS_STATS (icCanRufa1XXXXX) | 2 of 2 ✔
+[91/4523cb] SAN…FLAGSTAT (icCanRufa1XXXXX) | 2 of 2 ✔
+[f5/09126b] SAN…OOLS_IDXSTATS (icCanRufa1) | 2 of 2 ✔
+[73/e9c427] SAN…1_CANBKR010000003.1.small) | 1 of 1 ✔
+[f3/9c0ebc] SAN…KR010000003.1.small.fasta) | 1 of 1 ✔
+[69/87c87c] SAN…OLS_VIEW (icCanRufa1XXXXX) | 2 of 2 ✔
+[0d/00c766] SAN…1_CANBKR010000003.1.small) | 2 of 2 ✔
+[33/d6bb4d] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[90/530e0a] SAN…00003.1.pacbio.icCanRufa1) | 2 of 2 ✔
+[a8/3211a1] SAN…ufa1XXXXX_deepvariant.vcf) | 2 of 2 ✔
+[9b/a1a771] SAN…cCanRufa1_deepvariant.vcf) | 2 of 2 ✔
+[e8/35eb57] SAN…M_DUMPSOFTWAREVERSIONS (1) | 1 of 1 ✔
+-[sanger-tol/variantcalling] Pipeline completed successfully-
+Completed at: 16-Dec-2024 13:31:12
+Duration    : 26m 1s
+CPU hours   : 0.1
+Succeeded   : 55
+
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-oversubscribed01>
+Subject: Job 623571: <nextflow run main.nf -profile test_align,singularity,sanger> in cluster <farm22> Done
+
+Job <nextflow run main.nf -profile test_align,singularity,sanger> was submitted from host <farm22-head2> by user <tc25> in cluster <farm22> at Mon Dec 16 13:05:05 2024
+Job was executed on host(s) <4*farm22-oversubscribed01>, in queue <oversubscribed>, as user <tc25> in cluster <farm22> at Mon Dec 16 13:05:06 2024
+</nfs/users/nfs_t/tc25> was used as the home directory.
+</nfs/users/nfs_t/tc25/variantcalling> was used as the working directory.
+Started at Mon Dec 16 13:05:06 2024
+Terminated at Mon Dec 16 13:31:15 2024
+Results reported at Mon Dec 16 13:31:15 2024
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+nextflow run main.nf -profile test_align,singularity,sanger
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   64.63 sec.
+    Max Memory :                                 392 MB
+    Average Memory :                             356.39 MB
+    Total Requested Memory :                     8000.00 MB
+    Delta Memory :                               7608.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                57
+    Run time :                                   1566 sec.
+    Turnaround time :                            1570 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <lsf_error.623571.txt> for stderr output of this job.
+
