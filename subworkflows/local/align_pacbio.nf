@@ -5,7 +5,6 @@
 include { FILTER_PACBIO  } from '../../subworkflows/local/filter_pacbio'
 include { MINIMAP2_ALIGN } from '../../modules/nf-core/minimap2/align/main'
 include { SAMTOOLS_MERGE } from '../../modules/nf-core/samtools/merge/main'
-include { SAMTOOLS_SORT  } from '../../modules/nf-core/samtools/sort/main'
 include { CONVERT_STATS  } from '../../subworkflows/local/convert_stats'
 
 
@@ -35,7 +34,7 @@ workflow ALIGN_PACBIO {
     | map { meta, bam -> [['id': meta.sample, 'datatype': meta.datatype, 'sample': meta.sample ], bam] }
     | groupTuple ( by: [0] )
     | set { ch_bams }
-        
+
 
     // Merge
     SAMTOOLS_MERGE ( ch_bams, [ [], [] ], [ [], [] ] )

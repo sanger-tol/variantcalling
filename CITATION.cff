@@ -20,6 +20,10 @@ authors:
       family-names: Muffato
       affiliation: Wellcome Sanger Institute
       orcid: "https://orcid.org/0000-0002-7860-3560"
+    - given-names: Tyler
+      family-names: Chafin
+      affiliation: Wellcome Sanger Institute
+      orcid: "https://orcid.org/0000-0001-8687-5905"
 identifiers:
     - type: doi
       value: 10.5281/zenodo.7890528
