@@ -25,7 +25,7 @@ workflow ALIGN_PACBIO {
 
 
     // Align Fastq to Genome
-    MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false )
+    MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false, false )
     ch_versions = ch_versions.mix ( MINIMAP2_ALIGN.out.versions.first() )
 
 
