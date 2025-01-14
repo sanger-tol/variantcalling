@@ -33,7 +33,7 @@ workflow FILTER_PACBIO {
 
 
     // Collate BAM file to create interleaved FASTA
-    SAMTOOLS_COLLATE ( SAMTOOLS_CONVERT.out.bam, [] )
+    SAMTOOLS_COLLATE ( SAMTOOLS_CONVERT.out.bam, [[],[]] )
     ch_versions = ch_versions.mix ( SAMTOOLS_COLLATE.out.versions.first() )
 
 
