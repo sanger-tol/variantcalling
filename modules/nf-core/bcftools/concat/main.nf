@@ -8,7 +8,7 @@ process BCFTOOLS_CONCAT {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcfs), path(tbi)
+    tuple val(meta), path(vcfs), path(indices)
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz")    , emit: vcf
@@ -22,16 +22,26 @@ process BCFTOOLS_CONCAT {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def tbi_names = tbi.findAll { file -> !(file instanceof List) }.collect { file -> file.name }
-    def create_input_index = vcfs.collect { vcf -> tbi_names.contains(vcf.name + ".tbi") ? "" : "tabix ${vcf}" }.join("\n    ")
+    def index_names = indices.findAll { file -> !(file instanceof List) }.collect { file -> file.name }
+    def create_input_index = vcfs.collect { vcf ->
+        def tbi = index_names.find { it == "${vcf.name}.tbi" }
+        def csi = index_names.find { it == "${vcf.name}.csi" }
+        if (!tbi && !csi) {
+            "bcftools index ${vcf}"
+        } else {
+            ""
+        }
+    }.join("\n    ")
     """
     ${create_input_index}
+
+    echo "${vcfs.join('\n')}" > vcf_list.txt
 
     bcftools concat \\
         --output ${prefix}.vcf.gz \\
         $args \\
         --threads $task.cpus \\
-        ${vcfs}
+        --file-list vcf_list.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
