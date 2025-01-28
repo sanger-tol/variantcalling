@@ -8,13 +8,13 @@ process BCFTOOLS_CONCAT {
         'biocontainers/bcftools:1.20--h8b25389_0' }"
 
     input:
-    tuple val(meta), path(vcfs), path(indices)
+    tuple val(meta), path(vcfs), path(tbi)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz")    , emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("${prefix}.vcf.gz.csi"), emit: csi, optional: true
-    path  "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}.${extension}")    , emit: vcf
+    tuple val(meta), path("${prefix}.${extension}.tbi"), emit: tbi, optional: true
+    tuple val(meta), path("${prefix}.${extension}.csi"), emit: csi, optional: true
+    path  "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,26 +22,21 @@ process BCFTOOLS_CONCAT {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def index_names = indices.findAll { file -> !(file instanceof List) }.collect { file -> file.name }
-    def create_input_index = vcfs.collect { vcf ->
-        def tbi = index_names.find { it == "${vcf.name}.tbi" }
-        def csi = index_names.find { it == "${vcf.name}.csi" }
-        if (!tbi && !csi) {
-            "bcftools index ${vcf}"
-        } else {
-            ""
-        }
-    }.join("\n    ")
+    def tbi_names = tbi.findAll { file -> !(file instanceof List) }.collect { file -> file.name }
+    def create_input_index = vcfs.collect { vcf -> tbi_names.contains(vcf.name + ".tbi") || tbi_names.contains(vcf.name + ".csi") ? "" : "tabix ${vcf}" }.join("\n    ")
+    extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                "vcf"
     """
     ${create_input_index}
 
-    echo "${vcfs.join('\n')}" > vcf_list.txt
-
     bcftools concat \\
-        --output ${prefix}.vcf.gz \\
+        --output ${prefix}.${extension} \\
         $args \\
         --threads $task.cpus \\
-        --file-list vcf_list.txt
+        ${vcfs}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,13 +47,20 @@ process BCFTOOLS_CONCAT {
     stub:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                args.contains("--write-index") || args.contains("-W") ? "csi" :
-                ""
-    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${index}" : ""
+    extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                "vcf"
+    def index_extension = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                        args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                        args.contains("--write-index") || args.contains("-W") ? "csi" :
+                        ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index_extension.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index_extension}" : ""
+
     """
-    echo "" | gzip > ${prefix}.vcf.gz
+    ${create_cmd} ${prefix}.${extension}
     ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
