@@ -7,8 +7,9 @@
                 "nf-core": {
                     "bcftools/concat": {
                         "branch": "master",
-                        "git_sha": "d1e0ec7670fa77905a378627232566ce54c3c26d",
-                        "installed_by": ["modules"]
+                        "git_sha": "c807a63439b48f181523b9c943f5e51eaa805387",
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/bcftools/concat/bcftools-concat.diff"
                     },
                     "blast/blastn": {
                         "branch": "master",

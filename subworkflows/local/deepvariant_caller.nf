@@ -49,35 +49,37 @@ workflow DEEPVARIANT_CALLER {
 
     // group the vcf files together by sample
     DEEPVARIANT.out.vcf
-     .map { meta, vcf -> [
+        .join(DEEPVARIANT.out.vcf_index)
+        .map { meta, vcf, index -> [
             [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
-                  + "." + meta.type
-                  + "." + meta.sample
+                + "." + meta.type
+                + "." + meta.sample
             ],
-            vcf
-          ] }
-     .groupTuple()
-     .map { meta, vcf -> [ meta, vcf, [] ] }
-     .set { vcf }
+            vcf,
+            index
+        ] }
+        .groupTuple()
+        .set { vcf }
 
-    // catcat vcf files
+    // concat vcf files
     BCFTOOLS_CONCAT_VCF ( vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_VCF.out.versions.first() )
 
     // group the g vcf files together by sample
     DEEPVARIANT.out.gvcf
-     .map { meta, gvcf -> [
+        .join(DEEPVARIANT.out.gvcf_index)
+        .map { meta, gvcf, index -> [
             [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
-                  + "." + meta.type
-                  + "." + meta.sample
+                + "." + meta.type
+                + "." + meta.sample
             ],
-            gvcf
-          ] }
-     .groupTuple()
-     .map { meta, gvcf -> [ meta, gvcf, [] ] }
-     .set { g_vcf }
+            gvcf,
+            index
+        ] }
+        .groupTuple()
+        .set { g_vcf }
 
-    // catcat g vcf files
+    // concat g vcf files
     BCFTOOLS_CONCAT_GVCF ( g_vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
 
