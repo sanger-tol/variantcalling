@@ -27,7 +27,11 @@ workflow DEEPVARIANT_CALLER {
 
     // fasta
     fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
-                             [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
+                             [ [
+                                id: meta.id + "_" + fasta_file_name,
+                                genome_size: fasta.size(),
+                                sample: meta.id,
+                                type: meta.datatype ],
                               fasta
                              ]
                            }
