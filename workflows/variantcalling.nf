@@ -26,7 +26,7 @@ if (params.fai){
       exit 1, 'Reference fasta and its index file format not matched!'
     }
     ch_fai = Channel.fromPath(params.fai)
-} else { 
+} else {
     ch_fai = Channel.empty()
 }
 
@@ -36,12 +36,12 @@ if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff
 
 if ( (params.include_positions) && (params.exclude_positions) ){
     exit 1, 'Only one positions file can be given to include or exclude!'
-}else if (params.include_positions){ 
-    ch_positions = Channel.fromPath(params.include_positions) 
+}else if (params.include_positions){
+    ch_positions = Channel.fromPath(params.include_positions)
 } else if (params.exclude_positions){
-    ch_positions = Channel.fromPath(params.exclude_positions) 
-} else { 
-    ch_positions = [] 
+    ch_positions = Channel.fromPath(params.exclude_positions)
+} else {
+    ch_positions = []
 }
 
 /*
@@ -85,15 +85,15 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-     .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ ], fasta ] }
+     .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
      .first()
      .set { ch_genome }
 
     //
     // check reference fasta index given or not
     //
-    if( params.fai == null ){ 
-   
+    if( params.fai == null ){
+
        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
@@ -187,9 +187,9 @@ workflow VARIANTCALLING {
 
 
     //
-    // convert VCF channel meta id 
-    // 
-    DEEPVARIANT_CALLER.out.vcf 
+    // convert VCF channel meta id
+    //
+    DEEPVARIANT_CALLER.out.vcf
      .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
      .set{ vcf }
 
@@ -202,7 +202,7 @@ workflow VARIANTCALLING {
 
     //
     // MODULE: Combine different version together
-    // 
+    //
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )

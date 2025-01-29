@@ -11,6 +11,11 @@
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/bcftools/concat/bcftools-concat.diff"
                     },
+                    "bcftools/index": {
+                        "branch": "master",
+                        "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
+                        "installed_by": ["modules"]
+                    },
                     "blast/blastn": {
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
