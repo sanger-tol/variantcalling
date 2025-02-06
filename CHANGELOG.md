@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1.6](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.6)] - Shang Tang (patch 6) - [2025-02-06]
+
+### Enhancements & fixes
+
+- Allow DeepVariant and BCFtools to handle CSI files
+- Deal with genomes >4GB in Minimap
+
 ## [[1.1.5](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.5)] - Shang Tang (patch 5) - [2025-01-14]
 
 ### Enhancements & fixes
