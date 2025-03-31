@@ -45,7 +45,7 @@ The statistics for the aligned CRAM files will be calculated using `samtools`.
 
 ### Deepvariant Report
 
-The running report of `deepvariant`.
+The running HTML report of `deepvariant`.
 
 <details markdown="1">
 <summary>Output files</summary>
