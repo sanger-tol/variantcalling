@@ -31,7 +31,7 @@ process BCFTOOLS_INDEX {
         --threads $task.cpus \\
         $vcf
 
-    # Ensure .tbi is created if the file is VCF format
+    # create .tbi if the file is VCF format
     if [[ "$vcf" == *.vcf.gz || "$vcf" == *.g.vcf.gz ]]; then
         tabix -p vcf $vcf
     fi
@@ -58,9 +58,8 @@ process BCFTOOLS_INDEX {
 }
 
 workflow {
-    // Ensure the VCF file is correctly formatted for the process
     vcf_ch = Channel.fromPath(params.vcf).map { vcf -> tuple([:], file(vcf)) }
 
-    // Run the process
+    // to run
     BCFTOOLS_INDEX(vcf_ch)
 }
