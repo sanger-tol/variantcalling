@@ -43,6 +43,17 @@ The statistics for the aligned CRAM files will be calculated using `samtools`.
 
 </details>
 
+### Deepvariant Report
+
+The running report of `deepvariant`.
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- Visual Repoty by DeepVariant: `<sample_name>_<sample_name>.visual_report.html`.
+
+</details>
+
 ### VCFtools Processing
 
 <details markdown="1">
