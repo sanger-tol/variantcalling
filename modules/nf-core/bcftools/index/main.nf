@@ -1,3 +1,5 @@
+nextflow.enable.dsl=2
+
 process BCFTOOLS_INDEX {
     tag "$meta.id"
     label 'process_low'
@@ -29,6 +31,11 @@ process BCFTOOLS_INDEX {
         --threads $task.cpus \\
         $vcf
 
+    # create .tbi if the file is VCF format
+    if [[ "$vcf" == *.vcf.gz || "$vcf" == *.g.vcf.gz ]]; then
+        tabix -p vcf $vcf
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
@@ -48,4 +55,11 @@ process BCFTOOLS_INDEX {
         bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
     END_VERSIONS
     """
+}
+
+workflow {
+    vcf_ch = Channel.fromPath(params.vcf).map { vcf -> tuple([:], file(vcf)) }
+
+    // to run
+    BCFTOOLS_INDEX(vcf_ch)
 }
