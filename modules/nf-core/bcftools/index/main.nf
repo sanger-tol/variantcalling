@@ -60,6 +60,6 @@ process BCFTOOLS_INDEX {
 workflow {
     vcf_ch = Channel.fromPath(params.vcf).map { vcf -> tuple([:], file(vcf)) }
 
-    // to run
+    // to run process
     BCFTOOLS_INDEX(vcf_ch)
 }
