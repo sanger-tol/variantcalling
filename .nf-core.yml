@@ -1,15 +1,35 @@
-repository_type: pipeline
 lint:
   files_exist:
-    - CODE_OF_CONDUCT.md
-    - assets/nf-core-variantcalling_logo_light.png
-    - docs/images/nf-core-variantcalling_logo_light.png
-    - docs/images/nf-core-variantcalling_logo_dark.png
-    - .github/ISSUE_TEMPLATE/config.yml
-    - .github/workflows/awstest.yml
-    - .github/workflows/awsfulltest.yml
+  - CODE_OF_CONDUCT.md
+  - assets/nf-core-variantcalling_logo_light.png
+  - docs/images/nf-core-variantcalling_logo_light.png
+  - docs/images/nf-core-variantcalling_logo_dark.png
+  - .github/ISSUE_TEMPLATE/config.yml
+  - .github/workflows/awstest.yml
+  - .github/workflows/awsfulltest.yml
+  - assets/multiqc_config.yml
+  - conf/igenomes.config
+  files_unchanged:
+  - .github/CONTRIBUTING.md
+  - assets/sendmail_template.txt
+  - lib/NfcoreTemplate.groovy
+  - .github/PULL_REQUEST_TEMPLATE.md
+  - .github/workflows/branch.yml
+  - .github/workflows/linting.yml
+  - LICENSE
+  - assets/email_template.html
+  - .github/ISSUE_TEMPLATE/bug_report.yml
   nextflow_config:
-    - manifest.name
-    - manifest.homePage
-  multiqc_config:
-    - report_comment
+  - manifest.name
+  - manifest.homePage
+nf_core_version: 3.2.0
+repository_type: pipeline
+template:
+  author: '@muffato, @gq1, @priyanka-surana, @tkchafin'
+  description: Variant calling pipeline for PacBio data using DeepVariant
+  force: false
+  is_nfcore: true
+  name: variantcalling
+  org: nf-core
+  outdir: .
+  version: 1.1.6
