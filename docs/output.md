@@ -43,17 +43,6 @@ The statistics for the aligned CRAM files will be calculated using `samtools`.
 
 </details>
 
-### Deepvariant Report
-
-The running HTML report of `deepvariant`.
-
-<details markdown="1">
-<summary>Output files</summary>
-
-- Visual Repoty by DeepVariant: `<sample_name>_<sample_name>.visual_report.html`.
-
-</details>
-
 ### VCFtools Processing
 
 <details markdown="1">
@@ -74,6 +63,8 @@ The aligned PacBio read data is used to call variants with DeepVariant. This is 
 - `variant_calling`
   - Compressed VCF files: `<fasta_name>.pacbio.<sample_name>_deepvariant.vcf.gz`.
   - Compressed GVCF files: `<fasta_name>.pacbio.<sample_name>_deepvariant.g.vcf.gz`.
+  - `deepvariant_reports`
+    - HTML files: `<sample_name>_<fasta_name>.visual_report.html`.
 
 </details>
 
