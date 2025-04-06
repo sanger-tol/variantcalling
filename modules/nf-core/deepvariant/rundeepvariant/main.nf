@@ -14,11 +14,12 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     tuple val(meta4), path(gzi)
     tuple val(meta5), path(par_bed)
 
-output:
+    output:
     tuple val(meta), path("${prefix}.vcf.gz")             , emit: vcf
     tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
     tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
+    tuple val(meta), path("${prefix}.visual_report.html") , emit: visual_report
     path "versions.yml"                                   , emit: versions
 
     when:
@@ -69,6 +70,7 @@ output:
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
+    touch ${prefix}.visual_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
