@@ -17,7 +17,7 @@
                         "size": "Large",
                         "weight": "Bolder",
                         "color": "<% if (success) { %>Good<% } else { %>Attention<%} %>",
-                        "text": "nf-core/variantcalling v${version} - ${runName}",
+                        "text": "sanger-tol/variantcalling v${version} - ${runName}",
                         "wrap": true
                     },
                     {
