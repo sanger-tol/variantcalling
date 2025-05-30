@@ -3,9 +3,10 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     label 'process_high'
 
     // FIXME Conda is not supported at the moment
+    // https://github.com/bioconda/bioconda-recipes/pull/45214#issuecomment-1890937836
     // BUG https://github.com/nf-core/modules/issues/1754
     // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
-    container "nf-core/deepvariant:1.6.1"
+    container "docker.io/google/deepvariant:1.9.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -34,9 +35,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
-    // WARN https://github.com/nf-core/modules/pull/5801#issuecomment-2194293755
-    // FIXME Revert this on next version bump
-    def VERSION = '1.6.1'
 
     """
     /opt/deepvariant/bin/run_deepvariant \\
@@ -47,12 +45,13 @@ process DEEPVARIANT_RUNDEEPVARIANT {
         ${args} \\
         ${regions} \\
         ${par_regions} \\
+        --vcf_stats_report \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deepvariant: $VERSION
+        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
     END_VERSIONS
     """
 
@@ -62,19 +61,16 @@ process DEEPVARIANT_RUNDEEPVARIANT {
         error "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     prefix = task.ext.prefix ?: "${meta.id}"
-    // WARN https://github.com/nf-core/modules/pull/5801#issuecomment-2194293755
-    // FIXME Revert this on next version bump
-    def VERSION = '1.6.1'
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-    touch ${prefix}.g.vcf.gz
+    echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
     touch ${prefix}.visual_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deepvariant: $VERSION
+        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
     END_VERSIONS
     """
 }
