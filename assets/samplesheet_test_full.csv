@@ -1,2 +1,2 @@
 sample,datatype,datafile
-icCanRufa1,pacbio,/lustre/scratch123/tol/resources/nextflow/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1.cram
+icCanRufa1,pacbio,/nfs/treeoflife-01/resources/nextflow/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1.cram
