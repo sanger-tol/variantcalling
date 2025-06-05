@@ -5,6 +5,7 @@
 include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF    }   from '../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF   }   from '../../modules/nf-core/bcftools/concat/main'
+include { DEEPVARIANT_VCFSTATSREPORT as STATSREPORT }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
 
 workflow DEEPVARIANT_CALLER {
     take:
@@ -86,8 +87,13 @@ workflow DEEPVARIANT_CALLER {
     BCFTOOLS_CONCAT_GVCF ( g_vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
 
+    // generate vcf stats report
+    STATSREPORT ( vcf )
+    ch_versions = ch_versions.mix ( STATSREPORT.out.versions.first() )
+
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // channel: [ val(meta), path(vcf) ]
     gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf        // channel: [ val(meta), path(gvcf) ]
+    visual_report = STATSREPORT.out.visual_report.html  // channel: [ val(meta), path(visual_report) ]
     versions = ch_versions                         // channel: [ versions.yml ]
 }
