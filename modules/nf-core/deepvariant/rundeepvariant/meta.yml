@@ -109,16 +109,6 @@ output:
           type: file
           description: Tabix index file of compressed GVCF
           pattern: "*.g.vcf.gz.{tbi,csi}"
-  - visual_report:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.visual_report.html:
-          type: file
-          description: HTML file of visual report
-          pattern: "*.visual_report.html"
   - versions:
       - versions.yml:
           type: file
