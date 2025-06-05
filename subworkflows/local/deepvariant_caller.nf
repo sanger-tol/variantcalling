@@ -88,12 +88,12 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
 
     // generate vcf stats report
-    STATSREPORT ( vcf )
+    STATSREPORT ( BCFTOOLS_CONCAT_VCF.out.vcf )
     ch_versions = ch_versions.mix ( STATSREPORT.out.versions.first() )
 
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // channel: [ val(meta), path(vcf) ]
     gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf        // channel: [ val(meta), path(gvcf) ]
-    report   = STATSREPORT.out.html                // channel: [ val(meta), path(report) ]
+    report   = STATSREPORT.out.visual_report.html  // channel: [ val(meta), path("${prefix}.visual_report.html") ]
     versions = ch_versions                         // channel: [ versions.yml ]
 }
