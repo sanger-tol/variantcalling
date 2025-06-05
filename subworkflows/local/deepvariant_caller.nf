@@ -94,6 +94,6 @@ workflow DEEPVARIANT_CALLER {
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // channel: [ val(meta), path(vcf) ]
     gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf        // channel: [ val(meta), path(gvcf) ]
-    visual_report = STATSREPORT.out.visual_report.html  // channel: [ val(meta), path(visual_report) ]
+    # visual_report = STATSREPORT.out.visual_report.html  // channel: [ val(meta), path(visual_report) ]
     versions = ch_versions                         // channel: [ versions.yml ]
 }
