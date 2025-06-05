@@ -45,7 +45,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
         ${args} \\
         ${regions} \\
         ${par_regions} \\
-        --vcf_stats_report \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
 
