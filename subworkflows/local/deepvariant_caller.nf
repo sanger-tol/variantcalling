@@ -2,10 +2,10 @@
 // Call variants with Deepvariant
 //
 
-include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF    }   from '../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF   }   from '../../modules/nf-core/bcftools/concat/main'
-include { DEEPVARIANT_VCFSTATSREPORT as VCF_STATS_REPORT }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
+include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT       }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF          }   from '../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF         }   from '../../modules/nf-core/bcftools/concat/main'
+include { DEEPVARIANT_VCFSTATSREPORT as VCF_STATS_REPORT  }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
 include { DEEPVARIANT_VCFSTATSREPORT as GVCF_STATS_REPORT }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
 
 workflow DEEPVARIANT_CALLER {
@@ -97,9 +97,9 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = ch_versions.mix ( GVCF_STATS_REPORT.out.versions.first() )
 
     emit:
-    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // channel: [ val(meta), path(vcf) ]
-    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf        // channel: [ val(meta), path(gvcf) ]
-    vcf_visual_report = VCF_STATS_REPORT.out.visual_report.html
-    gvcf_visual_report = GVCF_STATS_REPORT.out.visual_report.html
-    versions = ch_versions                         // channel: [ versions.yml ]
+    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf) ]
+    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf          // channel: [ val(meta), path(gvcf) ]
+    vcf_stats_report = VCF_STATS_REPORT.out.report   // channel: [ val(meta), path(report) ]
+    gvcf_stats_report = GVCF_STATS_REPORT.out.report // channel: [ val(meta), path(report) ]
+    versions = ch_versions                           // channel: [ versions.yml ]
 }
