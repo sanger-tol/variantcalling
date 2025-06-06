@@ -15,10 +15,10 @@ jobs:
           access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
           compute_env: TOL_Farm_LSF_4GB
           revision: ${{ github.sha }}
-          workdir: /lustre/scratch122/tol/teams/tolit/nf-tower-agent/work/${{ github.repository }}/work-${{ github.sha }}
+          workdir: ${{ secrets.TOWER_WORKDIR_PARENT }}/work/${{ github.repository }}/work-${{ github.sha }}
           parameters: |
             {
-              "outdir": "/lustre/scratch122/tol/teams/tolit/nf-tower-agent/results/${{ github.repository }}/results-${{ github.sha }}"
+              "outdir": "${{ secrets.TOWER_WORKDIR_PARENT }}/results/${{ github.repository }}/results-${{ github.sha }}"
             }
           profiles: test_align,sanger,singularity,cleanup
 
