@@ -2,9 +2,11 @@
 // Call variants with Deepvariant
 //
 
-include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF    }   from '../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF   }   from '../../modules/nf-core/bcftools/concat/main'
+include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT       }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF          }   from '../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF         }   from '../../modules/nf-core/bcftools/concat/main'
+include { DEEPVARIANT_VCFSTATSREPORT as VCF_STATS_REPORT  }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
+include { DEEPVARIANT_VCFSTATSREPORT as GVCF_STATS_REPORT }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
 
 workflow DEEPVARIANT_CALLER {
     take:
@@ -86,8 +88,18 @@ workflow DEEPVARIANT_CALLER {
     BCFTOOLS_CONCAT_GVCF ( g_vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
 
+    // generate vcf stats report
+    VCF_STATS_REPORT ( BCFTOOLS_CONCAT_VCF.out.vcf )
+    ch_versions = ch_versions.mix ( VCF_STATS_REPORT.out.versions.first() )
+
+    // generate g vcf stats report
+    GVCF_STATS_REPORT ( BCFTOOLS_CONCAT_GVCF.out.vcf )
+    ch_versions = ch_versions.mix ( GVCF_STATS_REPORT.out.versions.first() )
+
     emit:
-    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf         // channel: [ val(meta), path(vcf) ]
-    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf        // channel: [ val(meta), path(gvcf) ]
-    versions = ch_versions                         // channel: [ versions.yml ]
+    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf) ]
+    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf          // channel: [ val(meta), path(gvcf) ]
+    vcf_stats_report = VCF_STATS_REPORT.out.report   // channel: [ val(meta), path(report) ]
+    gvcf_stats_report = GVCF_STATS_REPORT.out.report // channel: [ val(meta), path(report) ]
+    versions = ch_versions                           // channel: [ versions.yml ]
 }
