@@ -92,23 +92,32 @@ workflow VARIANTCALLING {
     //
     // check reference fasta index given or not
     //
+
     if( params.fai == null ){
 
        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
-       if( params.fasta.endsWith('.gz') ){
-            ch_genome_index = SAMTOOLS_FAIDX.out.gzi
-       }else{
-            ch_genome_index = SAMTOOLS_FAIDX.out.fai
-       }
+       // generate fai that is used to determine the maximum length of chromosome
+       ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
+       ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
     }else{
        ch_fai
         .map { fai -> [ [ 'id': fai.baseName ], fai ] }
         .first()
         .set { ch_genome_index }
+
+        ch_genome_index_fai  = ch_genome_index
+        if ( !params.fai.endsWith(".fai") ) {
+            ch_genome_index_fai = SAMTOOLS_FAIDX ( ch_genome,  [[], []] ).fai
+            ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+        }
     }
+
+    ch_genome_index_fai
+     .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
+     .set { ch_genome_info }
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -181,7 +190,8 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: call deepvariant
     //
     DEEPVARIANT_CALLER (
-        INPUT_FILTER_SPLIT.out.reads_fasta
+        INPUT_FILTER_SPLIT.out.reads_fasta,
+        ch_genome_info
     )
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
 
@@ -207,6 +217,37 @@ workflow VARIANTCALLING {
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
 
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    FUNCTION: GET SEQUENCE MAP
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+// Read the .fai file, extract sequence statistics, and make an extended meta map
+def get_sequence_map(fai_file) {
+    def n_sequences = 0
+    def max_length = 0
+    def total_length = 0
+    fai_file.eachLine { line ->
+        def lspl   = line.split('\t')
+        def chrom  = lspl[0]
+        def length = lspl[1].toInteger()
+        n_sequences ++
+        total_length += length
+        if (length > max_length) {
+            max_length = length
+        }
+    }
+
+    def sequence_map = [:]
+    sequence_map.n_sequences = n_sequences
+    sequence_map.total_length = total_length
+    if (n_sequences) {
+        sequence_map.max_length = max_length
+    }
+    return sequence_map
 }
 
 /*
