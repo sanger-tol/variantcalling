@@ -46,7 +46,7 @@ workflow DEEPVARIANT_CALLER {
                            [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
                              fai
                            ]
-                          }
+                         }
 
     // split fasta in compressed format, no gzi index file needed
     gzi = [ [], [] ]
