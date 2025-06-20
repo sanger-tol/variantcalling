@@ -219,11 +219,10 @@ workflow VARIANTCALLING {
 
 }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    FUNCTION: GET SEQUENCE MAP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+
+//
+// function: get sequence map
+//
 
 // Read the .fai file, extract sequence statistics, and make an extended meta map
 def get_sequence_map(fai_file) {
