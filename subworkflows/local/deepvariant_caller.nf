@@ -97,6 +97,7 @@ workflow DEEPVARIANT_CALLER {
     ch_compressed_vcf = BGZIP ( vcf_to_compress ).output
     ch_versions       = ch_versions.mix ( BGZIP.out.versions.first() )
 
+
     // index the compressed files in two formats for maximum compatibility (each has its own limitation)
     // select the type of index to use based on the maximum sequence length
     tabix_selector  = ch_compressed_vcf.branch { meta, vcf ->
