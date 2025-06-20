@@ -1,0 +1,13 @@
+diff --git a/modules/nf-core/tabix/bgzip/meta.yml b/modules/nf-core/tabix/bgzip/meta.yml
+index 7e44a07..72b9b99 100644
+--- a/modules/nf-core/tabix/bgzip/meta.yml
++++ b/modules/nf-core/tabix/bgzip/meta.yml
+@@ -40,7 +40,7 @@ output:
+           description: |
+             Groovy Map containing sample information
+             e.g. [ id:'test', single_end:false ]
+-      - '*.gzi':
++      - "*.gzi":
+           type: file
+           description: Optional gzip index file for compressed inputs
+           pattern: "*.gzi"
