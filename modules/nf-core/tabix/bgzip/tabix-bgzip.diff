@@ -1,7 +1,7 @@
-diff --git a/modules/nf-core/tabix/bgzip/meta.yml b/modules/nf-core/tabix/bgzip/meta.yml
-index 7e44a07..72b9b99 100644
---- a/modules/nf-core/tabix/bgzip/meta.yml
-+++ b/modules/nf-core/tabix/bgzip/meta.yml
+Changes in component 'nf-core/tabix/bgzip'
+Changes in 'nf-core/tabix/bgzip/meta.yml':
+--- modules/nf-core/tabix/bgzip/meta.yml
++++ modules/nf-core/tabix/bgzip/meta.yml
 @@ -40,7 +40,7 @@ output:
            description: |
              Groovy Map containing sample information
