@@ -64,7 +64,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     touch ${prefix}.vcf.gz.tbi
     echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
-    touch ${prefix}.visual_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
