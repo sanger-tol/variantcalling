@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update Deepvariant to version 1.9.0 (conda-free)
 - Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from Deepvariant
-- Compress and index concatenated VCFs 
+- Compress and index concatenated VCFs
 
 ### Software dependencies
 
