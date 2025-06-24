@@ -18,7 +18,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | Dependency  | Old version | New version |
 | ----------- | ----------- | ----------- |
 | Deepvariant | 1.6.1       | 1.9.0       |
-| Tabix       |             | 1.21        |
+| HTSlib      |             | 1.21        |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
