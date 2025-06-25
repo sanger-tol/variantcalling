@@ -3,12 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[1.1.7](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.7)] - Shang Tang (patch 7) - [2025-06-02]
+## [[1.1.7](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.7)] - Shang Tang (patch 7) - [2025-06-25]
 
 ### Enhancements & fixes
 
 - Update Deepvariant to version 1.9.0 (conda-free)
-- Export visual report for deepvariant/rundeepvariant module
+- Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from Deepvariant
+- Compress and index concatenated VCFs
 
 ### Software dependencies
 
@@ -17,6 +18,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | Dependency  | Old version | New version |
 | ----------- | ----------- | ----------- |
 | Deepvariant | 1.6.1       | 1.9.0       |
+| HTSlib      |             | 1.21        |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
