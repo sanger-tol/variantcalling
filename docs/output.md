@@ -62,7 +62,11 @@ The aligned PacBio read data is used to call variants with DeepVariant. This is 
 
 - `variant_calling`
   - Compressed VCF files: `<fasta_name>.pacbio.<sample_name>_deepvariant.vcf.gz`.
+  - Index of compressed VCF files: `<fasta_name>.pacbio.<sample_name>_deepvariant.vcf.gz.[tbi|csi]`.
   - Compressed GVCF files: `<fasta_name>.pacbio.<sample_name>_deepvariant.g.vcf.gz`.
+  - Index of compressed GVCF files: `<fasta_name>.pacbio.<sample_name>_deepvariant.g.vcf.gz.[tbi|csi]`.
+  - `reports`
+    - HTML files: `<fasta_name>.pacbio.<sample_name>_[vcf|gvcf].stats.visual_report.html`.
 
 </details>
 

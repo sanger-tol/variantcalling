@@ -1,34 +1,52 @@
-# This CITATION.cff file was generated with cffinit.
-# Visit https://bit.ly/cffinit to generate yours today!
-
-cff-version: 1.2.0
-title: sanger-tol/variantcalling v1.1.0
-message: >-
-    If you use this software, please cite it using the
-    metadata from this file.
-type: software
 authors:
-    - given-names: Guoying
-      family-names: Qi
-      affiliation: Wellcome Sanger Institute
-      orcid: "https://orcid.org/0000-0003-1262-8973"
-    - given-names: Priyanka
-      family-names: Surana
-      affiliation: Wellcome Sanger Institute
-      orcid: "https://orcid.org/0000-0002-7167-0875"
-    - given-names: Matthieu
-      family-names: Muffato
-      affiliation: Wellcome Sanger Institute
-      orcid: "https://orcid.org/0000-0002-7860-3560"
-    - given-names: Tyler
+    - affiliation: Universidade Federal do Rio Grande do Norte
+      family-names: Apolonio de Amorim
+      given-names: Julia
+      orcid: https://orcid.org/0000-0002-8539-527X
+      website: https://github.com/juliaapolonio
+    - affiliation: Wellcome Sanger Institute
+      email: tc25@sanger.ac.uk
       family-names: Chafin
-      affiliation: Wellcome Sanger Institute
-      orcid: "https://orcid.org/0000-0001-8687-5905"
-identifiers:
-    - type: doi
-      value: 10.5281/zenodo.7890528
-repository-code: "https://github.com/sanger-tol/variantcalling"
+      given-names: Tyler
+      orcid: https://orcid.org/0000-0001-8687-5905
+      website: https://github.com/tkchafin
+    - affiliation: Wellcome Sanger Institute
+      family-names: "Ho\xE0ng"
+      given-names: "H\u1EA1nh"
+      orcid: https://orcid.org/0009-0008-6911-9903
+      website: https://github.com/sainsachiko
+    - affiliation: Wellcome Sanger Institute
+      email: mm49@sanger.ac.uk
+      family-names: Muffato
+      given-names: Matthieu
+      orcid: https://orcid.org/0000-0002-7860-3560
+      website: https://github.com/muffato
+    - affiliation: Wellcome Sanger Institute
+      email: 729395+gq1@users.noreply.github.com
+      family-names: Qi
+      given-names: Guoying
+      orcid: https://orcid.org/0000-0003-1262-8973
+      website: https://github.com/gq1
+    - affiliation: Wellcome Sanger Institute
+      email: ps22@sanger.ac.uk
+      family-names: Surana
+      given-names: Priyanka
+      orcid: https://orcid.org/0000-0002-7167-0875
+      website: https://github.com/priyanka-surana
+    - affiliation: Wellcome Sanger Institute
+      email: naranbjg@gmail.com
+      family-names: Zhang
+      given-names: Yunjia
+      orcid: https://orcid.org/0000-0001-7029-0785
+      website: https://github.com/yz533cb
+cff-version: 1.2.0
+date-released: "2025-06-25"
+doi: 10.5281/zenodo.7890527
 license: MIT
-commit: TODO
-version: 1.1.0
-date-released: "2022-12-20"
+message: If you use this software, please cite it using the metadata from this file
+    and all references from CITATIONS.md .
+repository-code: https://github.com/sanger-tol/variantcalling
+title: sanger-tol/variantcalling v1.1.7 - Shang Tang (patch 7)
+type: software
+url: https://pipelines.tol.sanger.ac.uk/variantcalling
+version: 1.1.7
