@@ -99,10 +99,14 @@ workflow DEEPVARIANT_CALLER {
 
     // index the compressed files in two formats for maximum compatibility (each has its own limitation)
     // select the type of index to use based on the maximum sequence length
-    tabix_selector  = ch_compressed_vcf.branch { meta, vcf ->
+    ch_compressed_vcf
+    .combine(max_length)
+    .branch { meta_vcf, vcf, meta ->
         tbi_and_csi: meta.max_length < 2**29
         only_csi:    meta.max_length < 2**32
     }
+    .set { tabix_selector }
+
     // do the indexing on the compatible gvcf files
     ch_indexed_vcf_csi = TABIX_CSI ( tabix_selector.tbi_and_csi.mix(tabix_selector.only_csi) ).csi
     ch_versions        = ch_versions.mix ( TABIX_CSI.out.versions.first() )
