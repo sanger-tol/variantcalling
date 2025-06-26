@@ -22,18 +22,15 @@ lint:
   nextflow_config:
     - manifest.name
     - manifest.homePage
-nf_core_version: 3.2.1
+nf_core_version: 3.2.0
 repository_type: pipeline
 template:
-  author: "@gq1"
+  author: "Apolonio de Amorim, Julia, Chafin, Tyler, Ho\xE0ng, H\u1EA1nh, Muffato,\
+    \ Matthieu, Qi, Guoying, Surana, Priyanka, Zhang, Yunjia"
   description: Variant calling pipeline for PacBio data using DeepVariant
   force: false
-  is_nfcore: false
+  is_nfcore: true
   name: variantcalling
-  org: sanger-tol
+  org: nf-core
   outdir: .
-  skip_features:
-    - igenomes
-    - multiqc
-    - fastqc
-  version: 1.1.6
+  version: 1.1.7
