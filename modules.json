@@ -33,9 +33,14 @@
                     },
                     "deepvariant/rundeepvariant": {
                         "branch": "master",
-                        "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
+                        "git_sha": "123fdbae2bf2c827b2e11ae09c4d481f446b8ffb",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/deepvariant/rundeepvariant/deepvariant-rundeepvariant.diff"
+                    },
+                    "deepvariant/vcfstatsreport": {
+                        "branch": "master",
+                        "git_sha": "123fdbae2bf2c827b2e11ae09c4d481f446b8ffb",
+                        "installed_by": ["modules"]
                     },
                     "gunzip": {
                         "branch": "master",
@@ -97,6 +102,16 @@
                         "git_sha": "2d20463181b1c38981a02e90d3084b5f9fa8d540",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/samtools/view/samtools-view.diff"
+                    },
+                    "tabix/bgzip": {
+                        "branch": "master",
+                        "git_sha": "52a49a8807214ba93b0fdc9fa401876d9845f62a",
+                        "installed_by": ["modules"]
+                    },
+                    "tabix/tabix": {
+                        "branch": "master",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "installed_by": ["modules"]
                     },
                     "untar": {
                         "branch": "master",
