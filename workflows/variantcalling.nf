@@ -100,7 +100,7 @@ workflow VARIANTCALLING {
 
        // generate fai that is used to determine the maximum length of chromosome
        ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
-       ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
+       ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
     }else{
        ch_fai
@@ -111,12 +111,12 @@ workflow VARIANTCALLING {
         ch_genome_index_fai  = ch_genome_index
         if ( !params.fai.endsWith(".fai") ) {
             ch_genome_index_fai = SAMTOOLS_FAIDX ( ch_genome,  [[], []] ).fai
-            ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+            ch_versions         = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
         }
     }
 
     ch_genome_index_fai
-     .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
+     .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
      .set { ch_genome_info }
 
     //
@@ -226,23 +226,23 @@ workflow VARIANTCALLING {
 
 // Read the .fai file, extract sequence statistics, and make an extended meta map
 def get_sequence_map(fai_file) {
-    def n_sequences = 0
-    def max_length = 0
-    def total_length = 0
+    def n_sequences    = 0
+    def max_length     = 0
+    def total_length   = 0
     fai_file.eachLine { line ->
-        def lspl   = line.split('\t')
-        def chrom  = lspl[0]
-        def length = lspl[1].toInteger()
+        def lspl       = line.split('\t')
+        def chrom      = lspl[0]
+        def length     = lspl[1].toInteger()
         n_sequences ++
-        total_length += length
+        total_length  += length
         if (length > max_length) {
             max_length = length
         }
     }
 
     def sequence_map = [:]
-    sequence_map.n_sequences = n_sequences
-    sequence_map.total_length = total_length
+    sequence_map.n_sequences    = n_sequences
+    sequence_map.total_length   = total_length
     if (n_sequences) {
         sequence_map.max_length = max_length
     }
