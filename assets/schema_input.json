@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/schema_input.json",
     "title": "sanger-tol/variantcalling pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
@@ -10,7 +10,8 @@
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces"
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["sample"]
             },
             "datatype": {
                 "type": "string",
