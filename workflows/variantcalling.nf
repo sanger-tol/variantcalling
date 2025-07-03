@@ -1,6 +1,6 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
+    VALIDATE INPUTS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
@@ -89,9 +89,9 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-     .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
-     .first()
-     .set { ch_genome }
+        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
+        .first()
+        .set { ch_genome }
 
     //
     // check reference fasta index given or not
@@ -99,18 +99,18 @@ workflow VARIANTCALLING {
 
     if( params.fai == null ){
 
-       SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
-       ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
+        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
-       // generate fai that is used to determine the maximum length of chromosome
-       ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
-       ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
+        // generate fai that is used to determine the maximum length of chromosome
+        ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
+        ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
     }else{
-       ch_fai
-        .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-        .first()
-        .set { ch_genome_index }
+        ch_fai
+            .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+            .first()
+            .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
         if ( !params.fai.endsWith(".fai") ) {
@@ -120,8 +120,8 @@ workflow VARIANTCALLING {
     }
 
     ch_genome_index_fai
-     .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
-     .set { ch_genome_info }
+        .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
+        .set { ch_genome_info }
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -225,10 +225,10 @@ workflow VARIANTCALLING {
 
 
 //
-// function: get sequence map
+// FUNCTION: get sequence map
+// Read the .fai file, extract sequence statistics, and make an extended meta map
 //
 
-// Read the .fai file, extract sequence statistics, and make an extended meta map
 def get_sequence_map(fai_file) {
     def n_sequences    = 0
     def max_length     = 0
