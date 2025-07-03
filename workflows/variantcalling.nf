@@ -157,11 +157,11 @@ workflow VARIANTCALLING {
             INPUT_CHECK.out.reads,
             ch_vector_db
         )
-       ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
-       ALIGN_PACBIO.out.cram
-        .join( ALIGN_PACBIO.out.crai )
-        .set{ ch_aligned_reads }
+        ALIGN_PACBIO.out.cram
+            .join( ALIGN_PACBIO.out.crai )
+            .set{ ch_aligned_reads }
 
     } else {
 
@@ -204,8 +204,8 @@ workflow VARIANTCALLING {
     // convert VCF channel meta id
     //
     DEEPVARIANT_CALLER.out.vcf
-     .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
-     .set{ vcf }
+        .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+        .set{ vcf }
 
     //
     // process VCF output files
