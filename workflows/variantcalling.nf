@@ -1,58 +1,9 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VALIDATE INPUTS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
-
-// Validate input parameters
-WorkflowVariantcalling.initialise(params, log)
-
-// Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval, params.include_positions, params.exclude_positions ]
-for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
-
-// Check mandatory parameters
-if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
-
-// Check optional parameters
-if (params.fai){
-    if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
-        ||
-        ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
-    ){
-      exit 1, 'Reference fasta and its index file format not matched!'
-    }
-    ch_fai = Channel.fromPath(params.fai)
-} else {
-    ch_fai = Channel.empty()
-}
-
-if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
-
-if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
-
-if ( (params.include_positions) && (params.exclude_positions) ){
-    exit 1, 'Only one positions file can be given to include or exclude!'
-}else if (params.include_positions){
-    ch_positions = Channel.fromPath(params.include_positions)
-} else if (params.exclude_positions){
-    ch_positions = Channel.fromPath(params.exclude_positions)
-} else {
-    ch_positions = []
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-//
-// SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
-//
 include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
@@ -66,12 +17,11 @@ include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-//
-// MODULE: Installed directly from nf-core/modules
-//
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
-include { SAMTOOLS_FAIDX              } from '../modules/nf-core/samtools/faidx/main'
-include { UNTAR                       } from '../modules/nf-core/untar/main'
+include { paramsSummaryMap       } from 'plugin/nf-schema'
+include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_sequencecomposition_pipeline'
+include { SAMTOOLS_FAIDX         } from '../modules/nf-core/samtools/faidx/main'
+include { UNTAR                  } from '../modules/nf-core/untar/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,11 +33,15 @@ include { UNTAR                       } from '../modules/nf-core/untar/main'
 
 workflow VARIANTCALLING {
 
+    take:
+    ch_samplesheet // channel: samplesheet read in from --input
+    main:
+
     ch_versions = Channel.empty()
     ch_fasta
-     .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
-     .first()
-     .set { ch_genome }
+        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
+        .first()
+        .set { ch_genome }
 
     //
     // check reference fasta index given or not
@@ -95,29 +49,29 @@ workflow VARIANTCALLING {
 
     if( params.fai == null ){
 
-       SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
-       ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
+        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
-       // generate fai that is used to determine the maximum length of chromosome
-       ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
-       ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
+        // generate fai that is used to determine the maximum length of chromosome
+        ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
+        ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
     }else{
-       ch_fai
-        .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-        .first()
-        .set { ch_genome_index }
+        ch_fai
+            .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+            .first()
+            .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
         if ( !params.fai.endsWith(".fai") ) {
             ch_genome_index_fai = SAMTOOLS_FAIDX ( ch_genome,  [[], []] ).fai
-            ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+            ch_versions         = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
         }
     }
 
     ch_genome_index_fai
-     .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
-     .set { ch_genome_info }
+        .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
+        .set { ch_genome_info }
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -153,11 +107,11 @@ workflow VARIANTCALLING {
             INPUT_CHECK.out.reads,
             ch_vector_db
         )
-       ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
-       ALIGN_PACBIO.out.cram
-        .join( ALIGN_PACBIO.out.crai )
-        .set{ ch_aligned_reads }
+        ALIGN_PACBIO.out.cram
+            .join( ALIGN_PACBIO.out.crai )
+            .set{ ch_aligned_reads }
 
     } else {
 
@@ -200,8 +154,8 @@ workflow VARIANTCALLING {
     // convert VCF channel meta id
     //
     DEEPVARIANT_CALLER.out.vcf
-     .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
-     .set{ vcf }
+        .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+        .set{ vcf }
 
     //
     // process VCF output files
@@ -211,58 +165,49 @@ workflow VARIANTCALLING {
 
 
     //
-    // MODULE: Combine different version together
+    // Collate and save software versions
     //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
+    softwareVersionsToYAML(ch_versions)
+        .collectFile(
+            storeDir: "${params.outdir}/pipeline_info",
+            name:  'variantcalling_software_'  + 'versions.yml',
+            sort: true,
+            newLine: true
+        ).set { ch_collated_versions }
+    
 
+    emit:
+    versions       = ch_versions                 // channel: [ path(versions.yml) ]
 }
 
 
 //
-// function: get sequence map
+// FUNCTION: get sequence map
+// Read the .fai file, extract sequence statistics, and make an extended meta map
 //
 
-// Read the .fai file, extract sequence statistics, and make an extended meta map
 def get_sequence_map(fai_file) {
-    def n_sequences = 0
-    def max_length = 0
-    def total_length = 0
+    def n_sequences    = 0
+    def max_length     = 0
+    def total_length   = 0
     fai_file.eachLine { line ->
-        def lspl   = line.split('\t')
-        def chrom  = lspl[0]
-        def length = lspl[1].toInteger()
+        def lspl       = line.split('\t')
+        def chrom      = lspl[0]
+        def length     = lspl[1].toInteger()
         n_sequences ++
-        total_length += length
+        total_length  += length
         if (length > max_length) {
             max_length = length
         }
     }
 
     def sequence_map = [:]
-    sequence_map.n_sequences = n_sequences
-    sequence_map.total_length = total_length
+    sequence_map.n_sequences    = n_sequences
+    sequence_map.total_length   = total_length
     if (n_sequences) {
         sequence_map.max_length = max_length
     }
     return sequence_map
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.summary(workflow, params, log)
-    if (params.hook_url) {
-        NfcoreTemplate.IM_notification(workflow, params, summary_params, projectDir, log)
-    }
 }
 
 /*

@@ -2,33 +2,34 @@
 // Check input samplesheet and get read channels
 //
 
-include { SAMPLESHEET_CHECK } from '../../modules/local/samplesheet_check'
+include { samplesheetToList } from 'plugin/nf-schema'
 
 workflow INPUT_CHECK {
     take:
     samplesheet // file: /path/to/samplesheet.csv
 
     main:
-    SAMPLESHEET_CHECK ( samplesheet )
-        .csv
-        .splitCsv ( header:true, sep:',' )
-        .map { create_data_channel( it ) }
+    ch_versions = Channel.empty()
+
+    Channel
+        .fromList(samplesheetToList(samplesheet, "${projectDir}/assets/schema_input.json"))
+        .map { check_data_channel( it ) }
         .set { reads }
 
     emit:
-    reads                                     // channel: [ val(meta), data ]
-    versions = SAMPLESHEET_CHECK.out.versions // channel: [ versions.yml ]
+    reads                  // channel: [ val(meta), data ]
+    versions = ch_versions // channel: [ versions.yml ]
 }
 
 // Function to get list of [ meta, reads ]
-def create_data_channel ( LinkedHashMap row ) {
+def check_data_channel(meta, reads) {
     // create meta map
     def meta    = [:]
     meta.id     = row.sample
     meta.sample = row.sample.split('_')[0..-2].join('_')
     meta.datatype   = row.datatype
 
-    if ( meta.datatype == "pacbio" ) { 
+    if ( meta.datatype == "pacbio" ) {
         platform = "PACBIO"
     }
     meta.read_group  = "\'@RG\\tID:" + row.datafile.split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"

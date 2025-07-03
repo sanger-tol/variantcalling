@@ -25,4 +25,7 @@ Content-Disposition: inline; filename="sanger-tol-variantcalling_logo_light.png"
     flatten().
     join( '\n' ) %>
 
+<%
+%>
+
 --nfcoremimeboundary--
