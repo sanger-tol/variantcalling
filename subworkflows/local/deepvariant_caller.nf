@@ -105,7 +105,7 @@ workflow DEEPVARIANT_CALLER {
         .branch { meta, vcf ->
             tbi_and_csi: meta.max_length < 2**29
             only_csi:    meta.max_length < 2**32
-    }
+        }
         .set { tabix_selector }
 
     // do the indexing on the compatible gvcf files
