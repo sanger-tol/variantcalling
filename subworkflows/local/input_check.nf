@@ -9,20 +9,16 @@ workflow INPUT_CHECK {
     samplesheet // file: /path/to/samplesheet.csv
 
     main:
+    ch_versions = Channel.empty()
+
     Channel
         .fromList(samplesheetToList(samplesheet, "${projectDir}/assets/schema_input.json"))
         .map { check_data_channel( it ) }
         .set { reads }
 
-    // SAMPLESHEET_CHECK ( samplesheet )
-    //     .csv
-    //     .splitCsv ( header:true, sep:',' )
-    //     .map { create_data_channel( it ) }
-    //     .set { reads }
-
     emit:
-    reads                                     // channel: [ val(meta), data ]
-    // versions = SAMPLESHEET_CHECK.out.versions // channel: [ versions.yml ]
+    reads                  // channel: [ val(meta), data ]
+    versions = ch_versions // channel: [ versions.yml ]
 }
 
 // Function to get list of [ meta, reads ]
