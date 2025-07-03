@@ -1,4 +1,4 @@
-# sanger-tol/variantcalling: Contributing Guidelines
+# `sanger-tol/variantcalling`: Contributing Guidelines
 
 Hi there!
 Many thanks for taking an interest in improving sanger-tol/variantcalling.
@@ -59,7 +59,7 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 ## Pipeline contribution conventions
 
-To make the sanger-tol/variantcalling code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
+To make the `sanger-tol/variantcalling` code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
 ### Adding a new step
 

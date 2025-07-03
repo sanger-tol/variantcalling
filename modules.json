@@ -4,6 +4,9 @@
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {
+                "nf-core": {}
+            },
+            "subworkflows": {
                 "nf-core": {
                     "bcftools/concat": {
                         "branch": "master",

@@ -1,6 +1,6 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VALIDATE INPUTS
+    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
@@ -82,6 +82,10 @@ include { UNTAR                       } from '../modules/nf-core/untar/main'
 // Info required for completion email and summary
 
 workflow VARIANTCALLING {
+
+    take:
+    ch_samplesheet // channel: samplesheet read in from --input
+    main:
 
     ch_versions = Channel.empty()
     ch_fasta
