@@ -20,6 +20,7 @@
             },
             "datafile": {
                 "type": "string",
+                "exists": true,
                 "pattern": "^\\S+\\.(bam|cram)$",
                 "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
             }

@@ -23,8 +23,7 @@ If you're not used to this workflow with git, you can start with some [docs from
 
 ## Tests
 
-You have the option to test your changes locally by running the pipeline. For receiving warnings about process selectors and other `debug` information, it is recommended to use the debug profile.
-Execute all the tests with the following command:
+You have the option to test your changes locally by running the pipeline. For receiving warnings about process selectors and other `debug` information, it is recommended to use the debug profile. Execute all the tests with the following command:
 
 ```bash
 nf-test test --profile debug,test,docker --verbose
@@ -53,9 +52,9 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 :warning: Only in the unlikely and regretful event of a release happening with a bug.
 
-- On your own fork, make a new branch `patch` based on `upstream/main`.
+- On your own fork, make a new branch `patch` based on `upstream/main` or `upstream/master`.
 - Fix the bug, and bump version (X.Y.Z+1).
-- A PR should be made on `main` from patch to directly this particular bug.
+- Open a pull-request from `patch` to `main`/`master` with the changes.
 
 ## Pipeline contribution conventions
 

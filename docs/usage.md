@@ -8,7 +8,7 @@ The pipeline takes aligned or unaliged sample reads (CRAM/BAM files) from a CSV 
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use the `input` parameter to specify the samplesheet location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
@@ -18,7 +18,7 @@ You will need to create a samplesheet with information about the samples you wou
 
 The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. Below is an example for the same sample sequenced across 3 lanes:
 
-```console
+```csv title="samplesheet.csv"
 sample,datatype,datafile
 sample1,pacbio,sample1_1.cram
 sample1,pacbio,sample1_2.cram
@@ -29,7 +29,7 @@ sample1,pacbio,sample1_3.cram
 
 A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only supports Pacbio aligned data.
 
-```console
+```csv title="samplesheet.csv"
 sample,datatype,datafile
 sample1,pacbio,/path/to/data/file/file1.bam
 sample2,pacbio,/path/to/data/file/file2.cram
@@ -49,7 +49,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run sanger-tol/variantcalling --input samplesheet.csv --outdir <OUTDIR> --fasta genome.fasta.gz -profile docker
+nextflow run sanger-tol/variantcalling --input ./samplesheet.csv --outdir ./results --fasta genome.fasta.gz  -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -105,7 +105,7 @@ First, go to the [sanger-tol/variantcalling releases page](https://github.com/sa
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future.
 
-To further assist in reproducibility, you can use share and re-use [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
+To further assist in reproducibility, you can use share and reuse [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
 
 > [!TIP]
 > If you wish to share such profile (such as upload as supplementary material for academic publications), make sure to NOT include cluster specific paths to files, nor institutional specific profiles.
