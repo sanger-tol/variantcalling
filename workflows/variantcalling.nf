@@ -58,6 +58,7 @@ include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
+include { RUN_HIMUT          } from '../subworkflows/local/run_himut'
 include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 
 /*
@@ -85,9 +86,9 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-     .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
-     .first()
-     .set { ch_genome }
+        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
+        .first()
+        .set { ch_genome }
 
     //
     // check reference fasta index given or not
@@ -95,18 +96,18 @@ workflow VARIANTCALLING {
 
     if( params.fai == null ){
 
-       SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
-       ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
+        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
 
-       // generate fai that is used to determine the maximum length of chromosome
-       ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
-       ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
+        // generate fai that is used to determine the maximum length of chromosome
+        ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
+        ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
     }else{
-       ch_fai
-        .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-        .first()
-        .set { ch_genome_index }
+        ch_fai
+            .map { fai -> [ [ 'id': fai.baseName ], fai ] }
+            .first()
+            .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
         if ( !params.fai.endsWith(".fai") ) {
@@ -116,8 +117,8 @@ workflow VARIANTCALLING {
     }
 
     ch_genome_index_fai
-     .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
-     .set { ch_genome_info }
+        .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
+        .set { ch_genome_info }
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -153,11 +154,11 @@ workflow VARIANTCALLING {
             INPUT_CHECK.out.reads,
             ch_vector_db
         )
-       ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
-       ALIGN_PACBIO.out.cram
-        .join( ALIGN_PACBIO.out.crai )
-        .set{ ch_aligned_reads }
+        ALIGN_PACBIO.out.cram
+            .join( ALIGN_PACBIO.out.crai )
+            .set{ ch_aligned_reads }
 
     } else {
 
@@ -200,8 +201,23 @@ workflow VARIANTCALLING {
     // convert VCF channel meta id
     //
     DEEPVARIANT_CALLER.out.vcf
-     .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
-     .set{ vcf }
+        .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+        .set{ vcf }
+
+
+    //
+    // SUBWORKFLOW: run Himut
+    //
+    RUN_HIMUT (
+        ch_genome,
+        ch_genome_index_fai,
+        INPUT_FILTER_SPLIT.out.region_list,
+        ch_aligned_reads,
+        DEEPVARIANT_CALLER.out.compressed_vcf,
+        DEEPVARIANT_CALLER.out.vcf_tbi
+    )
+    ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
+
 
     //
     // process VCF output files
