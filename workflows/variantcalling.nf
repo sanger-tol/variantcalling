@@ -210,9 +210,9 @@ workflow VARIANTCALLING {
     //
     RUN_HIMUT (
         ch_genome,
-        ch_genome_index_fai,
-        INPUT_FILTER_SPLIT.out.region_list,
-        ch_aligned_reads,
+        ch_region_list,
+        // ALIGN_PACBIO.out.bam, // bam file
+        // ALIGN_PACBIO.out.bai, // bai file
         DEEPVARIANT_CALLER.out.compressed_vcf,
         DEEPVARIANT_CALLER.out.vcf_tbi
     )
