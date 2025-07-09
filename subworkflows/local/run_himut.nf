@@ -7,7 +7,7 @@ include { TABIX_BGZIP as BGZIP     }   from '../../modules/nf-core/tabix/bgzip/m
 include { TABIX_TABIX as TABIX_CSI }   from '../../modules/nf-core/tabix/tabix/main'
 include { TABIX_TABIX as TABIX_TBI }   from '../../modules/nf-core/tabix/tabix/main'
 
-workflow HIMUT {
+workflow RUN_HIMUT {
     take:
     ch_genome,              // genome fasta
     ch_genome_index_fai,    // genome index
@@ -20,30 +20,18 @@ workflow HIMUT {
     main:
     ch_versions = Channel.empty()
 
-    // If region list is not provided, generate region_list from .fai file
-    // Do not include sex chromosomes
-    if (params.region_list) {
-        ch_region_list = Channel.fromPath(params.region_list)
-    } else {
-        def make_region_list = { meta, fai ->
-            def chr_list = []
-            def chr_length = 0
-            def chr_name = ''
-            fai.splitEachLine('\t') { line ->
-                // How to select out sex chromosomes?
-                // if (line[0].startsWith('chr') && !line[0].contains('M') && !line[0].contains('Y')) {
-                    chr_name = line[0]
-                    chr_length = line[1] as int
-                    if (chr_length > 0) {
-                        chr_list << chr_name
-                    }
-            }
+    // Transfer .cram inout to .bam
+    ch_aligned_reads = ch_aligned_reads.map { meta, bam ->
+        if (bam.endsWith('.cram')) {
+            def bam_index = ch_aligned_reads_index.find { it.meta.id == meta.id }
+            def bam_out = "${bam}.bam"
+            def cmd = "samtools view -b -T ${bam_index} ${bam} > ${bam_out}"
+            log.info "Converting ${bam} to ${bam_out}"
+            sh(cmd)
+            return [meta, bam_out]
+        } else {
+            return [meta, bam]
         }
-        return [meta, chr_list]
-
-        ch_genome_index_fai
-            .map { meta, fai -> make_region_list(meta, fai) }
-            .set { ch_region_list }
     }
 
     // Run HIMUT
@@ -78,8 +66,6 @@ workflow HIMUT {
     ch_versions        = ch_versions.mix ( TABIX_CSI.out.versions.first() )
     ch_himut_vcf_tbi = TABIX_TBI ( himut_tabix_selector.tbi_and_csi ).tbi
     ch_versions        = ch_versions.mix ( TABIX_TBI.out.versions.first() )
-
-
 
     emit:
     himut_vcf = HIMUT.out.vcf_output
