@@ -25,20 +25,35 @@
 //     }
 // }
 
+
+params.fasta = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.fasta"
+params.region_list = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/all_regions.GCA_937595015.1.txt"
+params.bam = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam"
+params.bam_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam.bai"
+params.vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz"
+params.vcf_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz.tbi"
+
+
 process HIMUT {
-    tag "$meta.id"
+    tag "$bam.baseName"
     label 'process_single'
 
-    container "quay.io/repository/sanger-tol/himut"   // HIMUT version 1.0.0
+    container "quay.io/sanger-tol/himut:1.0.0-c1"
 
     input:
-    tuple val(meta), path(fasta)
-    tuple val(meta), path(region_list)
-    tuple val(meta), path(bam), path(bam_index)
-    tuple val(meta), path(vcf_input), path(vcf_index)
+    path fasta
+    path region_list
+    path bam
+    path bam_index
+    path vcf_input
+    path vcf_index
+    // tuple val(meta), path(fasta)
+    // tuple val(meta), path(region_list)
+    // tuple val(meta), path(bam), path(bam_index)
+    // tuple val(meta), path(vcf_input), path(vcf_index)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf_output
+    tuple path("*.vcf"), emit: vcf_output
     path  "versions.yml"          , emit: versions
 
     when:
@@ -46,28 +61,36 @@ process HIMUT {
 
     script:
 
-    """
-    if [param.region_list] ; then
-        region_list=${region_list}
-    else
-        # Generate region list from .fai file
-        region_list=\$(mktemp --suffix=.txt)
-        grep -v -E '^(chrX|chrY|chrZ|chrW)' ${fasta}.fai | cut -f1 > \${region_list}
-    fi
 
+    // if [[ -n "${params.region_list}" ]] ; then
+    //     region_list=${region_list}
+    // else
+    //     # Generate region list from .fai file
+    //     region_list=$(mktemp --suffix=.txt)
+    //     grep -v -E '^(chr)?[XYZW]\b' ${fasta}.fai | cut -f1 > \${region_list}
+    // fi
+    """
     himut call \\
-        -i=${bam} \\
-        --ref=${fasta} \\
-        --region_list=${region_list} \\
-        --vcf_input=${vcf_input} \\
-        --vcf_index=${vcf_index} \\
-        -o=${meta.id}.vcf \\
+        -i ${bam} \\
+        --ref ${fasta} \\
+        --region_list ${region_list} \\
+        --vcf ${vcf_input} \\
         --non_human_sample \\
-        -t=${task.cpus}
+        -o somatic.vcf \\
+        -t ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         himut: \$(himut --version | sed 's/^himut //; s/ .*\$//')
     END_VERSIONS
     """
+}
+
+workflow {
+    HIMUT(params.fasta,
+          params.region_list,
+          params.bam,
+          params.bam_index,
+          params.vcf_input,
+          params.vcf_index)
 }
