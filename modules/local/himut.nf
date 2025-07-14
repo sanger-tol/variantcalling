@@ -1,9 +1,9 @@
 params.fasta = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.fasta"
-params.fasta_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.fasta.fai"
-// params.region_list = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/all_regions.GCA_937595015.1.txt"
+// params.fasta_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.fasta.fai"
+params.region_list = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/all_regions.GCA_937595015.1.txt"
 params.bam = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam"
 params.bam_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam.bai"
-params.vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz"
+params.vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.gz"
 params.vcf_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz.tbi"
 
 params.outdir = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets"
@@ -12,17 +12,17 @@ params.outdir = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_cal
 process HIMUT {
     tag "$bam.baseName"
     // label 'process_single'
-    publishDir "${params.outdir}/himut", mode: 'copy', overwrite: true
+    // publishDir "${params.outdir}/himut", mode: 'copy', overwrite: true
 
     container "quay.io/sanger-tol/himut:1.0.0-c1"
 
     input:
     path fasta
-    path fasta_index
-    // path region_list
+    // path fasta_index
+    path region_list
     path bam
     path bam_index
-    path vcf_input
+    path vcf_input, stageAs( {bam.BaseName}.vcf.bgz )
     path vcf_index
     // tuple val(meta), path(fasta), path(fasta_index)
     // tuple val(meta), path(bam), path(bam_index)
@@ -38,9 +38,6 @@ process HIMUT {
 
 
     script:
-    def region_list_file = "${fasta_index}.regions.txt"
-    def region_list = "cut -f1 ${region_list_file}"
-
     // if (params.region_list) {
     // ch_region_list = Channel.fromPath(params.region_list)
     // } else {
@@ -84,8 +81,8 @@ process HIMUT {
 
 workflow {
     HIMUT(params.fasta,
-        params.fasta_index,
-        // params.region_list,
+        // params.fasta_index,
+        params.region_list,
         params.bam,
         params.bam_index,
         params.vcf_input,

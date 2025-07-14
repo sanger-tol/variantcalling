@@ -209,10 +209,9 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: run Himut
     //
     RUN_HIMUT (
-        ch_genome,
-        ch_region_list,
-        // ALIGN_PACBIO.out.bam, // bam file
-        // ALIGN_PACBIO.out.bai, // bai file
+        ch_genome, // fasta
+        // ch_region_list,
+        // ch_aligned_reads, // bam and bai
         DEEPVARIANT_CALLER.out.compressed_vcf,
         DEEPVARIANT_CALLER.out.vcf_tbi
     )
