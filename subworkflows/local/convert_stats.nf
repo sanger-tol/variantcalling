@@ -1,5 +1,5 @@
 //
-// Convert BAM to CRAM, create index and calculate statistics
+// Convert to BAM, create index and calculate statistics
 //
 
 include { SAMTOOLS_VIEW     } from '../../modules/nf-core/samtools/view/main'
@@ -17,35 +17,35 @@ workflow CONVERT_STATS {
     main:
     ch_versions = Channel.empty()
 
-    // Convert BAM to CRAM
+    // Convert input to BAM
     SAMTOOLS_VIEW ( bam, fasta, [ ] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
 
 
-    // Combine CRAM and CRAI into one channel
-    SAMTOOLS_VIEW.out.cram
-    | join ( SAMTOOLS_VIEW.out.crai )
-    | set { ch_cram_crai }
+    // Combine BAM and BAI into one channel
+    SAMTOOLS_VIEW.out.bam
+    | join ( SAMTOOLS_VIEW.out.bai )
+    | set { ch_bam_bai }
 
 
     // Calculate statistics
-    SAMTOOLS_STATS ( ch_cram_crai, fasta )
+    SAMTOOLS_STATS ( ch_bam_bai, fasta )
     ch_versions = ch_versions.mix ( SAMTOOLS_STATS.out.versions.first() )
 
 
     // Calculate statistics based on flag values
-    SAMTOOLS_FLAGSTAT ( ch_cram_crai )
+    SAMTOOLS_FLAGSTAT ( ch_bam_bai )
     ch_versions = ch_versions.mix ( SAMTOOLS_FLAGSTAT.out.versions.first() )
 
 
     // Calculate index statistics
-    SAMTOOLS_IDXSTATS ( ch_cram_crai )
+    SAMTOOLS_IDXSTATS ( ch_bam_bai )
     ch_versions = ch_versions.mix ( SAMTOOLS_IDXSTATS.out.versions.first() )
 
 
     emit:
-    cram     = SAMTOOLS_VIEW.out.cram            // channel: [ val(meta), /path/to/cram ]
-    crai     = SAMTOOLS_VIEW.out.crai            // channel: [ val(meta), /path/to/crai ]
+    bam     = SAMTOOLS_VIEW.out.bam            // channel: [ val(meta), /path/to/bam ]
+    bai     = SAMTOOLS_VIEW.out.bai            // channel: [ val(meta), /path/to/bai ]
     stats    = SAMTOOLS_STATS.out.stats          // channel: [ val(meta), /path/to/stats ]
     flagstat = SAMTOOLS_FLAGSTAT.out.flagstat    // channel: [ val(meta), /path/to/idxstats ]
     idxstats = SAMTOOLS_IDXSTATS.out.idxstats    // channel: [ val(meta), /path/to/flagstat ]
