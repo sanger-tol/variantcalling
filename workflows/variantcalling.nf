@@ -208,15 +208,17 @@ workflow VARIANTCALLING {
     //
     // SUBWORKFLOW: run Himut
     //
-    // RUN_HIMUT (
-    //     ch_genome,
-    //     ch_region_list,
-    //     // ALIGN_PACBIO.out.bam, // bam file
-    //     // ALIGN_PACBIO.out.bai, // bai file
-    //     DEEPVARIANT_CALLER.out.compressed_vcf,
-    //     DEEPVARIANT_CALLER.out.vcf_tbi
-    // )
-    // ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
+
+    RUN_HIMUT (
+        ch_genome, // fasta
+        // ch_fasta_fai
+        // channel_of_assembly_report
+        // ch_aligned_reads, // bam and bai
+        DEEPVARIANT_CALLER.out.compressed_vcf,
+        DEEPVARIANT_CALLER.out.vcf_tbi
+    )
+    ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
+
 
 
     //
