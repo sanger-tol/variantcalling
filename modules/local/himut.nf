@@ -1,12 +1,15 @@
-params.fasta = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.fasta"
-// params.fasta_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.fasta.fai"
-params.region_list = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/all_regions.GCA_937595015.1.txt"
-params.bam = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam"
-params.bam_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam.bai"
-params.vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.gz"
-params.vcf_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz.tbi"
+params.fasta = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.fasta"
+params.fasta_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.fasta.fai"
+params.assembly_report = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1_assembly_report.txt"
+// params.region_list = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/all_regions.GCA_937595015.1.txt"
+params.bam = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam"
+params.bam_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam.bai"
+params.vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.gz"
+// params.vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz"
+params.vcf_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.gz.tbi"
+// params.vcf_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.bgz.tbi"
 
-params.outdir = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/yz12-add_himut/assets"
+params.outdir = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets"
 
 
 process HIMUT {
@@ -18,18 +21,19 @@ process HIMUT {
 
     input:
     path fasta
-    // path fasta_index
-    path region_list
+    path fasta_index
+    path assembly_report
+    // path region_list
     path bam
     path bam_index
-    path vcf_input, stageAs( {bam.BaseName}.vcf.bgz )
-    path vcf_index
+    path vcf_input //, stageAs: "input_vcf.bgz"
+    path vcf_index //, stageAs: "input_vcf.bgz.tbi"
     // tuple val(meta), path(fasta), path(fasta_index)
     // tuple val(meta), path(bam), path(bam_index)
     // tuple val(meta), path(vcf_input), path(vcf_index)
 
     output:
-    // tuple path("*.vcf"), emit: vcf_output
+    // tuple val(meta), path("*.vcf"), emit: vcf_output
     path  ("*.vcf"), emit: vcf_output
     path  "versions.yml", emit: versions
 
@@ -38,36 +42,22 @@ process HIMUT {
 
 
     script:
-    // if (params.region_list) {
-    // ch_region_list = Channel.fromPath(params.region_list)
-    // } else {
-    // def make_region_list = { meta, fai ->
-    //     def chr_list = []
-    //     def chr_length = 0
-    //     def chr_name = ''
-    //     fai.splitEachLine('\t') { line ->
-    //         // How to select out sex chromosomes?
-    //         // if (line[0].startsWith('chr') && !line[0].contains('X') && !line[0].contains('Y') && !line[0].contains('Z') && !line[0].contains('W')) {
-    //             chr_name = line[0]
-    //             chr_length = line[1] as int
-    //             if (chr_length > 0) {
-    //                 chr_list << chr_name
-    //             }
-    //         //}
-    //     }
-    //     return [meta, chr_list]
-
-    //     ch_genome_index_fai
-    //         .map { meta, fai -> make_region_list(meta, fai) }
-    //         .set { ch_region_list }
-    // } }
+    println vcf_input
+    println vcf_index
+    // --vcf ${vcf_input} \\
 
     """
+    ln -s ${vcf_input} input.vcf.bgz
+    ln -s ${vcf_index} input.vcf.bgz.tbi
+
+    awk -F"\t" '\$3=="X" || \$3=="Y" || \$3=="Z" || \$3=="W" {print \$5}' ${assembly_report} > sex_chromosomes.txt
+    cut -f1 ${fasta_index} | grep -vFxf sex_chromosomes.txt > regions_list.txt
+
     himut call \\
         -i ${bam} \\
         --ref ${fasta} \\
-        --region_list ${region_list} \\
-        --vcf ${vcf_input} \\
+        --region_list regions_list.txt \\
+        --vcf input.vcf.bgz \\
         --non_human_sample \\
         -o ${bam.baseName}.himut.vcf \\
         -t ${task.cpus}
@@ -81,8 +71,9 @@ process HIMUT {
 
 workflow {
     HIMUT(params.fasta,
-        // params.fasta_index,
-        params.region_list,
+        params.fasta_index,
+        params.assembly_report,
+        // params.region_list,
         params.bam,
         params.bam_index,
         params.vcf_input,

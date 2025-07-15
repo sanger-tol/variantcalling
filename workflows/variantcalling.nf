@@ -210,7 +210,8 @@ workflow VARIANTCALLING {
     //
     RUN_HIMUT (
         ch_genome, // fasta
-        // ch_region_list,
+        // ch_fasta_fai
+        // channel_of_assembly_report
         // ch_aligned_reads, // bam and bai
         DEEPVARIANT_CALLER.out.compressed_vcf,
         DEEPVARIANT_CALLER.out.vcf_tbi
