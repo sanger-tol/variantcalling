@@ -41,7 +41,7 @@ workflow ALIGN_PACBIO {
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions.first() )
 
 
-    // Convert merged BAM to CRAM and calculate indices and statistics
+    // Convert to BAM and calculate indices and statistics
     SAMTOOLS_MERGE.out.bam
     | map { meta, bam -> [ meta, bam, [] ] }
     | set { ch_sort }
@@ -51,8 +51,8 @@ workflow ALIGN_PACBIO {
 
 
     emit:
-    cram     = CONVERT_STATS.out.cram        // channel: [ val(meta), /path/to/cram ]
-    crai     = CONVERT_STATS.out.crai        // channel: [ val(meta), /path/to/crai ]
+    bam     = CONVERT_STATS.out.bam        // channel: [ val(meta), /path/to/bam ]
+    bai     = CONVERT_STATS.out.bai        // channel: [ val(meta), /path/to/bai ]
     stats    = CONVERT_STATS.out.stats       // channel: [ val(meta), /path/to/stats ]
     idxstats = CONVERT_STATS.out.idxstats    // channel: [ val(meta), /path/to/idxstats ]
     flagstat = CONVERT_STATS.out.flagstat    // channel: [ val(meta), /path/to/flagstat ]

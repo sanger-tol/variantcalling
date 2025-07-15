@@ -156,8 +156,8 @@ workflow VARIANTCALLING {
         )
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
-        ALIGN_PACBIO.out.cram
-            .join( ALIGN_PACBIO.out.crai )
+        ALIGN_PACBIO.out.bam
+            .join( ALIGN_PACBIO.out.bai )
             .set{ ch_aligned_reads }
 
     } else {
@@ -208,6 +208,7 @@ workflow VARIANTCALLING {
     //
     // SUBWORKFLOW: run Himut
     //
+
     RUN_HIMUT (
         ch_genome, // fasta
         // ch_fasta_fai
@@ -217,6 +218,7 @@ workflow VARIANTCALLING {
         DEEPVARIANT_CALLER.out.vcf_tbi
     )
     ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
+
 
 
     //

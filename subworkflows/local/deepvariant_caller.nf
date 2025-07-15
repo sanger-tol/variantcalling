@@ -13,26 +13,26 @@ include { TABIX_TABIX as TABIX_TBI                        }   from '../../module
 
 workflow DEEPVARIANT_CALLER {
     take:
-    reads_fasta    // [ val(meta), cram, crai, interval, fasta_file_name, fasta, fai ]
+    reads_fasta    // [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ]
     max_length     // [ val(max_length) - maximum chromosome length in the fasta file  ]
 
     main:
     ch_versions = Channel.empty()
 
-    reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
+    reads_fasta.map { meta, bam, bai, interval, fasta_file_name, fasta, fai ->
                      [ [ id: meta.id + "_" + fasta_file_name,
                          sample: meta.id,
                          type: meta.datatype,
                          fasta_file_name: fasta_file_name
                        ],
-                       cram,
-                       crai,
+                       bam,
+                       bai,
                        interval
                      ] }
-               .set { cram_crai }
+               .set { bam_bai }
 
     // fasta
-    fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
+    fasta = reads_fasta.map { meta, bam, bai, interval, fasta_file_name, fasta, fai ->
                              [ [
                                 id: meta.id + "_" + fasta_file_name,
                                 sample: meta.id,
@@ -42,7 +42,7 @@ workflow DEEPVARIANT_CALLER {
                             }
 
     // fai
-    fai = reads_fasta.map{ meta, cram, crai, interval, fasta_file_name, fasta, fai ->
+    fai = reads_fasta.map{ meta, bam, bai, interval, fasta_file_name, fasta, fai ->
                            [ [ id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
                              fai
                            ]
@@ -53,7 +53,7 @@ workflow DEEPVARIANT_CALLER {
     par_bed = [ [], [] ]
 
     // call deepvariant
-    DEEPVARIANT ( cram_crai, fasta, fai, gzi, par_bed )
+    DEEPVARIANT ( bam_bai, fasta, fai, gzi, par_bed )
     ch_versions = ch_versions.mix ( DEEPVARIANT.out.versions.first() )
 
     // group the vcf files together by sample
