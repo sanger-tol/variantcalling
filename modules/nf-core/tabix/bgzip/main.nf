@@ -23,7 +23,7 @@ process TABIX_BGZIP {
     prefix   = task.ext.prefix ?: "${meta.id}"
     in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
     extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
-    output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.bgz"
+    output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
     command = in_bgzip ? '-d' : ''
     // Name the index according to $prefix, unless a name has been requested
     split_args = args.split(' +|=')
