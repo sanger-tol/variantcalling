@@ -49,6 +49,8 @@ workflow INPUT_FILTER_SPLIT {
     SAMTOOLS_FAIDX ( split_fasta,  [[], []])
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
 
+    // SAMTOOLS_FAIDX.out.view()
+
     // join fasta with corresponding fai file
     split_fasta
      .map { meta, fasta -> [ fasta.baseName, fasta ] }
@@ -66,12 +68,17 @@ workflow INPUT_FILTER_SPLIT {
 
     // combine reads with splitted references
     SAMTOOLS_VIEW.out.bam
-     .join ( SAMTOOLS_VIEW.out.bai )
+     .join ( SAMTOOLS_VIEW.out.bai.mix(SAMTOOLS_VIEW.out.csi) )
      .combine(interval.ifEmpty([[]]))
      .combine ( fasta_fai )
      .set { bam_bai_fasta_fai }
 
+    // SAMTOOLS_VIEW.out.bam.view()
+    // SAMTOOLS_VIEW.out.bai.view()
+    // SAMTOOLS_VIEW.out.csi.view()
+
+
     emit:
-    reads_fasta    = bam_bai_fasta_fai  // channel: [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ]
+    reads_fasta    = bam_bai_fasta_fai  // channel: [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ] !!! Attension : bai_channel actually contains csi file
     versions       = ch_versions          // channel: [ versions.yml ]
 }

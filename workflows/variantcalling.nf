@@ -141,7 +141,6 @@ workflow VARIANTCALLING {
             | set { ch_vector_db }
             ch_versions = ch_versions.mix ( UNTAR.out.versions )
 
-
         } else {
 
             Channel.fromPath ( params.vector_db )
@@ -157,7 +156,7 @@ workflow VARIANTCALLING {
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
         ALIGN_PACBIO.out.bam
-            .join( ALIGN_PACBIO.out.bai )
+            .join( ALIGN_PACBIO.out.csi )
             .set{ ch_aligned_reads }
 
     } else {
@@ -178,6 +177,8 @@ workflow VARIANTCALLING {
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
+
+
     INPUT_FILTER_SPLIT (
         ch_fasta,
         ch_aligned_reads,
@@ -188,7 +189,7 @@ workflow VARIANTCALLING {
 
 
     //
-    // SUBWORKFLOW: call deepvariant
+    // SUBWORKFLOW: call DeepVariant
     //
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta,
@@ -205,17 +206,22 @@ workflow VARIANTCALLING {
         .set{ vcf }
 
 
+
     //
     // SUBWORKFLOW: run Himut
     //
 
+    // get assembly report from ch_interval
     RUN_HIMUT (
-        ch_genome, // fasta
-        // ch_fasta_fai
-        // channel_of_assembly_report
-        // ch_aligned_reads, // bam and bai
+        ch_fasta,
+        ch_genome_index_fai,
+        ch_interval,
+        // ch_assembly_report,   // for region_list
+        ALIGN_PACBIO.out.bam,    // bam
+        ALIGN_PACBIO.out.bai,    // bai
         DEEPVARIANT_CALLER.out.compressed_vcf,
-        DEEPVARIANT_CALLER.out.vcf_tbi
+        DEEPVARIANT_CALLER.out.vcf_tbi,
+        ch_genome_info
     )
     ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
 

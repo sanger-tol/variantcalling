@@ -3,6 +3,7 @@
 //
 
 include { SAMTOOLS_VIEW     } from '../../modules/nf-core/samtools/view/main'
+include { SAMTOOLS_INDEX    } from '../../modules/nf-core/samtools/index'
 include { SAMTOOLS_STATS    } from '../../modules/nf-core/samtools/stats/main'
 include { SAMTOOLS_FLAGSTAT } from '../../modules/nf-core/samtools/flagstat/main'
 include { SAMTOOLS_IDXSTATS } from '../../modules/nf-core/samtools/idxstats/main'
@@ -10,12 +11,21 @@ include { SAMTOOLS_IDXSTATS } from '../../modules/nf-core/samtools/idxstats/main
 
 workflow CONVERT_STATS {
     take:
-    bam      // channel: [ val(meta), /path/to/bam, /path/to/bai]
-    fasta    // channel: [ val(meta), /path/to/fasta ]
+    himut_bam // channel: [ val(meta), /path/to/bam]
+    bam       // channel: [ val(meta), /path/to/bam, /path/to/bai]
+    fasta     // channel: [ val(meta), /path/to/fasta ]
 
 
     main:
     ch_versions = Channel.empty()
+
+
+
+    // generate bai index as Himut input
+    SAMTOOLS_INDEX (himut_bam)
+    ch_versions = ch_versions.mix ( SAMTOOLS_INDEX.out.versions )
+
+
 
     // Convert input to BAM
     SAMTOOLS_VIEW ( bam, fasta, [ ] )
@@ -24,8 +34,8 @@ workflow CONVERT_STATS {
 
     // Combine BAM and BAI into one channel
     SAMTOOLS_VIEW.out.bam
-    | join ( SAMTOOLS_VIEW.out.bai )
-    | set { ch_bam_bai }
+        .join ( SAMTOOLS_VIEW.out.bai.mix(SAMTOOLS_VIEW.out.csi) )
+        .set { ch_bam_bai }
 
 
     // Calculate statistics
@@ -44,9 +54,10 @@ workflow CONVERT_STATS {
 
 
     emit:
-    bam     = SAMTOOLS_VIEW.out.bam            // channel: [ val(meta), /path/to/bam ]
-    bai     = SAMTOOLS_VIEW.out.bai            // channel: [ val(meta), /path/to/bai ]
-    stats    = SAMTOOLS_STATS.out.stats          // channel: [ val(meta), /path/to/stats ]
+    bam      = SAMTOOLS_VIEW.out.bam             // channel: [ val(meta), /path/to/bam      ]
+    csi      = SAMTOOLS_VIEW.out.csi             // channel: [ val(meta), /path/to/csi      ]
+    bai      = SAMTOOLS_INDEX.out.bai            // channel: [ val(meta), /path/to/bai      ]
+    stats    = SAMTOOLS_STATS.out.stats          // channel: [ val(meta), /path/to/stats    ]
     flagstat = SAMTOOLS_FLAGSTAT.out.flagstat    // channel: [ val(meta), /path/to/idxstats ]
     idxstats = SAMTOOLS_IDXSTATS.out.idxstats    // channel: [ val(meta), /path/to/flagstat ]
     versions = ch_versions                       // channel: [ versions.yml ]

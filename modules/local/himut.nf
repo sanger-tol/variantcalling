@@ -1,29 +1,30 @@
 process HIMUT {
-    tag "$bam.baseName"
+    tag "$meta.id"
+    label 'process_medium'
 
     container "quay.io/sanger-tol/himut:1.0.0-c1"
 
     input:
-    // tuple val(meta), path(fasta), path(fasta_index)
-    // tuple val(meta), path(bam), path(bam_index)
-    // tuple val(meta), path(vcf_input), path(vcf_index)
-    path fasta
-    path fasta_index
-    path assembly_report
-    path bam
-    path bam_index
-    path vcf_input
-    path vcf_index
+    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta_index)
+    tuple val(meta), path(assembly_report)
+    tuple val(meta), path(bam)
+    tuple val(meta), path(bam_index)
+    tuple val(meta), path(vcf_input)
+    tuple val(meta), path(vcf_index)
 
     output:
-    // tuple val(meta), path("*.vcf"), emit: vcf_output
-    path  ("*.vcf"), emit: vcf_output
-    path  "versions.yml", emit: versions
+    tuple val(meta), path("*.vcf") , emit: vcf_output
+    path  "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Temporary rename the compressed VCF files (.gz) as input.vcf.bgz, as the vcf_input of Himut
+    // Identify sex chromosomes (labelled with X/Y/Z/W in assembly report column 3), generate a sex_chromosomes.txt that contains the respective accession numbers
+    // List the first column of fasta index (all the chromosome accession numbers), exclude those in sex_chromosomes.txt,
+    //     generate region_list.txt as the region_list input of Himut
     """
     ln -s ${vcf_input} input.vcf.bgz
     ln -s ${vcf_index} input.vcf.bgz.tbi

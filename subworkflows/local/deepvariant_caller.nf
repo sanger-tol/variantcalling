@@ -13,7 +13,7 @@ include { TABIX_TABIX as TABIX_TBI                        }   from '../../module
 
 workflow DEEPVARIANT_CALLER {
     take:
-    reads_fasta    // [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ]
+    reads_fasta    // [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai     ]
     max_length     // [ val(max_length) - maximum chromosome length in the fasta file  ]
 
     main:
@@ -100,7 +100,7 @@ workflow DEEPVARIANT_CALLER {
     // index the compressed files in two formats for maximum compatibility (each has its own limitation)
     // select the type of index to use based on the maximum sequence length
     ch_compressed_vcf
-        .combine(max_length)
+        .combine( max_length )
         .map { meta_vcf, vcf, meta -> [ meta_vcf + meta, vcf ] }
         .branch { meta, vcf ->
         tbi_and_csi: meta.max_length < 2**29
@@ -123,12 +123,12 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = ch_versions.mix ( GVCF_STATS_REPORT.out.versions.first() )
 
     emit:
-    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf) ]
-    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf          // channel: [ val(meta), path(gvcf) ]
-    compressed_vcf    = ch_compressed_vcf            // channel: [ val(meta), path(output)]
-    vcf_csi  = ch_indexed_vcf_csi                    // channel: [ val(meta), path(csi)]
-    vcf_tbi  = ch_indexed_vcf_tbi                    // channel: [ val(meta), path(tbi)]
+    vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf)    ]
+    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf          // channel: [ val(meta), path(gvcf)   ]
+    compressed_vcf    = ch_compressed_vcf            // channel: [ val(meta), path(output) ]
+    vcf_csi  = ch_indexed_vcf_csi                    // channel: [ val(meta), path(csi)    ]
+    vcf_tbi  = ch_indexed_vcf_tbi                    // channel: [ val(meta), path(tbi)    ]
     vcf_stats_report  = VCF_STATS_REPORT.out.report  // channel: [ val(meta), path(report) ]
     gvcf_stats_report = GVCF_STATS_REPORT.out.report // channel: [ val(meta), path(report) ]
-    versions = ch_versions                           // channel: [ versions.yml ]
+    versions = ch_versions                           // channel: [ versions.yml            ]
 }
