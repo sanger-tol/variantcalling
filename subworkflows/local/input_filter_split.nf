@@ -3,6 +3,7 @@
 //
 
 include { SAMTOOLS_FAIDX } from '../../modules/nf-core/samtools/faidx/main'
+include { SAMTOOLS_INDEX } from '../../modules/nf-core/samtools/index'
 include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
 include { CAT_CAT        } from '../../modules/nf-core/cat/cat/main'
 
@@ -49,8 +50,6 @@ workflow INPUT_FILTER_SPLIT {
     SAMTOOLS_FAIDX ( split_fasta,  [[], []])
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
 
-    // SAMTOOLS_FAIDX.out.view()
-
     // join fasta with corresponding fai file
     split_fasta
      .map { meta, fasta -> [ fasta.baseName, fasta ] }
@@ -73,12 +72,21 @@ workflow INPUT_FILTER_SPLIT {
      .combine ( fasta_fai )
      .set { bam_bai_fasta_fai }
 
-    // SAMTOOLS_VIEW.out.bam.view()
-    // SAMTOOLS_VIEW.out.bai.view()
-    // SAMTOOLS_VIEW.out.csi.view()
+    // take the filtered bam file and index the file, as the input of Himut
+    SAMTOOLS_VIEW.out.bam
+        .set { filtered_bam }
+
+    SAMTOOLS_INDEX ( filtered_bam )
+    ch_versions = ch_versions.mix ( SAMTOOLS_INDEX.out.versions )
+
+
+    // filtered_bam.view()
+    // SAMTOOLS_INDEX.out.bai.view()
 
 
     emit:
-    reads_fasta    = bam_bai_fasta_fai  // channel: [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ] !!! Attension : bai_channel actually contains csi file
-    versions       = ch_versions          // channel: [ versions.yml ]
+    bam            = filtered_bam            // channel: [ val(meta), bam ]
+    bai            = SAMTOOLS_INDEX.out.bai  // channel: [ val(meta), bai ]
+    reads_fasta    = bam_bai_fasta_fai       // channel: [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ][ Attension : bai channel actually contains csi file ]
+    versions       = ch_versions             // channel: [ versions.yml   ]
 }

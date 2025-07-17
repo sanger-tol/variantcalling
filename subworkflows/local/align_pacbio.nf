@@ -46,14 +46,13 @@ workflow ALIGN_PACBIO {
     | map { meta, bam -> [ meta, bam, [] ] }
     | set { ch_sort }
 
-    CONVERT_STATS ( SAMTOOLS_MERGE.out.bam, ch_sort, fasta )
+    CONVERT_STATS ( ch_sort, fasta )
     ch_versions = ch_versions.mix ( CONVERT_STATS.out.versions )
 
 
     emit:
     bam      = CONVERT_STATS.out.bam         // channel: [ val(meta), /path/to/bam ]
     csi      = CONVERT_STATS.out.csi         // channel: [ val(meta), /path/to/csi ]
-    bai      = CONVERT_STATS.out.bai         // channel: [ val(meta), /path/to/bai ]
     stats    = CONVERT_STATS.out.stats       // channel: [ val(meta), /path/to/stats ]
     idxstats = CONVERT_STATS.out.idxstats    // channel: [ val(meta), /path/to/idxstats ]
     flagstat = CONVERT_STATS.out.flagstat    // channel: [ val(meta), /path/to/flagstat ]

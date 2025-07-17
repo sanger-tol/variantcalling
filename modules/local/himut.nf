@@ -1,6 +1,6 @@
 process HIMUT {
-    // tag "$meta.id"
-    tag "$bam.baseName"
+    tag "$meta.id"
+    // tag "$bam.baseName"
     label 'process_medium'
 
     // container "quay.io/sanger-tol/himut:1.0.0-c1"
@@ -28,20 +28,17 @@ process HIMUT {
     tuple val(meta), path(fasta)
     tuple val(meta), path(fasta_index)
     path(assembly_report)
-
     tuple val(meta), path(bam)
-    // path(bam)
     tuple val(meta), path(bam_index)
-    // path(bam_index)
-
     tuple val(meta), path(vcf_input)
     tuple val(meta), path(vcf_index)
 
 
     output:
     // tuple val(meta), path("*.vcf") , emit: vcf_output
-    path  "*.vcf"         , emit: vcf_output
-    path  "versions.yml"  , emit: versions
+    tuple val(meta), path("*.himut.vcf")                     , emit: vcf_output
+    tuple val(meta), path("*.single_molecule_mutations.vcf") , emit: smm_vcf_output
+    path  "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

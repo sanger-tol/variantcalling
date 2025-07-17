@@ -277,9 +277,9 @@ workflow VARIANTCALLING {
         ch_genome,
         ch_himut_fai,
         ch_assembly_report,
-        ALIGN_PACBIO.out.bam,
+        INPUT_FILTER_SPLIT.out.bam,
         // params.himut_bam,
-        ALIGN_PACBIO.out.bai,
+        INPUT_FILTER_SPLIT.out.bai,
         // params.himut_bam_index,
 
         DEEPVARIANT_CALLER.out.compressed_vcf,
