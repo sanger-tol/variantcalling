@@ -9,20 +9,20 @@ include { TABIX_TABIX as TABIX_TBI }   from '../../modules/nf-core/tabix/tabix/m
 
 workflow RUN_HIMUT {
     take:
-    genome                // [ val(meta), fasta           ]
-    genome_index          // [ val(meta), fai             ]
-    assembly_report       // [ val(meta), assembly_report ]
-    aligned_reads         // [ val(meta), bam             ]
-    aligned_reads_index   // [ val(meta), bai             ]
-    vcf_input             // [ val(meta), vcf_input       ]
-    vcf_index             // [ val(meta), vcf_tbi         ]
-    max_length            // [ val(max_length)            ]
+    fasta                // [ val(meta), fasta           ]
+    fasta_index          // [ val(meta), fai             ]
+    assembly_report      // [ val(meta), assembly_report ]
+    bam                  // [ val(meta), bam             ]
+    bam_index            // [ val(meta), bai             ]
+    vcf_input            // [ val(meta), vcf_input       ]
+    vcf_index            // [ val(meta), vcf_tbi         ]
+    max_length           // [ val(max_length)            ]
 
     main:
     ch_versions = Channel.empty()
 
     // run Himut
-    HIMUT ( genome, genome_index, assembly_report, aligned_reads, aligned_reads_index, vcf_input, vcf_index )
+    HIMUT ( fasta, fasta_index, assembly_report, bam, bam_index, vcf_input, vcf_index )
     ch_versions = ch_versions.mix ( HIMUT.out.versions.first() )
 
     // compress the vcf output of Himut

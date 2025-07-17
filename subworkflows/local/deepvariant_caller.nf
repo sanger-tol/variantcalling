@@ -93,7 +93,8 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
 
     // compress the vcf and gvcf files
-    vcf_to_compress   = BCFTOOLS_CONCAT_VCF.out.vcf.mix ( BCFTOOLS_CONCAT_GVCF.out.vcf )
+    vcf_to_compress   = BCFTOOLS_CONCAT_VCF.out.vcf
+    // vcf_to_compress   = BCFTOOLS_CONCAT_VCF.out.vcf.mix ( BCFTOOLS_CONCAT_GVCF.out.vcf )
     ch_compressed_vcf = BGZIP ( vcf_to_compress ).output
     ch_versions       = ch_versions.mix ( BGZIP.out.versions.first() )
 
