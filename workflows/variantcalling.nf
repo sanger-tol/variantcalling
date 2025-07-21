@@ -46,7 +46,7 @@ if ( (params.include_positions) && (params.exclude_positions) ){
 
 
 
-params.assembly_report = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1_assembly_report.txt"
+// params.assembly_report = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1_assembly_report.txt"
 if (params.assembly_report){ ch_assembly_report = Channel.fromPath(params.assembly_report) } else { error 'Assembly report missing' }
 
 // params.himut_fasta = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.fasta"

@@ -27,7 +27,7 @@ process HIMUT {
 
     tuple val(meta), path(fasta)
     tuple val(meta), path(fasta_index)
-    path(assembly_report)
+    path (assembly_report)
     tuple val(meta), path(bam)
     tuple val(meta), path(bam_index)
     tuple val(meta), path(vcf_input)
@@ -36,9 +36,9 @@ process HIMUT {
 
     output:
     // tuple val(meta), path("*.vcf") , emit: vcf_output
-    tuple val(meta), path("*.himut.vcf")                     , emit: vcf_output
-    tuple val(meta), path("*.single_molecule_mutations.vcf") , emit: smm_vcf_output
-    path  "versions.yml"                                     , emit: versions
+    tuple val(meta), path("*.somatic.vcf")                           , emit: vcf_output
+    tuple val(meta), path("*.somatic.single_molecule_mutations.vcf") , emit: smm_vcf_output
+    path  "versions.yml"                                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,7 +63,7 @@ process HIMUT {
         --region_list regions_list.txt \\
         --vcf input.vcf.bgz \\
         --non_human_sample \\
-        -o ${bam.baseName}.himut.vcf \\
+        -o ${bam.baseName}.somatic.vcf \\
         -t ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml

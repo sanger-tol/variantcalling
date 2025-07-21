@@ -26,7 +26,7 @@ workflow RUN_HIMUT {
     ch_versions = ch_versions.mix ( HIMUT.out.versions.first() )
 
     // compress the vcf outputs of Himut
-    himut_vcf_to_compress   = HIMUT.out.vcf_output.mix ( HIMUT.out.smm_vcf_output )
+    himut_vcf_to_compress   = HIMUT.out.vcf_output  // somatic.single_molecule_mutations.vcf is not included in the final output
     ch_compressed_himut_vcf = BGZIP ( himut_vcf_to_compress ).output
     ch_versions             = ch_versions.mix ( BGZIP.out.versions.first() )
 
