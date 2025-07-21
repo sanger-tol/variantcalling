@@ -44,19 +44,7 @@ if ( (params.include_positions) && (params.exclude_positions) ){
     ch_positions = []
 }
 
-
-
-// params.assembly_report = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1_assembly_report.txt"
-if (params.assembly_report){ ch_assembly_report = Channel.fromPath(params.assembly_report) } else { error 'Assembly report missing' }
-
-// params.himut_fasta = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.fasta"
-// params.himut_fasta_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.fasta.fai"
-// params.himut_assembly_report = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1_assembly_report.txt"
-// params.himut_bam = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam"
-// params.himut_bam_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1.pri.bam.bai"
-// params.himut_vcf_input = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.gz"
-// params.himut_vcf_index = "/nfs/treeoflife-01/teams/tolit/users/yz12/pipelines/variant_calling/add_himut/assets/data/GCA_937595015.1.pacbio.ilPolIcar1_deepvariant.vcf.gz.tbi"
-
+if (params.assembly_report){ ch_assembly_report = Channel.fromPath(params.assembly_report) } else { exit 1, 'Assembly report missing' }
 
 
 /*
@@ -88,7 +76,6 @@ include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS   } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 include { SAMTOOLS_FAIDX                } from '../modules/nf-core/samtools/faidx/main'
 include { SAMTOOLS_FAIDX as FASTA_INDEX } from '../modules/nf-core/samtools/faidx/main'
-// include { GUNZIP as GUNZIP_FASTA        } from '../modules/nf-core/gunzip/main'
 include { UNTAR                         } from '../modules/nf-core/untar/main'
 
 /*
@@ -107,10 +94,6 @@ workflow VARIANTCALLING {
         .first()
         .set { ch_genome }
 
-    // Copy the fasta channel to unzip the fasta and use in Himut
-    // ch_himut_genome_gz = ch_genome.map { it }
-
-
     //
     // check reference fasta index given or not
     //
@@ -119,15 +102,6 @@ workflow VARIANTCALLING {
 
         SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
         ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
-
-
-        // unzip and index the fasta file, as the input of Himut
-        // ch_himut_fasta = GUNZIP_FASTA ( ch_himut_genome_gz ).gunzip
-        // ch_versions = ch_versions.mix( GUNZIP_FASTA.out.versions.first() )
-
-        // ch_himut_fai = FASTA_INDEX ( GUNZIP_FASTA.out.gunzip,  [[], []]  ).fai
-        // ch_versions = ch_versions.mix( FASTA_INDEX.out.versions )
-
 
         // generate fai that is used to determine the maximum length of chromosome
         ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
@@ -146,12 +120,10 @@ workflow VARIANTCALLING {
         }
     }
 
-    // copy the fai file as the input for Himut
-    ch_himut_fai = ch_genome_index_fai.map { it }
-
     ch_genome_index_fai
         .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
         .set { ch_genome_info }
+
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -207,10 +179,10 @@ workflow VARIANTCALLING {
 
     }
 
+
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
-
 
     INPUT_FILTER_SPLIT (
         ch_fasta,
@@ -243,45 +215,12 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: run Himut
     //
 
-
-    // ch_himut_fasta.view()
-    // ch_himut_fai.view()
-    // ch_assembly_report.view()
-    // ALIGN_PACBIO.out.bam.view()
-    // ALIGN_PACBIO.out.bai.view()
-    // DEEPVARIANT_CALLER.out.compressed_vcf.view()
-    // DEEPVARIANT_CALLER.out.vcf_tbi.view()
-    // ch_genome_info.view()
-
-
     RUN_HIMUT (
-        // ch_genome,
-        // ch_himut_fai,
-        // ch_assembly_report,      // for region_list
-        // ALIGN_PACBIO.out.bam,    // bam
-        // ALIGN_PACBIO.out.bai,    // bai
-        // DEEPVARIANT_CALLER.out.compressed_vcf,
-        // DEEPVARIANT_CALLER.out.vcf_tbi,
-        // ch_genome_info
-
-        // params.himut_fasta,
-        // params.himut_fasta_index,
-        // params.himut_assembly_report,
-        // params.himut_bam,
-        // params.himut_bam_index,
-        // params.himut_vcf_input,
-        // params.himut_vcf_index,
-        // ch_genome_info
-
-
         ch_genome,
-        ch_himut_fai,
+        ch_genome_index_fai,
         ch_assembly_report,
         INPUT_FILTER_SPLIT.out.bam,
-        // params.himut_bam,
         INPUT_FILTER_SPLIT.out.bai,
-        // params.himut_bam_index,
-
         DEEPVARIANT_CALLER.out.compressed_vcf,
         DEEPVARIANT_CALLER.out.vcf_tbi,
         ch_genome_info
@@ -334,6 +273,7 @@ def get_sequence_map(fai_file) {
     }
     return sequence_map
 }
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

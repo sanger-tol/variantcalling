@@ -72,16 +72,13 @@ workflow INPUT_FILTER_SPLIT {
      .combine ( fasta_fai )
      .set { bam_bai_fasta_fai }
 
+
     // take the filtered bam file and index the file, as the input of Himut
     SAMTOOLS_VIEW.out.bam
         .set { filtered_bam }
 
     SAMTOOLS_INDEX ( filtered_bam )
     ch_versions = ch_versions.mix ( SAMTOOLS_INDEX.out.versions )
-
-
-    // filtered_bam.view()
-    // SAMTOOLS_INDEX.out.bai.view()
 
 
     emit:

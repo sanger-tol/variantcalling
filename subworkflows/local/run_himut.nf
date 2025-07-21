@@ -1,5 +1,5 @@
 //
-// Run Himut to analyse VCF
+// Run Himut to analyse somatic VCF
 //
 
 include { HIMUT                    }   from '../../modules/local/himut.nf'
@@ -29,7 +29,6 @@ workflow RUN_HIMUT {
     himut_vcf_to_compress   = HIMUT.out.vcf_output  // somatic.single_molecule_mutations.vcf is not included in the final output
     ch_compressed_himut_vcf = BGZIP ( himut_vcf_to_compress ).output
     ch_versions             = ch_versions.mix ( BGZIP.out.versions.first() )
-
 
     // index the compressed himut vcf files in two formats for maximum compatibility (each has its own limitation)
     // select the type of index to use based on the maximum sequence length

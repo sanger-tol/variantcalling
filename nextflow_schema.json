@@ -57,6 +57,10 @@
                     "type": "string",
                     "description": "Path to the index file of the FASTA genome file, either fai or gzi."
                 },
+                "assembly_report": {
+                    "type": "string",
+                    "description": "Path to the assembly report txt file to generate regions list"
+                },
                 "align": {
                     "type": "boolean",
                     "description": "Align the input reads to the reference"
