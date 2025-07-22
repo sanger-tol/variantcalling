@@ -24,7 +24,7 @@ process HIMUT {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.${bam.baseName}"
 
     // Himut takes reference fasta, fai, regions list, bam, bai, and germline vcf file as the input,
     //     and output somatic vcf (alternate count >= 1) + single_molecule_mutation somatic vcf (alternate count = 1).
