@@ -23,7 +23,7 @@ if (params.fai){
         ||
         ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
     ){
-      exit 1, 'Reference fasta and its index file format not matched!'
+        exit 1, 'Reference fasta and its index file format not matched!'
     }
     ch_fai = Channel.fromPath(params.fai)
 } else {
