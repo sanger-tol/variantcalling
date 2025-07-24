@@ -19,20 +19,17 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | Deepvariant | 1.9.0       | 1.1.0       |
 | Himut       |             | 1.0.0       |
 
-
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
 ### Parameters
 
 This release with the following initial parameters:
 
-| Old parameter | New parameter       |
-| ------------- | ------------------- |
-|               | --assembly_report   |
-
+| Old parameter | New parameter     |
+| ------------- | ----------------- |
+|               | --assembly_report |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
-
 
 ## [[1.1.8](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.8)] - Shang Tang (patch 8) - [2025-07-03]
 
