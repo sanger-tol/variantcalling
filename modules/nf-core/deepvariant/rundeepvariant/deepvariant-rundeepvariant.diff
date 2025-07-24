@@ -1,4 +1,5 @@
-Changes in module 'nf-core/deepvariant/rundeepvariant'
+Changes in component 'nf-core/deepvariant/rundeepvariant'
+Changes in 'deepvariant/rundeepvariant/meta.yml':
 --- modules/nf-core/deepvariant/rundeepvariant/meta.yml
 +++ modules/nf-core/deepvariant/rundeepvariant/meta.yml
 @@ -79,16 +79,16 @@
@@ -42,8 +43,18 @@ Changes in module 'nf-core/deepvariant/rundeepvariant'
        - versions.yml:
            type: file
 
+Changes in 'deepvariant/rundeepvariant/main.nf':
 --- modules/nf-core/deepvariant/rundeepvariant/main.nf
 +++ modules/nf-core/deepvariant/rundeepvariant/main.nf
+@@ -6,7 +6,7 @@
+     // https://github.com/bioconda/bioconda-recipes/pull/45214#issuecomment-1890937836
+     // BUG https://github.com/nf-core/modules/issues/1754
+     // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
+-    container "docker.io/google/deepvariant:1.9.0"
++    container "docker.io/google/deepvariant:1.1.0"
+ 
+     input:
+     tuple val(meta), path(input), path(index), path(intervals)
 @@ -16,11 +16,11 @@
      tuple val(meta5), path(par_bed)
  
@@ -62,4 +73,9 @@ Changes in module 'nf-core/deepvariant/rundeepvariant'
      when:
      task.ext.when == null || task.ext.when
 
+'modules/nf-core/deepvariant/rundeepvariant/tests/nextflow-non-autosomal-calling.config' is unchanged
+'modules/nf-core/deepvariant/rundeepvariant/tests/main.nf.test' is unchanged
+'modules/nf-core/deepvariant/rundeepvariant/tests/nextflow.config' is unchanged
+'modules/nf-core/deepvariant/rundeepvariant/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/deepvariant/rundeepvariant/tests/nextflow-intervals.config' is unchanged
 ************************************************************
