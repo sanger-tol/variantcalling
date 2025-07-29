@@ -90,7 +90,7 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
+        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ ], fasta ] }
         .first()
         .set { ch_genome }
 
@@ -156,7 +156,8 @@ workflow VARIANTCALLING {
         ALIGN_PACBIO (
             ch_genome,
             INPUT_CHECK.out.reads,
-            ch_vector_db
+            ch_vector_db,
+            ch_genome_info
         )
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 

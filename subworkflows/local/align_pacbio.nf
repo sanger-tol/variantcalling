@@ -13,6 +13,7 @@ workflow ALIGN_PACBIO {
     fasta    // channel: [ val(meta), /path/to/fasta ]
     reads    // channel: [ val(meta), /path/to/datafile ]
     db       // channel: /path/to/vector_db
+    genome_info
 
 
     main:
@@ -25,7 +26,7 @@ workflow ALIGN_PACBIO {
 
 
     // Align Fastq to Genome
-    MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false, false )
+    MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false, false, genome_info )
     ch_versions = ch_versions.mix ( MINIMAP2_ALIGN.out.versions.first() )
 
 
