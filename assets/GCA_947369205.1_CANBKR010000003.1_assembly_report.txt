@@ -28,4 +28,4 @@
 #
 # Sequence-Name	Sequence-Role	Assigned-Molecule	Assigned-Molecule-Location/Type	GenBank-Accn	Relationship	RefSeq-Accn	Assembly-Unit	Sequence-Length	UCSC-style-name
 scaffold_16	unplaced-scaffold	na	na	CANBKR010000003.1	<>	na	Primary Assembly	77523	na
-scaffold_MT_1	assembled-molecule	MT	Mitochondrion	OX376310.1	<>	na	non-nuclear	17342	na
+
