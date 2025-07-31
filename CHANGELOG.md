@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.8 + Himut] - Shang Tang (plus Himut) - [2025-07-22]
+## [1.1.8 + Himut] - Shang Tang (plus Himut) - [2025-xx-xx]
 
 ### Enhancements & fixes
 
@@ -51,7 +51,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency  | Old version | New version |
 | ----------- | ----------- | ----------- |
-| Deepvariant | 1.6.        | 1.9.0       |
+| Deepvariant | 1.6.1       | 1.9.0       |
 | HTSlib      |             | 1.21        |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
