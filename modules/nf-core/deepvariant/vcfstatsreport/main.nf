@@ -1,6 +1,6 @@
 process DEEPVARIANT_VCFSTATSREPORT {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     // FIXME Conda is not supported at the moment
     // BUG https://github.com/nf-core/modules/issues/1754
