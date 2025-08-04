@@ -113,7 +113,7 @@ workflow VARIANTCALLING {
             .first()
             .set { ch_genome_index }
 
-        ch_genome_index_fai  = ch_genome_index
+        ch_genome_index_fai = ch_genome_index
         if ( !params.fai.endsWith(".fai") ) {
             ch_genome_index_fai = SAMTOOLS_FAIDX ( ch_genome,  [[], []] ).fai
             ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )

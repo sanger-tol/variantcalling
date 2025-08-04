@@ -46,7 +46,7 @@ workflow CONVERT_STATS {
 
     emit:
     bam      = SAMTOOLS_VIEW.out.bam             // channel: [ val(meta), /path/to/bam      ]
-    csi      = SAMTOOLS_VIEW.out.csi             // channel: [ val(meta), /path/to/csi      ] ( SAMTOOLS_VIEW.out.bai in empty )
+    csi      = SAMTOOLS_VIEW.out.csi             // channel: [ val(meta), /path/to/csi      ] ( channel SAMTOOLS_VIEW.out.bai is empty )
     stats    = SAMTOOLS_STATS.out.stats          // channel: [ val(meta), /path/to/stats    ]
     flagstat = SAMTOOLS_FLAGSTAT.out.flagstat    // channel: [ val(meta), /path/to/idxstats ]
     idxstats = SAMTOOLS_IDXSTATS.out.idxstats    // channel: [ val(meta), /path/to/flagstat ]
