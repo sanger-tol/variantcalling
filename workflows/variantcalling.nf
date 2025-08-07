@@ -233,7 +233,7 @@ def get_sequence_map(fai_file) {
     fai_file.eachLine { line ->
         def lspl   = line.split('\t')
         def chrom  = lspl[0]
-        def length = lspl[1].toInteger()
+        def length = lspl[1].toLong()
         n_sequences ++
         total_length += length
         if (length > max_length) {
