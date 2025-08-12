@@ -13,7 +13,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { VARIANTCALLING  } from './workflows/variantcalling'
+include { VARIANTCALLING          } from './workflows/variantcalling'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_variantcalling_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_variantcalling_pipeline'
 /*
@@ -28,7 +28,12 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_vari
 workflow SANGERTOL_VARIANTCALLING {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    reads // channel: samplesheet read in from --input
+    fasta
+    fai
+    interval
+    split_fasta_cutoff
+    include_exclude_positions
 
     main:
 
@@ -36,7 +41,12 @@ workflow SANGERTOL_VARIANTCALLING {
     // WORKFLOW: Run pipeline
     //
     VARIANTCALLING (
-        samplesheet
+        reads,
+        fasta,
+        fai,
+        interval,
+        split_fasta_cutoff,
+        include_exclude_positions
     )
 }
 /*
@@ -64,7 +74,12 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     SANGERTOL_VARIANTCALLING (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.reads,
+        PIPELINE_INITIALISATION.out.fasta,
+        PIPELINE_INITIALISATION.out.fai,
+        PIPELINE_INITIALISATION.out.interval,
+        PIPELINE_INITIALISATION.out.split_fasta_cutoff,
+        PIPELINE_INITIALISATION.out.positions
     )
     //
     // SUBWORKFLOW: Run completion tasks

@@ -64,32 +64,50 @@ workflow PIPELINE_INITIALISATION {
     )
 
     //
-    // Create channel from input file provided through params.input
+    // Custom validation for pipeline parameters
     //
+    validateInputParameters()
 
+    // Check input path parameters to see if they exist
+    def checkPathParamList = [
+        params.input,
+        params.fasta,
+        params.fai,
+        params.interval,
+        params.include_positions,
+        params.exclude_positions
+    ]
+
+    for (param in checkPathParamList) {
+        if (param) { file(param, checkIfExists: true) }
+    }
+
+    // Create channel from input file provided through params.input
     Channel
-        .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
+        .fromList( samplesheetToList(params.input, "${projectDir}/assets/schema_input.json") )
+        .map { row ->
+            println row
+            // create meta map
+            def meta = [:]
+            meta['id']        = row[0].sample
+            meta['sample']    = row[0].sample.split('_')[0..-2].join('_')
+            meta['datatype']  = row[1].datatype
+            if ( meta.datatype == "pacbio" ) { meta['platform'] = "PACBIO" }
+            meta.read_group    = "\'@RG\\tID:" + row.datafile.split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + meta.platform + "\\tSM:" + meta.sample + "\'"
+            return [ meta, file( row[2].datafile, checkIfExists: true) ]
         }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
-        .set { ch_samplesheet }
+        .set { ch_input }
+    validateInputSamplesheet(ch_input)
+        .set { ch_validated_input }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    reads              = ch_validated_input  // channel: [ val(meta), data ]
+    fasta              = ch_fasta            // channel: [ val(meta), data ]
+    fai                = ch_fai              // channel: [ val(meta), data ]
+    interval           = ch_interval         // channel: [ val(meta), data ]
+    split_fasta_cutoff = split_fasta_cutoff  // channel: int
+    positions          = ch_positions        // channel: [ val(meta), data ]
+    versions = ch_versions                   // channel: [ versions.yml ]
 }
 
 /*
@@ -145,19 +163,69 @@ workflow PIPELINE_COMPLETION {
 */
 
 //
-// Validate channels from input samplesheet
+// Check and validate pipeline parameters
 //
-def validateInputSamplesheet(input) {
-    def (metas, fastqs) = input[1..2]
 
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
+def validateInputParameters() {
+    // Check mandatory parameters
+    if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+    if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
+
+    // Check optional parameters
+    if (params.fai){
+        if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
+            ||
+            ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
+        ){
+            exit 1, 'Reference fasta and its index file format not matched!'
+        }
+        ch_fai = Channel.fromPath(params.fai)
+    } else {
+        ch_fai = Channel.empty()
     }
 
-    return [ metas[0], fastqs ]
+    if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
+
+    if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
+
+    if ( (params.include_positions) && (params.exclude_positions) ){
+        exit 1, 'Only one positions file can be given to include or exclude!'
+    } else if (params.include_positions){
+        ch_positions = Channel.fromPath(params.include_positions)
+    } else if (params.exclude_positions){
+        ch_positions = Channel.fromPath(params.exclude_positions)
+    } else {
+        ch_positions = []
+    }
 }
+
+//
+// Validate channels from input samplesheet
+//
+
+def validateInputSamplesheet(ch_samplesheet) {
+    def seen = [:].withDefault { 0 }
+    def validFormats = [ ".cram", ".bam" ]
+
+    return ch_samplesheet.map { sample ->
+        def (meta, file) = sample
+
+        // Replace spaces with underscores in sample names
+        meta.sample = meta.sample.replace(" ", "_")
+
+        // Validate that the file path is non-empty and has a valid format
+        if (!file || !validFormats.any { file.toString().endsWith(it) }) {
+            error( "Data file is required and must have a valid extension: ${file}" )
+        }
+
+        seen[meta.sample] += 1
+        meta.sample = "${meta.sample}_${seen[meta.sample]}"
+
+        return [meta, file]
+    }
+}
+
+
 //
 // Generate methods description for MultiQC
 //
@@ -219,4 +287,3 @@ def methodsDescriptionText(mqc_methods_yaml) {
 
     return description_html.toString()
 }
-

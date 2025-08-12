@@ -4,7 +4,6 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
@@ -19,7 +18,7 @@ include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_sequencecomposition_pipeline'
+include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_variantcalling_pipeline'
 include { SAMTOOLS_FAIDX         } from '../modules/nf-core/samtools/faidx/main'
 include { UNTAR                  } from '../modules/nf-core/untar/main'
 
@@ -34,9 +33,14 @@ include { UNTAR                  } from '../modules/nf-core/untar/main'
 workflow VARIANTCALLING {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
-    main:
+    ch_reads            // channel: samplesheet read in from --input
+    ch_fasta            // channel: fasta file read in from --fasta
+    ch_fai              // channel: fai file read in from --fai
+    ch_interval         // channel: interval file read in from --interval
+    split_fasta_cutoff
+    ch_positions        // channel: positions to include or exclude in the variant calling
 
+    main:
     ch_versions = Channel.empty()
     ch_fasta
         .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
@@ -73,14 +77,6 @@ workflow VARIANTCALLING {
         .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
         .set { ch_genome_info }
 
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    INPUT_CHECK (
-        ch_input
-    )
-    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
-
 
     //
     // SUBWORKFLOW: align reads if required
@@ -104,7 +100,7 @@ workflow VARIANTCALLING {
 
         ALIGN_PACBIO (
             ch_genome,
-            INPUT_CHECK.out.reads,
+            ch_reads,
             ch_vector_db
         )
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
@@ -121,7 +117,7 @@ workflow VARIANTCALLING {
         INPUT_MERGE (
             ch_genome,
             ch_genome_index,
-            INPUT_CHECK.out.reads,
+            ch_reads
         )
         ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
         ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
@@ -174,7 +170,6 @@ workflow VARIANTCALLING {
             sort: true,
             newLine: true
         ).set { ch_collated_versions }
-    
 
     emit:
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
