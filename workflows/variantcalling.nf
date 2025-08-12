@@ -38,7 +38,6 @@ workflow VARIANTCALLING {
     ch_fasta            // channel: fasta file read in from --fasta
     ch_fai              // channel: fai file read in from --fai
     ch_interval         // channel: interval file read in from --interval
-    split_fasta_cutoff
     ch_positions        // channel: positions to include or exclude in the variant calling
 
     main:
@@ -51,18 +50,21 @@ workflow VARIANTCALLING {
         .set { ch_reads }
     ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
 
-
-
+    //
+    // channel for reference genome
+    //
     ch_fasta
         .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
         .first()
         .set { ch_genome }
 
+    // reference genome parameter
+    if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
+
     //
     // check reference fasta index given or not
     //
-
-    if( params.fai == null ){
+    if( params.fai == null ) {
 
         SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
         ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
@@ -71,7 +73,7 @@ workflow VARIANTCALLING {
         ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
         ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
-    }else{
+    } else {
         ch_fai
             .map { fai -> [ [ 'id': fai.baseName ], fai ] }
             .first()
@@ -91,7 +93,7 @@ workflow VARIANTCALLING {
     //
     // SUBWORKFLOW: align reads if required
     //
-    if( params.align ){
+    if( params.align ) {
 
         if ( params.vector_db.endsWith( '.tar.gz' ) ) {
 
@@ -168,7 +170,6 @@ workflow VARIANTCALLING {
     //
     PROCESS_VCF( vcf, ch_positions )
     ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
-
 
     //
     // Collate and save software versions

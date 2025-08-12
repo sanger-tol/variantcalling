@@ -32,7 +32,6 @@ workflow SANGERTOL_VARIANTCALLING {
     fasta
     fai
     interval
-    split_fasta_cutoff
     include_exclude_positions
 
     main:
@@ -45,7 +44,6 @@ workflow SANGERTOL_VARIANTCALLING {
         fasta,
         fai,
         interval,
-        split_fasta_cutoff,
         include_exclude_positions
     )
 }
@@ -78,7 +76,6 @@ workflow {
         PIPELINE_INITIALISATION.out.fasta,
         PIPELINE_INITIALISATION.out.fai,
         PIPELINE_INITIALISATION.out.interval,
-        PIPELINE_INITIALISATION.out.split_fasta_cutoff,
         PIPELINE_INITIALISATION.out.positions
     )
     //

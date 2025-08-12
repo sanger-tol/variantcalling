@@ -66,7 +66,35 @@ workflow PIPELINE_INITIALISATION {
     //
     // Custom validation for pipeline parameters
     //
-    validateInputParameters()
+
+    // Check mandatory parameters
+    if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+    if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
+
+    // Check optional parameters
+    if (params.fai){
+        if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
+            ||
+            ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
+        ){
+            exit 1, 'Reference fasta and its index file format not matched!'
+        }
+        ch_fai = Channel.fromPath(params.fai)
+    } else {
+        ch_fai = Channel.empty()
+    }
+
+    if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
+
+    if ( (params.include_positions) && (params.exclude_positions) ){
+        exit 1, 'Only one positions file can be given to include or exclude!'
+    } else if (params.include_positions){
+        ch_positions = Channel.fromPath(params.include_positions)
+    } else if (params.exclude_positions){
+        ch_positions = Channel.fromPath(params.exclude_positions)
+    } else {
+        ch_positions = []
+    }
 
     // Check input path parameters to see if they exist
     def checkPathParamList = [
@@ -95,13 +123,12 @@ workflow PIPELINE_INITIALISATION {
         .set { ch_validated_samplesheet }
 
     emit:
-    input              = ch_validated_samplesheet  // channel: [ val(meta), data ]
-    fasta              = ch_fasta                  // channel: [ val(meta), data ]
-    fai                = ch_fai                    // channel: [ val(meta), data ]
-    interval           = ch_interval               // channel: [ val(meta), data ]
-    split_fasta_cutoff = split_fasta_cutoff        // channel: int
-    positions          = ch_positions              // channel: [ val(meta), data ]
-    versions = ch_versions                         // channel: [ versions.yml ]
+    input     = ch_validated_samplesheet
+    fasta     = ch_fasta
+    fai       = ch_fai
+    interval  = ch_interval
+    positions = ch_positions
+    versions  = ch_versions
 }
 
 /*
@@ -155,43 +182,6 @@ workflow PIPELINE_COMPLETION {
     FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
-//
-// Check and validate pipeline parameters
-//
-
-def validateInputParameters() {
-    // Check mandatory parameters
-    if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-    if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
-
-    // Check optional parameters
-    if (params.fai){
-        if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
-            ||
-            ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
-        ){
-            exit 1, 'Reference fasta and its index file format not matched!'
-        }
-        ch_fai = Channel.fromPath(params.fai)
-    } else {
-        ch_fai = Channel.empty()
-    }
-
-    if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
-
-    if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
-
-    if ( (params.include_positions) && (params.exclude_positions) ){
-        exit 1, 'Only one positions file can be given to include or exclude!'
-    } else if (params.include_positions){
-        ch_positions = Channel.fromPath(params.include_positions)
-    } else if (params.exclude_positions){
-        ch_positions = Channel.fromPath(params.exclude_positions)
-    } else {
-        ch_positions = []
-    }
-}
 
 //
 // Validate channels from input samplesheet

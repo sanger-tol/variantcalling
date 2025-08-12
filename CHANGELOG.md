@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update nf-core tools
 
-
 ## [[1.1.8](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.8)] - Shang Tang (patch 8) - [2025-07-03]
 
 ### Enhancements & fixes

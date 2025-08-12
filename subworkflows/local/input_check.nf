@@ -17,7 +17,7 @@ workflow INPUT_CHECK {
 
 
     emit:
-    reads                            // channel: [ val(meta), /path/to/datafile ]
+    reads                          // channel: [ val(meta), /path/to/datafile ]
     versions = ch_versions         // channel: [ versions.yml                 ]
 }
 
