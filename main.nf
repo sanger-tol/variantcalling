@@ -28,7 +28,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_vari
 workflow SANGERTOL_VARIANTCALLING {
 
     take:
-    reads // channel: samplesheet read in from --input
+    input       // channel: samplesheet read in from --input
     fasta
     fai
     interval
@@ -41,7 +41,7 @@ workflow SANGERTOL_VARIANTCALLING {
     // WORKFLOW: Run pipeline
     //
     VARIANTCALLING (
-        reads,
+        input,
         fasta,
         fai,
         interval,
@@ -74,7 +74,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     SANGERTOL_VARIANTCALLING (
-        PIPELINE_INITIALISATION.out.reads,
+        PIPELINE_INITIALISATION.out.input,
         PIPELINE_INITIALISATION.out.fasta,
         PIPELINE_INITIALISATION.out.fai,
         PIPELINE_INITIALISATION.out.interval,

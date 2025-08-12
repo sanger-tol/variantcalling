@@ -4,6 +4,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
@@ -33,7 +34,7 @@ include { UNTAR                  } from '../modules/nf-core/untar/main'
 workflow VARIANTCALLING {
 
     take:
-    ch_reads            // channel: samplesheet read in from --input
+    ch_input            // channel: samplesheet read in from --input
     ch_fasta            // channel: fasta file read in from --fasta
     ch_fai              // channel: fai file read in from --fai
     ch_interval         // channel: interval file read in from --interval
@@ -42,6 +43,16 @@ workflow VARIANTCALLING {
 
     main:
     ch_versions = Channel.empty()
+
+    //
+    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
+    //
+    INPUT_CHECK ( ch_input ).reads
+        .set { ch_reads }
+    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
+
+
+
     ch_fasta
         .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
         .first()
@@ -76,7 +87,6 @@ workflow VARIANTCALLING {
     ch_genome_index_fai
         .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
         .set { ch_genome_info }
-
 
     //
     // SUBWORKFLOW: align reads if required

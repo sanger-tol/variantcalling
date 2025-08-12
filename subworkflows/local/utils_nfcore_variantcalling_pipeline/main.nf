@@ -86,28 +86,22 @@ workflow PIPELINE_INITIALISATION {
     Channel
         .fromList( samplesheetToList(params.input, "${projectDir}/assets/schema_input.json") )
         .map { row ->
-            println row
-            // create meta map
-            def meta = [:]
-            meta['id']        = row[0].sample
-            meta['sample']    = row[0].sample.split('_')[0..-2].join('_')
-            meta['datatype']  = row[1].datatype
-            if ( meta.datatype == "pacbio" ) { meta['platform'] = "PACBIO" }
-            meta.read_group    = "\'@RG\\tID:" + row.datafile.split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + meta.platform + "\\tSM:" + meta.sample + "\'"
-            return [ meta, file( row[2].datafile, checkIfExists: true) ]
+            // println row[0]
+            def meta = row[0] + [id: file(row[0].datafile).baseName]
+            return [meta, file(row[0].datafile, checkIfExists: true)]
         }
-        .set { ch_input }
-    validateInputSamplesheet(ch_input)
-        .set { ch_validated_input }
+        .set { ch_samplesheet }
+    validateInputSamplesheet( ch_samplesheet )
+        .set { ch_validated_samplesheet }
 
     emit:
-    reads              = ch_validated_input  // channel: [ val(meta), data ]
-    fasta              = ch_fasta            // channel: [ val(meta), data ]
-    fai                = ch_fai              // channel: [ val(meta), data ]
-    interval           = ch_interval         // channel: [ val(meta), data ]
-    split_fasta_cutoff = split_fasta_cutoff  // channel: int
-    positions          = ch_positions        // channel: [ val(meta), data ]
-    versions = ch_versions                   // channel: [ versions.yml ]
+    input              = ch_validated_samplesheet  // channel: [ val(meta), data ]
+    fasta              = ch_fasta                  // channel: [ val(meta), data ]
+    fai                = ch_fai                    // channel: [ val(meta), data ]
+    interval           = ch_interval               // channel: [ val(meta), data ]
+    split_fasta_cutoff = split_fasta_cutoff        // channel: int
+    positions          = ch_positions              // channel: [ val(meta), data ]
+    versions = ch_versions                         // channel: [ versions.yml ]
 }
 
 /*

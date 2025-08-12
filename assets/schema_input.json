@@ -16,13 +16,15 @@
             "datatype": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Data type, and must be one of: 'pacbio'"
+                "errorMessage": "Data type, and must be one of: 'pacbio'",
+                "meta": ["datatype"]
             },
             "datafile": {
                 "type": "string",
                 "exists": true,
                 "pattern": "^\\S+\\.(bam|cram)$",
-                "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
+                "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'",
+                "meta": ["datafile"]
             }
         },
         "required": ["sample", "datatype", "datafile"]
