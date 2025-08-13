@@ -11,7 +11,7 @@ authors:
       orcid: https://orcid.org/0000-0001-8687-5905
       website: https://github.com/tkchafin
     - affiliation: Wellcome Sanger Institute
-      family-names: "Ho\xE0ng"
+      -names: "Ho\xE0ng"
       given-names: "H\u1EA1nh"
       orcid: https://orcid.org/0009-0008-6911-9903
       website: https://github.com/sainsachiko

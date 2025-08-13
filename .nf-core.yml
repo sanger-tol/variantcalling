@@ -19,9 +19,13 @@ lint:
     - LICENSE
     - assets/email_template.html
     - .github/ISSUE_TEMPLATE/bug_report.yml
+  multiqc_config: false
   nextflow_config:
     - manifest.name
     - manifest.homePage
+    - config_defaults:
+        - params.vector_db
+        - params.tracedir
 nf_core_version: 3.2.1
 repository_type: pipeline
 template:
