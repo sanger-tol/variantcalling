@@ -17,14 +17,15 @@
                 "type": "string",
                 "pattern": "^\\S+$",
                 "errorMessage": "Data type, and must be one of: 'pacbio'",
+                "enum": ["pacbio"],
                 "meta": ["datatype"]
             },
             "datafile": {
                 "type": "string",
+                "format": "file-path",
                 "exists": true,
                 "pattern": "^\\S+\\.(bam|cram)$",
-                "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'",
-                "meta": ["datafile"]
+                "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
             }
         },
         "required": ["sample", "datatype", "datafile"]

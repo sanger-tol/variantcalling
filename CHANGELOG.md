@@ -3,11 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.1.9dev - [date]
+## 1.2.0dev - [date]
 
 ### Enhancements & fixes
 
-- Update nf-core tools
+- Update to nf-core template version 3.2.1
 
 ## [[1.1.8](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.8)] - Shang Tang (patch 8) - [2025-07-03]
 

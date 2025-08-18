@@ -52,6 +52,7 @@
             "properties": {
                 "fasta": {
                     "type": "string",
+                    "exists": true,
                     "description": "Path to FASTA genome file, either fasta or fast.gz."
                 },
                 "fai": {

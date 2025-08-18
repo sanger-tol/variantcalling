@@ -32,6 +32,11 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
+    fasta
+    fai
+    interval
+    include_positions
+    exclude_positions
 
     main:
 
@@ -67,11 +72,17 @@ workflow PIPELINE_INITIALISATION {
     // Custom validation for pipeline parameters
     //
 
-    // Check mandatory parameters
-    if (params.input) { ch_input = Channel.fromPath(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-    if (params.fasta) { ch_fasta = Channel.fromPath(params.fasta) } else { exit 1, 'Reference fasta not specified!'   }
+    // Create channel from input file provided through params.input
+    Channel
+        .fromList( samplesheetToList(params.input, "${projectDir}/assets/schema_input.json") )
+        .set { ch_samplesheet }
+    validateInputSamplesheet( ch_samplesheet )
+        .set { ch_validated_samplesheet }
 
-    // Check optional parameters
+    // Creat channel for mandatory parameters
+    ch_fasta = Channel.fromPath(fasta)
+
+    // Creat channel for optional parameters
     if (params.fai){
         if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
             ||
@@ -79,7 +90,7 @@ workflow PIPELINE_INITIALISATION {
         ){
             exit 1, 'Reference fasta and its index file format not matched!'
         }
-        ch_fai = Channel.fromPath(params.fai)
+        ch_fai = Channel.fromPath(fai)
     } else {
         ch_fai = Channel.empty()
     }
@@ -89,38 +100,12 @@ workflow PIPELINE_INITIALISATION {
     if ( (params.include_positions) && (params.exclude_positions) ){
         exit 1, 'Only one positions file can be given to include or exclude!'
     } else if (params.include_positions){
-        ch_positions = Channel.fromPath(params.include_positions)
+        ch_positions = Channel.fromPath(include_positions)
     } else if (params.exclude_positions){
-        ch_positions = Channel.fromPath(params.exclude_positions)
+        ch_positions = Channel.fromPath(exclude_positions)
     } else {
         ch_positions = []
     }
-
-    // Check input path parameters to see if they exist
-    def checkPathParamList = [
-        params.input,
-        params.fasta,
-        params.fai,
-        params.interval,
-        params.include_positions,
-        params.exclude_positions
-    ]
-
-    for (param in checkPathParamList) {
-        if (param) { file(param, checkIfExists: true) }
-    }
-
-    // Create channel from input file provided through params.input
-    Channel
-        .fromList( samplesheetToList(params.input, "${projectDir}/assets/schema_input.json") )
-        .map { row ->
-            // println row[0]
-            def meta = row[0] + [id: file(row[0].datafile).baseName]
-            return [meta, file(row[0].datafile, checkIfExists: true)]
-        }
-        .set { ch_samplesheet }
-    validateInputSamplesheet( ch_samplesheet )
-        .set { ch_validated_samplesheet }
 
     emit:
     input     = ch_validated_samplesheet
@@ -187,26 +172,31 @@ workflow PIPELINE_COMPLETION {
 // Validate channels from input samplesheet
 //
 
-def validateInputSamplesheet(ch_samplesheet) {
+def validateInputSamplesheet(channel) {
     def seen = [:].withDefault { 0 }
     def validFormats = [ ".cram", ".bam" ]
 
-    return ch_samplesheet.map { sample ->
-        def (meta, file) = sample
+    return channel.map { row ->
+        def (meta, datafile) = row
 
         // Replace spaces with underscores in sample names
         meta.sample = meta.sample.replace(" ", "_")
 
         // Validate that the file path is non-empty and has a valid format
-        if (!file || !validFormats.any { file.toString().endsWith(it) }) {
-            error( "Data file is required and must have a valid extension: ${file}" )
+        if ( !datafile || !validFormats.any { datafile.toString().endsWith(it) } ) {
+        error( "Data file is required and must have a valid extension: ${datafile}" )
         }
 
-        seen[meta.sample] += 1
-        meta.sample = "${meta.sample}_${seen[meta.sample]}"
+        if ( meta.datatype == "pacbio" ) {
+            platform = "PACBIO"
+        }
+        meta.read_group  = "\'@RG\\tID:" + datafile.toString().split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
 
-        return [meta, file]
-    }
+        seen[meta.sample] += 1
+        meta.id = "${meta.sample}_T${seen[meta.sample]}"
+
+        return [meta, datafile]
+        }
 }
 
 

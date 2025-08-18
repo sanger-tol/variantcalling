@@ -80,7 +80,7 @@ We also acknowledge the work of [Damon-Lee Pointon](https://github.com/DLBPointo
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
 
-For further information or help, please [create an issue](https://github.com/sanger-tol/readmapping/issues/new/choose) on GitHub if you are not on the Sanger slack channel.
+For further information or help, please [create an issue](https://github.com/sanger-tol/variantcalling/issues/new/choose) on GitHub if you are not on the Sanger slack channel.
 
 ## Citations
 

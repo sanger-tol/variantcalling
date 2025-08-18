@@ -65,7 +65,12 @@ workflow {
         params.monochrome_logs,
         args,
         params.outdir,
-        params.input
+        params.input,
+        params.fasta,
+        params.fai,
+        params.interval,
+        params.include_positions,
+        params.exclude_positions
     )
 
     //
