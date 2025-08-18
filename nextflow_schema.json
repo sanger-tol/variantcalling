@@ -82,7 +82,7 @@
                     "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
                 }
             },
-            "required": ["fasta"]
+            "required": ["fasta", "split_fasta_cutoff"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",

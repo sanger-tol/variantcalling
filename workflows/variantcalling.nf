@@ -43,20 +43,17 @@ workflow VARIANTCALLING {
     ch_versions = Channel.empty()
 
     //
-    // channel for reference genome
+    // Channel for reference genome
     //
     // Remenber to fix the fasta.size with total_length in the next merge
-    // Also remember to change from toInterger to toLong
     ch_fasta
         .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
         .first()
         .set { ch_genome }
 
-    // reference genome parameter
-    if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
     //
-    // check reference fasta index given or not
+    // Check reference fasta index given or not
     //
     if( !params.fai ) {
 
@@ -83,6 +80,7 @@ workflow VARIANTCALLING {
     ch_genome_index_fai
         .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
         .set { ch_genome_info }
+
 
     //
     // SUBWORKFLOW: align reads if required
@@ -130,14 +128,14 @@ workflow VARIANTCALLING {
 
     }
 
+
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
         ch_fasta,
         ch_aligned_reads,
-        ch_interval,
-        split_fasta_cutoff
+        ch_interval
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
@@ -153,17 +151,19 @@ workflow VARIANTCALLING {
 
 
     //
-    // convert VCF channel meta id
+    // Convert VCF channel meta id
     //
     DEEPVARIANT_CALLER.out.vcf
         .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
         .set{ vcf }
 
+
     //
-    // process VCF output files
+    // Process VCF output files
     //
     PROCESS_VCF( vcf, ch_positions )
     ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
+
 
     //
     // Collate and save software versions
@@ -177,7 +177,7 @@ workflow VARIANTCALLING {
         ).set { ch_collated_versions }
 
     emit:
-    versions       = ch_versions                 // channel: [ path(versions.yml) ]
+    versions = ch_versions   // channel: [ path(versions.yml) ]
 }
 
 
@@ -193,7 +193,7 @@ def get_sequence_map(fai_file) {
     fai_file.eachLine { line ->
         def lspl       = line.split('\t')
         def chrom      = lspl[0]
-        def length     = lspl[1].toInteger()
+        def length     = lspl[1].toLong()
         n_sequences ++
         total_length  += length
         if (length > max_length) {

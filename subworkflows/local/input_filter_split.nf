@@ -11,7 +11,6 @@ workflow INPUT_FILTER_SPLIT {
     fasta              // file: /path/to/genome.fasta or /path/to/genome.fasta.gz
     reads              // [ val(meta), data, index ]
     interval           // file: /path/to/intervals.bed
-    split_fasta_cutoff // val(min_file_size)
 
     main:
     ch_versions = Channel.empty()
@@ -20,8 +19,8 @@ workflow INPUT_FILTER_SPLIT {
     fasta
         .splitFasta ( file:true )
         .branch {
-        small: it.size() < split_fasta_cutoff
-        large: it.size() >= split_fasta_cutoff
+        small: it.size() <  params.split_fasta_cutoff
+        large: it.size() >= params.split_fasta_cutoff
         }
         .set { branched_fasta_files }
 
