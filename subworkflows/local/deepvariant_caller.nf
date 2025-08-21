@@ -5,8 +5,6 @@
 include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT       }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF          }   from '../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF         }   from '../../modules/nf-core/bcftools/concat/main'
-include { DEEPVARIANT_VCFSTATSREPORT as VCF_STATS_REPORT  }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
-include { DEEPVARIANT_VCFSTATSREPORT as GVCF_STATS_REPORT }   from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
 include { TABIX_BGZIP as BGZIP                            }   from '../../modules/nf-core/tabix/bgzip/main'
 include { TABIX_TABIX as TABIX_CSI                        }   from '../../modules/nf-core/tabix/tabix/main'
 include { TABIX_TABIX as TABIX_TBI                        }   from '../../modules/nf-core/tabix/tabix/main'
@@ -114,21 +112,11 @@ workflow DEEPVARIANT_CALLER {
     ch_indexed_vcf_tbi = TABIX_TBI ( tabix_selector.tbi_and_csi ).tbi
     ch_versions        = ch_versions.mix ( TABIX_TBI.out.versions.first() )
 
-    // generate vcf stats report
-    VCF_STATS_REPORT ( BCFTOOLS_CONCAT_VCF.out.vcf )
-    ch_versions = ch_versions.mix ( VCF_STATS_REPORT.out.versions.first() )
-
-    // generate g vcf stats report
-    GVCF_STATS_REPORT ( BCFTOOLS_CONCAT_GVCF.out.vcf )
-    ch_versions = ch_versions.mix ( GVCF_STATS_REPORT.out.versions.first() )
-
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf)    ]
     gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf          // channel: [ val(meta), path(gvcf)   ]
     compressed_vcf    = ch_compressed_vcf            // channel: [ val(meta), path(output) ]
     vcf_csi  = ch_indexed_vcf_csi                    // channel: [ val(meta), path(csi)    ]
     vcf_tbi  = ch_indexed_vcf_tbi                    // channel: [ val(meta), path(tbi)    ]
-    vcf_stats_report  = VCF_STATS_REPORT.out.report  // channel: [ val(meta), path(report) ]
-    gvcf_stats_report = GVCF_STATS_REPORT.out.report // channel: [ val(meta), path(report) ]
     versions = ch_versions                           // channel: [ versions.yml            ]
 }

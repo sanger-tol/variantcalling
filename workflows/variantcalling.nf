@@ -10,7 +10,7 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 WorkflowVariantcalling.initialise(params, log)
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval, params.include_positions, params.exclude_positions ]
+def checkPathParamList = [ params.input, params.fasta, params.fai, params.interval ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
@@ -34,16 +34,6 @@ if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { c
 
 if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
 
-if ( (params.include_positions) && (params.exclude_positions) ){
-    exit 1, 'Only one positions file can be given to include or exclude!'
-}else if (params.include_positions){
-    ch_positions = Channel.fromPath(params.include_positions)
-} else if (params.exclude_positions){
-    ch_positions = Channel.fromPath(params.exclude_positions)
-} else {
-    ch_positions = []
-}
-
 if (params.assembly_report){ ch_assembly_report = Channel.fromPath(params.assembly_report) } else { exit 1, 'Assembly report missing' }
 
 
@@ -62,7 +52,6 @@ include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
 include { RUN_HIMUT          } from '../subworkflows/local/run_himut'
-include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -227,14 +216,6 @@ workflow VARIANTCALLING {
         ch_genome_info
     )
     ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
-
-
-    //
-    // process VCF output files
-    //
-    PROCESS_VCF( vcf, ch_positions )
-    ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
-
 
     //
     // MODULE: Combine different version together

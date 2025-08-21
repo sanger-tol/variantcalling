@@ -1,0 +1,21 @@
+Changes in component 'nf-core/tabix/bgzip'
+'modules/nf-core/tabix/bgzip/meta.yml' is unchanged
+Changes in 'tabix/bgzip/main.nf':
+--- modules/nf-core/tabix/bgzip/main.nf
++++ modules/nf-core/tabix/bgzip/main.nf
+@@ -23,7 +23,7 @@
+     prefix   = task.ext.prefix ?: "${meta.id}"
+     in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
+     extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
+-    output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
++    output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.bgz"
+     command = in_bgzip ? '-d' : ''
+     // Name the index according to $prefix, unless a name has been requested
+     split_args = args.split(' +|=')
+
+'modules/nf-core/tabix/bgzip/environment.yml' is unchanged
+'modules/nf-core/tabix/bgzip/tests/bgzip_compress.config' is unchanged
+'modules/nf-core/tabix/bgzip/tests/vcf_none.config' is unchanged
+'modules/nf-core/tabix/bgzip/tests/main.nf.test' is unchanged
+'modules/nf-core/tabix/bgzip/tests/main.nf.test.snap' is unchanged
+************************************************************
