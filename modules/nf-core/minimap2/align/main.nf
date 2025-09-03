@@ -15,6 +15,7 @@ process MINIMAP2_ALIGN {
     val bam_index_extension
     val cigar_paf_format
     val cigar_bam
+    val genome_info
 
     output:
     tuple val(meta), path("*.paf")                       , optional: true, emit: paf

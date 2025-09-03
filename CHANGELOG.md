@@ -3,6 +3,34 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1.9-himut.1](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.9-himut.1)] - Zhou Jichang - [2025-09-03]
+
+### Enhancements & fixes
+
+- Add Himut module
+- DeepVariant input change from cram/crai to bam/bai
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| Deepvariant | 1.9.0       | 1.1.0       |
+| Himut       |             | 1.0.0       |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
+### Parameters
+
+This release with the following initial parameters:
+
+| Old parameter | New parameter     |
+| ------------- | ----------------- |
+|               | --assembly_report |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
 ## [[1.1.8](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.8)] - Shang Tang (patch 8) - [2025-07-03]
 
 ### Enhancements & fixes

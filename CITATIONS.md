@@ -10,6 +10,8 @@
 
 ## Pipeline tools
 
+- [Himut](https://github.com/sjin09/himut)
+
 - [DeepVariant](https://github.com/google/deepvariant)
 
   > Poplin, Ryan, et al. “A Universal SNP and Small-Indel Variant Caller Using Deep Neural Networks.” Nature Biotechnology, vol. 36, no. 10, 2018, pp. 983–987., https://doi.org/10.1038/nbt.4235.

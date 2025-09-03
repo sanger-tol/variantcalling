@@ -36,12 +36,11 @@ jobs:
           version: "${{ matrix.NXF_VER }}"
 
       - name: Run pipeline with test data
+        # The test_align profile is used here because:
+        #   - the original input should be unaligned BAM file, which is processed by the minimap2 alignment step in the pipeline
+        #   - the output from minimap2 alignment can be successfully recognized by the Himut software
         # You can customise CI pipeline run tests as required
         # For example: adding multiple test runs with different parameters
         # Remember that you can parallelise this by using strategy.matrix
-        run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
-
-      - name: Run pipeline with unaligned test data
         run: |
           nextflow run ${GITHUB_WORKSPACE} -profile test_align,docker --outdir ./results

@@ -13,6 +13,7 @@ workflow ALIGN_PACBIO {
     fasta    // channel: [ val(meta), /path/to/fasta ]
     reads    // channel: [ val(meta), /path/to/datafile ]
     db       // channel: /path/to/vector_db
+    genome_info
 
 
     main:
@@ -25,7 +26,7 @@ workflow ALIGN_PACBIO {
 
 
     // Align Fastq to Genome
-    MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false, false )
+    MINIMAP2_ALIGN ( FILTER_PACBIO.out.fastq, fasta, true, false, false, false, genome_info )
     ch_versions = ch_versions.mix ( MINIMAP2_ALIGN.out.versions.first() )
 
 
@@ -41,7 +42,7 @@ workflow ALIGN_PACBIO {
     ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions.first() )
 
 
-    // Convert merged BAM to CRAM and calculate indices and statistics
+    // Convert to BAM and calculate indices and statistics
     SAMTOOLS_MERGE.out.bam
     | map { meta, bam -> [ meta, bam, [] ] }
     | set { ch_sort }
@@ -51,8 +52,8 @@ workflow ALIGN_PACBIO {
 
 
     emit:
-    cram     = CONVERT_STATS.out.cram        // channel: [ val(meta), /path/to/cram ]
-    crai     = CONVERT_STATS.out.crai        // channel: [ val(meta), /path/to/crai ]
+    bam      = CONVERT_STATS.out.bam         // channel: [ val(meta), /path/to/bam ]
+    csi      = CONVERT_STATS.out.csi         // channel: [ val(meta), /path/to/csi ]
     stats    = CONVERT_STATS.out.stats       // channel: [ val(meta), /path/to/stats ]
     idxstats = CONVERT_STATS.out.idxstats    // channel: [ val(meta), /path/to/idxstats ]
     flagstat = CONVERT_STATS.out.flagstat    // channel: [ val(meta), /path/to/flagstat ]
