@@ -3,7 +3,9 @@ name: nf-core branch protection
 # It fails when someone tries to make a PR against the nf-core `main` branch instead of `dev`
 on:
   pull_request_target:
-    branches: [main]
+    branches:
+      - main
+      - main_himut
 
 jobs:
   test:
