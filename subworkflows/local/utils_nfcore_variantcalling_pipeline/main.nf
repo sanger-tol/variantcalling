@@ -32,6 +32,11 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
+    fasta
+    fai
+    interval
+    include_positions
+    exclude_positions
 
     main:
 
@@ -64,32 +69,51 @@ workflow PIPELINE_INITIALISATION {
     )
 
     //
-    // Create channel from input file provided through params.input
+    // Custom validation for pipeline parameters
     //
 
+    // Create channel from input file provided through params.input
     Channel
-        .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
-        }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
+        .fromList( samplesheetToList(params.input, "${projectDir}/assets/schema_input.json") )
         .set { ch_samplesheet }
+    validateInputSamplesheet( ch_samplesheet )
+        .set { ch_validated_samplesheet }
+
+    // Creat channel for mandatory parameters
+    ch_fasta = Channel.fromPath(fasta)
+
+    // Creat channel for optional parameters
+    if (params.fai){
+        if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
+            ||
+            ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
+        ){
+            exit 1, 'Reference fasta and its index file format not matched!'
+        }
+        ch_fai = Channel.fromPath(fai)
+    } else {
+        ch_fai = Channel.empty()
+    }
+
+    if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
+
+    if ( (params.include_positions) && (params.exclude_positions) ){
+        exit 1, 'Only one positions file can be given to include or exclude!'
+    } else if (params.include_positions){
+        ch_positions = Channel.fromPath(include_positions)
+    } else if (params.exclude_positions){
+        ch_positions = Channel.fromPath(exclude_positions)
+    } else {
+        ch_positions = []
+    }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    input     = ch_validated_samplesheet
+    fasta     = ch_fasta
+    fai       = ch_fai
+    interval  = ch_interval
+    positions = ch_positions
+    versions  = ch_versions
 }
 
 /*
@@ -147,17 +171,35 @@ workflow PIPELINE_COMPLETION {
 //
 // Validate channels from input samplesheet
 //
-def validateInputSamplesheet(input) {
-    def (metas, fastqs) = input[1..2]
 
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
-    }
+def validateInputSamplesheet(channel) {
+    def seen = [:].withDefault { 0 }
+    def validFormats = [ ".cram", ".bam" ]
 
-    return [ metas[0], fastqs ]
+    return channel.map { row ->
+        def (meta, datafile) = row
+
+        // Replace spaces with underscores in sample names
+        meta.sample = meta.sample.replace(" ", "_")
+
+        // Validate that the file path is non-empty and has a valid format
+        if ( !datafile || !validFormats.any { datafile.toString().endsWith(it) } ) {
+        error( "Data file is required and must have a valid extension: ${datafile}" )
+        }
+
+        if ( meta.datatype == "pacbio" ) {
+            platform = "PACBIO"
+        }
+        meta.read_group  = "\'@RG\\tID:" + datafile.toString().split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
+
+        seen[meta.sample] += 1
+        meta.id = "${meta.sample}_T${seen[meta.sample]}"
+
+        return [meta, datafile]
+        }
 }
+
+
 //
 // Generate methods description for MultiQC
 //
