@@ -54,7 +54,7 @@ workflow INPUT_FILTER_SPLIT {
      .map { meta, fasta -> [ fasta.baseName, fasta ] }
      .join ( 
         SAMTOOLS_FAIDX.out.fai
-         .map { mata, fai -> [ fai.baseName - ~/.fa\w*$/, fai ] } 
+         .map { meta, fai -> [ fai.baseName - ~/.fa\w*$/, fai ] }
       )
      .set { fasta_fai }
 
