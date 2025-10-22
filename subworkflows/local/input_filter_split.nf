@@ -48,7 +48,9 @@ workflow INPUT_FILTER_SPLIT {
     | map { fa -> [ [id: fa.baseName, total_length: fa.size()], fa ] }
     | set { ch_split_fastas }
 
-    // index split fasta files
+    //
+    // MODULE: Index the chunks
+    //
     SAMTOOLS_FAIDX ( ch_split_fastas,  [[], []])
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
 
@@ -57,7 +59,9 @@ workflow INPUT_FILTER_SPLIT {
     | join ( SAMTOOLS_FAIDX.out.fai )
     | set { fasta_fai }
 
-    // filter reads
+    //
+    // MODULE: filter the reads
+    //
     SAMTOOLS_VIEW ( reads, fasta, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
 
