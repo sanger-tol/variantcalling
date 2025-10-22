@@ -32,21 +32,10 @@ workflow DEEPVARIANT_CALLER {
                .set { cram_crai }
 
     // fasta
-    fasta = reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai ->
-                             [ [
-                                id: meta.id + "_" + meta_fasta.id,
-                                sample: meta.id,
-                                type: meta.datatype ],
-                              fasta
-                             ]
-                            }
+    fasta = reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fasta ] }
 
     // fai
-    fai = reads_fasta.map{ meta, cram, crai, interval, meta_fasta, fasta, fai ->
-                           [ [ id: meta.id + "_" + meta_fasta.id, sample: meta.id, type: meta.datatype ],
-                             fai
-                           ]
-                         }
+    fai = reads_fasta.map{ meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fai ] }
 
     // split fasta in compressed format, no gzi index file needed
     gzi = [ [], [] ]
