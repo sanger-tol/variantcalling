@@ -14,7 +14,7 @@ include { TABIX_TABIX as TABIX_TBI                        }   from '../../module
 workflow DEEPVARIANT_CALLER {
     take:
     reads_fasta    // [ val(meta), cram, crai, interval, val(meta_fasta), fasta, fai ]
-    max_length     // [ val(max_length) - maximum chromosome length in the fasta file  ]
+    max_length     // [ val(meta_max_length) - maximum chromosome length in the fasta file  ]
 
     main:
     ch_versions = Channel.empty()
