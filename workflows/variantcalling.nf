@@ -32,8 +32,6 @@ if (params.fai){
 
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
-if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
-
 if ( (params.include_positions) && (params.exclude_positions) ){
     exit 1, 'Only one positions file can be given to include or exclude!'
 }else if (params.include_positions){
@@ -85,9 +83,13 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
-        .first()
-        .set { ch_genome }
+    | map { fasta -> [ [
+                        'id': fasta.baseName -  ~/.fa\w*$/,
+                        'genome_size': fasta.size(),            // To allow tuning the resources
+                        'single_end': true,                     // For SEQKIT_SPLIT2
+                     ], fasta ] }
+    | first()
+    | set { ch_genome }
 
     //
     // check reference fasta index given or not
@@ -178,10 +180,9 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
-        ch_fasta,
+        ch_genome,
         ch_aligned_reads,
         ch_interval,
-        split_fasta_cutoff
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
