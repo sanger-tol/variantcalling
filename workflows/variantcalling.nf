@@ -87,7 +87,6 @@ workflow VARIANTCALLING {
                         'id': fasta.baseName -  ~/.fa\w*$/,
                         'single_end': true,                     // For SEQKIT_SPLIT2
                      ], fasta ] }
-    | first()
     | set { ch_genome }
 
     //
@@ -106,7 +105,6 @@ workflow VARIANTCALLING {
     }else{
         ch_fai
             .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-            .first()
             .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
