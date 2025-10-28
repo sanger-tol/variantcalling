@@ -32,8 +32,6 @@ if (params.fai){
 
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
-if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
-
 if ( (params.include_positions) && (params.exclude_positions) ){
     exit 1, 'Only one positions file can be given to include or exclude!'
 }else if (params.include_positions){
@@ -85,9 +83,11 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
-        .first()
-        .set { ch_genome }
+    | map { fasta -> [ [
+                        'id': fasta.baseName -  ~/.fa\w*$/,
+                        'single_end': true,                     // For SEQKIT_SPLIT2
+                     ], fasta ] }
+    | set { ch_genome }
 
     //
     // check reference fasta index given or not
@@ -105,7 +105,6 @@ workflow VARIANTCALLING {
     }else{
         ch_fai
             .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-            .first()
             .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
@@ -115,9 +114,16 @@ workflow VARIANTCALLING {
         }
     }
 
-    ch_genome_index_fai
-        .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
-        .set { ch_genome_info }
+    ch_genome
+    | combine ( ch_genome_index_fai )
+    | map { meta_fa, fa, meta_fai, fai ->
+            [ meta_fa + get_sequence_map(fai), fa, fai ] }
+    | multiMap { meta, fa, fai ->
+        meta: meta
+        fasta: [ meta, fa ]
+        index: [ meta, fai ]
+    }
+    | set { ch_genome_info }
 
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
@@ -149,7 +155,7 @@ workflow VARIANTCALLING {
         }
 
         ALIGN_PACBIO (
-            ch_genome,
+            ch_genome_info.fasta,
             INPUT_CHECK.out.reads,
             ch_vector_db
         )
@@ -165,8 +171,8 @@ workflow VARIANTCALLING {
         // SUBWORKFLOW: merge the input reads by sample name
         //
         INPUT_MERGE (
-            ch_genome,
-            ch_genome_index,
+            ch_genome_info.fasta,
+            ch_genome_info.index,
             INPUT_CHECK.out.reads,
         )
         ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
@@ -178,10 +184,9 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
-        ch_fasta,
+        ch_genome_info.fasta,
         ch_aligned_reads,
         ch_interval,
-        split_fasta_cutoff
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
@@ -191,7 +196,7 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta,
-        ch_genome_info
+        ch_genome_info.meta,
     )
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
 
@@ -232,7 +237,7 @@ def get_sequence_map(fai_file) {
     fai_file.eachLine { line ->
         def lspl   = line.split('\t')
         def chrom  = lspl[0]
-        def length = lspl[1].toInteger()
+        def length = lspl[1].toLong()
         n_sequences ++
         total_length += length
         if (length > max_length) {
