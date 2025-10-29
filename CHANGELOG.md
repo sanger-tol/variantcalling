@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1.10](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.10)] - Shang Tang (patch 10) - [2025-10-30]
+
+### Enhancements & fixes
+
+- Fixed a bug introduced in 1.1.9 whereby only the first sample would be aligned
+
 ## [[1.1.9](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.9)] - Shang Tang (patch 9) - [2025-10-28]
 
 ### Enhancements & fixes
