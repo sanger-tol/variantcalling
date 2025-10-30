@@ -118,6 +118,7 @@ workflow VARIANTCALLING {
     | combine ( ch_genome_index_fai )
     | map { meta_fa, fa, meta_fai, fai ->
             [ meta_fa + get_sequence_map(fai), fa, fai ] }
+    | collect
     | multiMap { meta, fa, fai ->
         meta: meta
         fasta: [ meta, fa ]
