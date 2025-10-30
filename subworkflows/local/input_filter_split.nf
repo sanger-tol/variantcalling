@@ -2,76 +2,76 @@
 // Split input fasta file by sequence and filter the input reads
 //
 
+include { GUNZIP         } from '../../modules/nf-core/gunzip/main'
+include { SEQKIT_SPLIT2  } from '../../modules/nf-core/seqkit/split2/main'
 include { SAMTOOLS_FAIDX } from '../../modules/nf-core/samtools/faidx/main'
 include { SAMTOOLS_INDEX } from '../../modules/nf-core/samtools/index'
 include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
-include { CAT_CAT        } from '../../modules/nf-core/cat/cat/main'
 
 workflow INPUT_FILTER_SPLIT {
     take:
-    fasta              // file: /path/to/genome.fasta or /path/to/genome.fasta.gz
+    fasta              // [ val(meta, /path/to/genome.fasta[.gz] ]
     reads              // [ val(meta), data, index ]
     interval           // file: /path/to/intervals.bed
-    split_fasta_cutoff // val(min_file_size)
 
     main:
     ch_versions = Channel.empty()
 
-    // split the fasta file into files with one sequence each, group them by file size
+    //
+    // MODULE: Unzip the fasta if zipped
+    //
     fasta
-     .splitFasta ( file:true )
-     .branch {
-        small: it.size() < split_fasta_cutoff
-        large: it.size() >= split_fasta_cutoff
-     }
-     .set { branched_fasta_files }
+    | branch { meta, fa ->
+        gzipped: fa.name.endsWith('.gz')
+        unzipped: true
+    }
+    | set { ch_fasta }
 
-    // check the large split fasta files
-    branched_fasta_files.large
-     .map { large_file -> [ [ id: large_file.baseName ], large_file ] }
-     .set { ch_large_files }
+    GUNZIP (
+        ch_fasta.gzipped
+    )
+    ch_versions  = ch_versions.mix ( GUNZIP.out.versions )
 
-    // check all the small split fasta files
-    branched_fasta_files.small
-     .collect()
-     .map { small_files -> [ [ id : small_files[0].baseName.substring(0, small_files[0].baseName.lastIndexOf('.') ) + '.small' ], small_files ] }
-     .set { ch_samll_files }
+    GUNZIP.out.gunzip
+    | mix ( ch_fasta.unzipped )
+    | set { ch_fasta_to_split }
 
-    // merge all small split fasta files together
-    CAT_CAT ( ch_samll_files )
-    ch_versions = ch_versions.mix ( CAT_CAT.out.versions )
+    //
+    // MODULE: Split the Fasta file in chunks
+    //
+    SEQKIT_SPLIT2 ( ch_fasta_to_split )
+    ch_versions = ch_versions.mix ( SEQKIT_SPLIT2.out.versions )
 
-    // concat large and merged samll fasta files together
-    Channel.empty()
-     .concat ( CAT_CAT.out.file_out, ch_large_files )
-     .set { split_fasta }
+    // Add pertinent meta maps to the chunks
+    SEQKIT_SPLIT2.out.reads
+    | map { meta, fastas -> fastas }
+    | flatten
+    | map { fa -> [ [id: fa.baseName, total_length: fa.size()], fa ] }
+    | set { ch_split_fastas }
 
-    // index split fasta files
-    SAMTOOLS_FAIDX ( split_fasta,  [[], []])
+    //
+    // MODULE: Index the chunks
+    //
+    SAMTOOLS_FAIDX ( ch_split_fastas,  [[], []])
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
 
     // join fasta with corresponding fai file
-    split_fasta
-     .map { meta, fasta -> [ fasta.baseName, fasta ] }
-     .join (
-        SAMTOOLS_FAIDX.out.fai
-         .map { mata, fai -> [ fai.baseName - ~/.fa\w*$/, fai ] }
-      )
-     .set { fasta_fai }
+    ch_split_fastas
+    | join ( SAMTOOLS_FAIDX.out.fai )
+    | set { fasta_fai }
 
-    // filter reads
-    ch_fasta = fasta.map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
-
-    SAMTOOLS_VIEW ( reads, ch_fasta, [] )
+    //
+    // MODULE: filter the reads
+    //
+    SAMTOOLS_VIEW ( reads, fasta, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
 
     // combine reads with splitted references
     SAMTOOLS_VIEW.out.bam
-     .join ( SAMTOOLS_VIEW.out.bai.mix(SAMTOOLS_VIEW.out.csi) )
-     .combine(interval.ifEmpty([[]]))
-     .combine ( fasta_fai )
-     .set { bam_bai_fasta_fai }
-
+    | join ( SAMTOOLS_VIEW.out.bai.mix(SAMTOOLS_VIEW.out.csi) )
+    | combine(interval.ifEmpty([[]]))
+    | combine ( fasta_fai )
+    | set { bam_bai_fasta_fai }
 
     // take the filtered bam file and index the file, as the input of Himut
     SAMTOOLS_VIEW.out.bam
@@ -80,10 +80,9 @@ workflow INPUT_FILTER_SPLIT {
     SAMTOOLS_INDEX ( filtered_bam )
     ch_versions = ch_versions.mix ( SAMTOOLS_INDEX.out.versions )
 
-
     emit:
     bam            = filtered_bam            // channel: [ val(meta), bam ]
     bai            = SAMTOOLS_INDEX.out.bai  // channel: [ val(meta), bai ]
-    reads_fasta    = bam_bai_fasta_fai       // channel: [ val(meta), bam, bai, interval, fasta_file_name, fasta, fai ][ Attension : bai channel actually contains csi file ]
+    reads_fasta    = bam_bai_fasta_fai       // channel: [ val(meta), bam, bai, interval, val(meta_fasta), fasta, fai ] // Attention: bai channel actually contains csi file
     versions       = ch_versions             // channel: [ versions.yml   ]
 }

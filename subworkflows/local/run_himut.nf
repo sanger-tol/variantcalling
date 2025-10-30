@@ -16,7 +16,6 @@ workflow RUN_HIMUT {
     bam_index            // [ val(meta), bai       ]
     vcf_input            // [ val(meta), vcf_input ]
     vcf_index            // [ val(meta), vcf_tbi   ]
-    max_length           // [ val(max_length)      ]
 
     main:
     ch_versions = Channel.empty()
@@ -33,8 +32,6 @@ workflow RUN_HIMUT {
     // index the compressed himut vcf files in two formats for maximum compatibility (each has its own limitation)
     // select the type of index to use based on the maximum sequence length
     ch_compressed_himut_vcf
-        .combine( max_length )
-        .map { meta_vcf, vcf, meta -> [ meta_vcf + meta, vcf ] }
         .branch { meta, vcf ->
         tbi_and_csi: meta.max_length < 2**29
         only_csi:    meta.max_length < 2**32
