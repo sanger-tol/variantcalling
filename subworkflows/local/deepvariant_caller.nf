@@ -13,36 +13,29 @@ include { TABIX_TABIX as TABIX_TBI                        }   from '../../module
 
 workflow DEEPVARIANT_CALLER {
     take:
-    reads_fasta    // [ val(meta), cram, crai, interval, fasta_file_name, fasta, fai ]
-    max_length     // [ val(max_length) - maximum chromosome length in the fasta file  ]
+    reads_fasta    // [ val(meta), cram, crai, interval, val(meta_fasta), fasta, fai ]
+    max_length     // [ val(meta_max_length) - maximum chromosome length in the fasta file  ]
 
     main:
     ch_versions = Channel.empty()
 
-    reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai ->
-                    [ [ id: meta.id + "_" + fasta_file_name,
-                        sample: meta.id,
-                        type: meta.datatype,
-                        fasta_file_name: fasta_file_name ],
-                        cram,
-                        crai,
-                        interval
-                    ] }
-                .set { cram_crai }
+    reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai ->
+                     [ [ id: meta.id + "_" + meta_fasta.id,
+                         sample: meta.id,
+                         type: meta.datatype,
+                         fasta_id: meta_fasta.id.tokenize(".")[0..-2].join(".") // Strip the suffix added by seqkit
+                       ],
+                       cram,
+                       crai,
+                       interval
+                     ] }
+               .set { cram_crai }
 
     // fasta
-    fasta = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai -> [ [
-                                id: meta.id + "_" + fasta_file_name,
-                                sample: meta.id,
-                                type: meta.datatype ],
-                                fasta ]
-                            }
+    fasta = reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fasta ] }
 
     // fai
-    fai = reads_fasta.map { meta, cram, crai, interval, fasta_file_name, fasta, fai -> [ [
-                            id: meta.id + "_" + fasta_file_name, sample: meta.id, type: meta.datatype ],
-                            fai ]
-                            }
+    fai = reads_fasta.map{ meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fai ] }
 
     // split fasta in compressed format, no gzi index file needed
     gzi = [ [], [] ]
@@ -56,7 +49,7 @@ workflow DEEPVARIANT_CALLER {
     DEEPVARIANT.out.vcf
         .join(DEEPVARIANT.out.vcf_index)
         .map { meta, vcf, index -> [
-            [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
+            [ id: meta.fasta_id
                 + "." + meta.type
                 + "." + meta.sample
             ],
@@ -74,7 +67,7 @@ workflow DEEPVARIANT_CALLER {
     DEEPVARIANT.out.gvcf
         .join(DEEPVARIANT.out.gvcf_index)
         .map { meta, gvcf, index -> [
-            [ id: meta.fasta_file_name.tokenize(".")[0..-2].join(".")
+            [ id: meta.fasta_id
                 + "." + meta.type
                 + "." + meta.sample
             ],
