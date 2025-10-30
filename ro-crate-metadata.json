@@ -184,10 +184,10 @@
             },
             "url": [
                 "https://github.com/sanger-tol/variantcalling",
-                "https://pipelines.tol.sanger.ac.uk//variantcalling/1.1.9-himut.3/"
+                "https://pipelines.tol.sanger.ac.uk//variantcalling/1.1.11-himut.3/"
             ],
             "version": [
-                "1.1.9-himut.3"
+                "1.1.11-himut.3"
             ]
         },
         {

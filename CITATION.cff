@@ -46,7 +46,7 @@ license: MIT
 message: If you use this software, please cite it using the metadata from this file
     and all references from CITATIONS.md .
 repository-code: https://github.com/sanger-tol/variantcalling
-title: sanger-tol/variantcalling v1.1.9-himut.3 - Zhou Jichang (patch 3)
+title: sanger-tol/variantcalling v1.1.11-himut.3 - Zhou Jichang (patch 3)
 type: software
 url: https://pipelines.tol.sanger.ac.uk/variantcalling
-version: 1.1.9-himut.3
+version: 1.1.11-himut.3
