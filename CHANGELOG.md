@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1.11-himut.3](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.11-himut.3)] - Zhou Jichang (patch 3) - [2025-10-30]
+
+### Enhancements & fixes
+
+- Moved away from the channel operator `splitFasta` as it creates memory issues (#135)
+
 ## [[1.1.9-himut.2](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.9-himut.2)] - Zhou Jichang (patch 2) - [2025-09-22]
 
 ### Enhancements & fixes

@@ -21,11 +21,6 @@
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
                         "installed_by": ["modules"]
                     },
-                    "cat/cat": {
-                        "branch": "master",
-                        "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
-                        "installed_by": ["modules"]
-                    },
                     "custom/dumpsoftwareversions": {
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
@@ -45,8 +40,7 @@
                     "minimap2/align": {
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/minimap2/align/minimap2-align.diff"
+                        "installed_by": ["modules"]
                     },
                     "samtools/collate": {
                         "branch": "master",
@@ -103,6 +97,11 @@
                         "git_sha": "2d20463181b1c38981a02e90d3084b5f9fa8d540",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/samtools/view/samtools-view.diff"
+                    },
+                    "seqkit/split2": {
+                        "branch": "master",
+                        "git_sha": "55a02f55949516773979bbff82bf3f6bdb09456e",
+                        "installed_by": ["modules"]
                     },
                     "tabix/bgzip": {
                         "branch": "master",

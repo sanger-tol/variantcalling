@@ -76,7 +76,7 @@
                     "description": "The minimum fasta file size when splitting the input fasta file by sequence."
                 }
             },
-            "required": ["fasta"]
+            "required": ["fasta", "assembly_report"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",

@@ -32,8 +32,6 @@ if (params.fai){
 
 if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
 
-if (params.split_fasta_cutoff ) { split_fasta_cutoff = params.split_fasta_cutoff } else { split_fasta_cutoff = 100000 }
-
 if (params.assembly_report){ ch_assembly_report = Channel.fromPath(params.assembly_report) } else { exit 1, 'Assembly report missing' }
 
 
@@ -79,9 +77,11 @@ workflow VARIANTCALLING {
 
     ch_versions = Channel.empty()
     ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ ], fasta ] }
-        .first()
-        .set { ch_genome }
+    | map { fasta -> [ [
+                        'id': fasta.baseName -  ~/.fa\w*$/,
+                        'single_end': true,                     // For SEQKIT_SPLIT2
+                     ], fasta ] }
+    | set { ch_genome }
 
     //
     // check reference fasta index given or not
@@ -99,7 +99,6 @@ workflow VARIANTCALLING {
     }else{
         ch_fai
             .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-            .first()
             .set { ch_genome_index }
 
         ch_genome_index_fai = ch_genome_index
@@ -109,9 +108,17 @@ workflow VARIANTCALLING {
         }
     }
 
-    ch_genome_index_fai
-        .map { meta, index -> [ [ id: meta.id ] + get_sequence_map(index) ] }
-        .set { ch_genome_info }
+    ch_genome
+    | combine ( ch_genome_index_fai )
+    | map { meta_fa, fa, meta_fai, fai ->
+            [ meta_fa + get_sequence_map(fai), fa, fai ] }
+    | collect
+    | multiMap { meta, fa, fai ->
+        meta: meta
+        fasta: [ meta, fa ]
+        index: [ meta, fai ]
+    }
+    | set { ch_genome_info }
 
 
     //
@@ -143,10 +150,9 @@ workflow VARIANTCALLING {
         }
 
         ALIGN_PACBIO (
-            ch_genome,
+            ch_genome_info.fasta,
             INPUT_CHECK.out.reads,
             ch_vector_db,
-            ch_genome_info
         )
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
@@ -160,8 +166,8 @@ workflow VARIANTCALLING {
         // SUBWORKFLOW: merge the input reads by sample name
         //
         INPUT_MERGE (
-            ch_genome,
-            ch_genome_index,
+            ch_genome_info.fasta,
+            ch_genome_info.index,
             INPUT_CHECK.out.reads,
         )
         ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
@@ -175,10 +181,9 @@ workflow VARIANTCALLING {
     //
 
     INPUT_FILTER_SPLIT (
-        ch_fasta,
+        ch_genome_info.fasta,
         ch_aligned_reads,
         ch_interval,
-        split_fasta_cutoff
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
@@ -188,7 +193,7 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta,
-        ch_genome_info
+        ch_genome_info.meta,
     )
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
 
@@ -213,7 +218,6 @@ workflow VARIANTCALLING {
         INPUT_FILTER_SPLIT.out.bai,
         DEEPVARIANT_CALLER.out.compressed_vcf,
         DEEPVARIANT_CALLER.out.vcf_tbi,
-        ch_genome_info
     )
     ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
 
