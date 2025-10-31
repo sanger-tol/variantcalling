@@ -19,19 +19,20 @@ workflow DEEPVARIANT_CALLER {
     main:
     ch_versions = Channel.empty()
 
-    reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai ->
-                    [
-                        [
-                            id: meta.id + "_" + meta_fasta.id,
-                            sample: meta.id,
-                            type: meta.datatype,
-                            fasta_id: meta_fasta.id.tokenize(".")[0..-2].join(".") // Strip the suffix added by seqkit
-                        ],
-                        cram,
-                        crai,
-                        interval
-                    ] }
-               .set { cram_crai }
+    reads_fasta
+    | map { meta, cram, crai, interval, meta_fasta, fasta, fai ->
+        [
+            [
+                id:       meta.id + "_" + meta_fasta.id,
+                sample:   meta.id,
+                type:     meta.datatype,
+                fasta_id: meta_fasta.id.tokenize(".")[0..-2].join(".") // Strip the suffix added by seqkit
+            ],
+            cram,
+            crai,
+            interval
+        ] }
+    | set { cram_crai }
 
     // fasta
     fasta = reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fasta ] }
