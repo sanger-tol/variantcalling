@@ -50,7 +50,7 @@ workflow VARIANTCALLING {
     | map { fasta -> [ [
                         'id': fasta.baseName -  ~/.fa\w*$/,
                         'single_end': true,                     // For SEQKIT_SPLIT2
-                     ], fasta ] }
+                    ], fasta ] }
     | set { ch_genome }
 
 
