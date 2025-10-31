@@ -52,10 +52,7 @@ workflow DEEPVARIANT_CALLER {
     DEEPVARIANT.out.vcf
         .join(DEEPVARIANT.out.vcf_index)
         .map { meta, vcf, index -> [
-            [ id: meta.fasta_id
-                + "." + meta.type
-                + "." + meta.sample
-            ],
+            [ id: [meta.fasta_id, meta.type, meta.sample].join(".") ],
             vcf,
             index
         ] }
@@ -70,10 +67,7 @@ workflow DEEPVARIANT_CALLER {
     DEEPVARIANT.out.gvcf
         .join(DEEPVARIANT.out.gvcf_index)
         .map { meta, gvcf, index -> [
-            [ id: meta.fasta_id
-                + "." + meta.type
-                + "." + meta.sample
-            ],
+            [ id: [meta.fasta_id, meta.type, meta.sample].join(".") ],
             gvcf,
             index
         ] }
