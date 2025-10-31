@@ -47,9 +47,11 @@ workflow VARIANTCALLING {
     //
     // Remenber to fix the fasta.size with total_length in the next merge
     ch_fasta
-        .map { fasta -> [ [ 'id': fasta.baseName -  ~/.fa\w*$/ , 'genome_size': fasta.size() ], fasta ] }
-        .first()
-        .set { ch_genome }
+    | map { fasta -> [ [
+                        'id': fasta.baseName -  ~/.fa\w*$/,
+                        'single_end': true,                     // For SEQKIT_SPLIT2
+                    ], fasta ] }
+    | set { ch_genome }
 
 
     //
@@ -67,7 +69,6 @@ workflow VARIANTCALLING {
     } else {
         ch_fai
             .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-            .first()
             .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
@@ -77,9 +78,17 @@ workflow VARIANTCALLING {
         }
     }
 
-    ch_genome_index_fai
-        .map { meta, fai_file -> [ [ id: meta.id ] + get_sequence_map(fai_file) ] }
-        .set { ch_genome_info }
+    ch_genome
+    | combine ( ch_genome_index_fai )
+    | map { meta_fa, fa, meta_fai, fai ->
+            [ meta_fa + get_sequence_map(fai), fa, fai ] }
+    | collect
+    | multiMap { meta, fa, fai ->
+        meta: meta
+        fasta: [ meta, fa ]
+        index: [ meta, fai ]
+    }
+    | set { ch_genome_info }
 
 
     //
@@ -103,7 +112,7 @@ workflow VARIANTCALLING {
         }
 
         ALIGN_PACBIO (
-            ch_genome,
+            ch_genome_info.fasta,
             ch_reads,
             ch_vector_db
         )
@@ -119,9 +128,9 @@ workflow VARIANTCALLING {
         // SUBWORKFLOW: merge the input reads by sample name
         //
         INPUT_MERGE (
-            ch_genome,
-            ch_genome_index,
-            ch_reads
+            ch_genome_info.fasta,
+            ch_genome_info.index,
+            ch_reads,
         )
         ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
         ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
@@ -133,9 +142,9 @@ workflow VARIANTCALLING {
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
     INPUT_FILTER_SPLIT (
-        ch_fasta,
+        ch_genome_info.fasta,
         ch_aligned_reads,
-        ch_interval
+        ch_interval,
     )
     ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
 
@@ -145,7 +154,7 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER (
         INPUT_FILTER_SPLIT.out.reads_fasta,
-        ch_genome_info
+        ch_genome_info.meta,
     )
     ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
 
