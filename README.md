@@ -1,4 +1,3 @@
-
 # ![sanger-tol/variantcalling](docs/images/sanger-tol-variantcalling_logo.png)
 
 [![GitHub Actions CI Status](https://github.com/sanger-tol/variantcalling/actions/workflows/nf-test.yml/badge.svg)](https://github.com/sanger-tol/variantcalling/actions/workflows/nf-test.yml)
