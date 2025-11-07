@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update to nf-core template version 3.2.1
 
+## [[1.1.10](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.10)] - Shang Tang (patch 10) - [2025-10-30]
+
+### Enhancements & fixes
+
+- Fixed a bug introduced in 1.1.9 whereby only the first sample would be aligned
+
+## [[1.1.9](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.9)] - Shang Tang (patch 9) - [2025-10-28]
+
+### Enhancements & fixes
+
+- Moved away from the channel operator `splitFasta` as it creates memory issues (#135)
+
 ## [[1.1.8](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.8)] - Shang Tang (patch 8) - [2025-07-03]
 
 ### Enhancements & fixes

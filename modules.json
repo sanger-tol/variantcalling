@@ -20,11 +20,6 @@
                         "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["modules"]
                     },
-                    "cat/cat": {
-                        "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
-                        "installed_by": ["modules"]
-                    },
                     "deepvariant/rundeepvariant": {
                         "branch": "master",
                         "git_sha": "dd78204eb24332ec3cdd512fa9a83898f9728842",
@@ -93,6 +88,11 @@
                     "samtools/view": {
                         "branch": "master",
                         "git_sha": "c8be52dba1166c678e74cda9c3a3c221635c8bb1",
+                        "installed_by": ["modules"]
+                    },
+                    "seqkit/split2": {
+                        "branch": "master",
+                        "git_sha": "55a02f55949516773979bbff82bf3f6bdb09456e",
                         "installed_by": ["modules"]
                     },
                     "tabix/bgzip": {
