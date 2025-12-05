@@ -59,10 +59,10 @@ workflow INPUT_FILTER_SPLIT {
     | join ( SAMTOOLS_FAIDX.out.fai )
     | set { fasta_fai }
 
-    //
-    // MODULE: filter the reads
-    //
-    SAMTOOLS_VIEW ( reads, fasta, [] )
+    // filter reads
+    ch_fasta = fasta.map { meta, fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
+
+    SAMTOOLS_VIEW ( reads, ch_fasta, [], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
 
     // combine reads with splitted references
