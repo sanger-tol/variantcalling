@@ -39,13 +39,9 @@
                 "variant_calling/report/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_vcf.stats.visual_report.html"
             ],
             [
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.cram:md5,99a93e94610c51d6bfda6f01165a78af",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.cram.crai:md5,bf5ed17db5e0ac56fd5f4c1741037ea8",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.flagstat:md5,46d82921bb895f051b6a82658c18286f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.idxstats:md5,7be1ca471671613630279bd5179b558f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.stats:md5,03007e0201718d56f8eb075372db3ac8",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.cram:md5,d6d9fee3dd24dd909bb53ed80c5670a0",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.cram.crai:md5,6fa02cbdc0422820ffe609e32ff11552",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.flagstat:md5,2c5d67733407c8eddc2a7d59e035606e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.idxstats:md5,122ade711785188461e196872324044b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.stats:md5,e7699a813f03dd0c2918fcd2f1f18532",
@@ -77,6 +73,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-05T17:43:46.697551345"
+        "timestamp": "2025-12-05T18:10:39.165060193"
     }
 }
