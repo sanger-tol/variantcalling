@@ -60,7 +60,7 @@ workflow INPUT_FILTER_SPLIT {
     | set { fasta_fai }
 
     // filter reads
-    ch_fasta = fasta.map { fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
+    ch_fasta = fasta.map { meta, fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
 
     SAMTOOLS_VIEW ( reads, ch_fasta, [], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
