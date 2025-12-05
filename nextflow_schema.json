@@ -29,6 +29,12 @@
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
                 },
+                "vector_db": {
+                    "type": "string",
+                    "default": "${projectDir}/assets/vectorDB.tar.gz",
+                    "description": "Path to directory or tar.gz archive for pre-built PacBio vector database.",
+                    "format": "file-path"
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",
@@ -37,6 +43,46 @@
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
                 }
             }
+        },
+        "reference_genome_options": {
+            "title": "Reference genome options",
+            "type": "object",
+            "description": "Reference genome related files and options required for the workflow.",
+            "default": "",
+            "properties": {
+                "fasta": {
+                    "type": "string",
+                    "exists": true,
+                    "description": "Path to FASTA genome file, either fasta or fast.gz."
+                },
+                "fai": {
+                    "type": "string",
+                    "description": "Path to the index file of the FASTA genome file, either fai or gzi."
+                },
+                "align": {
+                    "type": "boolean",
+                    "description": "Align the input reads to the reference"
+                },
+                "interval": {
+                    "type": "string",
+                    "description": "Interval bed file."
+                },
+                "split_fasta_cutoff": {
+                    "type": "integer",
+                    "default": 100000,
+                    "hidden": true,
+                    "description": "The minimum fasta file size when splitting the input fasta file by sequence."
+                },
+                "include_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position."
+                },
+                "exclude_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
+                }
+            },
+            "required": ["fasta", "split_fasta_cutoff"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -173,6 +219,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/reference_genome_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

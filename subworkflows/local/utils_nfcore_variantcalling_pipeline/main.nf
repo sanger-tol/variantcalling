@@ -36,6 +36,11 @@ workflow PIPELINE_INITIALISATION {
     help              // boolean: Display help message and exit
     help_full         // boolean: Show the full help message
     show_hidden       // boolean: Show hidden parameters in the help message
+    fasta
+    fai
+    interval
+    include_positions
+    exclude_positions
 
     main:
 
@@ -54,6 +59,27 @@ workflow PIPELINE_INITIALISATION {
     //
     // Validate parameters and generate parameter summary to stdout
     //
+
+    before_text = """
+-\033[2m----------------------------------------------------\033[0m-
+\033[0;34m   _____                               \033[0;32m _______   \033[0;31m _\033[0m
+\033[0;34m  / ____|                              \033[0;32m|__   __|  \033[0;31m| |\033[0m
+\033[0;34m | (___   __ _ _ __   __ _  ___ _ __ \033[0m ___ \033[0;32m| |\033[0;33m ___ \033[0;31m| |\033[0m
+\033[0;34m  \\___ \\ / _` | '_ \\ / _` |/ _ \\ '__|\033[0m|___|\033[0;32m| |\033[0;33m/ _ \\\033[0;31m| |\033[0m
+\033[0;34m  ____) | (_| | | | | (_| |  __/ |        \033[0;32m| |\033[0;33m (_) \033[0;31m| |____\033[0m
+\033[0;34m |_____/ \\__,_|_| |_|\\__, |\\___|_|        \033[0;32m|_|\033[0;33m\\___/\033[0;31m|______|\033[0m
+\033[0;34m                      __/ |\033[0m
+\033[0;34m                     |___/\033[0m
+\033[0;35m  ${workflow.manifest.name} ${workflow.manifest.version}\033[0m
+-\033[2m----------------------------------------------------\033[0m-
+        """
+    after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { doi -> "    https://doi.org/${doi.trim().replace('https://doi.org/', '')}" }.join("\n")}${workflow.manifest.doi ? "\n" : ""}
+* The nf-core framework
+    https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+    https://github.com/sanger-tol/variantcalling/blob/main/CITATIONS.md
+"""
     command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --outdir <OUTDIR>"
 
     UTILS_NFSCHEMA_PLUGIN (
@@ -63,8 +89,8 @@ workflow PIPELINE_INITIALISATION {
         help,
         help_full,
         show_hidden,
-        "",
-        "",
+        before_text,
+        after_text,
         command
     )
 
@@ -76,32 +102,50 @@ workflow PIPELINE_INITIALISATION {
     )
 
     //
-    // Create channel from input file provided through params.input
+    // Custom validation for pipeline parameters
     //
 
     channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
-        }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
         .set { ch_samplesheet }
+    validateInputSamplesheet( ch_samplesheet )
+        .set { ch_validated_samplesheet }
+
+    // Creat channel for mandatory parameters
+    ch_fasta = Channel.fromPath(fasta)
+
+    // Creat channel for optional parameters
+    if (params.fai){
+        if( ( params.fasta.endsWith('.gz') && params.fai.endsWith('.fai') )
+            ||
+            ( !params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi') )
+        ){
+            exit 1, 'Reference fasta and its index file format not matched!'
+        }
+        ch_fai = Channel.fromPath(fai)
+    } else {
+        ch_fai = Channel.empty()
+    }
+
+    if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
+
+    if ( (params.include_positions) && (params.exclude_positions) ){
+        exit 1, 'Only one positions file can be given to include or exclude!'
+    } else if (params.include_positions){
+        ch_positions = Channel.fromPath(include_positions)
+    } else if (params.exclude_positions){
+        ch_positions = Channel.fromPath(exclude_positions)
+    } else {
+        ch_positions = []
+    }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    input     = ch_validated_samplesheet
+    fasta     = ch_fasta
+    fai       = ch_fai
+    interval  = ch_interval
+    positions = ch_positions
+    versions  = ch_versions
 }
 
 /*
@@ -159,17 +203,35 @@ workflow PIPELINE_COMPLETION {
 //
 // Validate channels from input samplesheet
 //
-def validateInputSamplesheet(input) {
-    def (metas, fastqs) = input[1..2]
 
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
-    }
+def validateInputSamplesheet(channel) {
+    def seen = [:].withDefault { 0 }
+    def validFormats = [ ".cram", ".bam" ]
 
-    return [ metas[0], fastqs ]
+    return channel.map { row ->
+        def (meta, datafile) = row
+
+        // Replace spaces with underscores in sample names
+        meta.sample = meta.sample.replace(" ", "_")
+
+        // Validate that the file path is non-empty and has a valid format
+        if ( !datafile || !validFormats.any { datafile.toString().endsWith(it) } ) {
+        error( "Data file is required and must have a valid extension: ${datafile}" )
+        }
+
+        if ( meta.datatype == "pacbio" ) {
+            platform = "PACBIO"
+        }
+        meta.read_group  = "\'@RG\\tID:" + datafile.toString().split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
+
+        seen[meta.sample] += 1
+        meta.id = "${meta.sample}_T${seen[meta.sample]}"
+
+        return [meta, datafile]
+        }
 }
+
+
 //
 // Generate methods description for MultiQC
 //
