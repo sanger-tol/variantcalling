@@ -18,6 +18,16 @@ nextflow_pipeline {
             // stable_path: All files in ${params.outdir}/ with stable content
             def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
 
+            // Collect VCF files and their variant MD5 checksums
+            def vcf_files = []
+            def vcf_outdir = file(params.outdir)
+            vcf_outdir.eachFileRecurse(groovy.io.FileType.FILES) { vcf_file ->
+                if (vcf_file.name.endsWith('.vcf.gz')) {
+                    vcf_files << vcf_file
+                }
+            }
+            vcf_files = vcf_files.sort { it.name }
+
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
@@ -28,11 +38,10 @@ nextflow_pipeline {
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
-                    stable_path
+                    stable_path,
+                    // VCF variant MD5 checksums
+                    vcf_files.collect { file -> [ path(file.toString()).vcf.variantsMD5 ] }
                 ).match() }
-
-                // VCF variant MD5 checksums
-
             )
         }
     }

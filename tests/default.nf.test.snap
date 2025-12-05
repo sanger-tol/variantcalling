@@ -51,12 +51,32 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_cram_vcf.stats.visual_report.html:md5,62bc1ad7120831ed00ee8a49afc80ee6",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_gvcf.stats.visual_report.html:md5,03fb7fd786944b6f37f80897562d8317",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_vcf.stats.visual_report.html:md5,1a2b1dd783fd07d6edcb0995abd99fa4"
+            ],
+            [
+                [
+                    "42a624ef2f85dfb8c730b20457b49398"
+                ],
+                [
+                    "169e9b8e8f54797db257ddaa429c35f3"
+                ],
+                [
+                    "42a624ef2f85dfb8c730b20457b49398"
+                ],
+                [
+                    "169e9b8e8f54797db257ddaa429c35f3"
+                ],
+                [
+                    "dad466fb4f27eb6cdf63eabddaa12fae"
+                ],
+                [
+                    "d6d5b4260158c33f7959dca8c78fd8df"
+                ]
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-05T14:29:20.061977869"
+        "timestamp": "2025-12-05T15:09:53.500259174"
     }
 }
