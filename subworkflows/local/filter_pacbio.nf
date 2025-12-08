@@ -28,7 +28,7 @@ workflow FILTER_PACBIO {
     | map { meta, bam -> [ meta, bam, [] ] }
     | set { ch_pacbio }
 
-    SAMTOOLS_CONVERT (ch_pacbio, [ [], [] ], [] )
+    SAMTOOLS_CONVERT (ch_pacbio, [ [], [] ], [], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_CONVERT.out.versions.first() )
 
 
@@ -72,7 +72,7 @@ workflow FILTER_PACBIO {
     | map { meta, bam, csi, list -> list }
     | set { ch_lists }
 
-    SAMTOOLS_FILTER ( ch_reads, [ [], [] ], ch_lists )
+    SAMTOOLS_FILTER ( ch_reads, [ [], [] ], ch_lists, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_FILTER.out.versions.first() )
 
 

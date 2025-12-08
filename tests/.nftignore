@@ -6,3 +6,5 @@ pipeline_info/*.{html,json,txt,yml}
 **.g.vcf.gz.tbi
 **.vcf.gz.csi
 **.g.vcf.gz.csi
+**.crai
+**.cram
