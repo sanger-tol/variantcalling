@@ -59,12 +59,16 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz:md5,cd89541bae31e32523a4329c59277148",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz:md5,c3145668dc0fe2cc98a97a1e14345649"
+            ],
+            [
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.cram:md5,49774288f3270c0d31fc7139a1f33a49",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.cram:md5,e34a3e0c89e931b165c6f45317fc044a"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-17T22:53:03.563069506"
+        "timestamp": "2026-01-17T23:12:52.497322641"
     }
 }

@@ -29,6 +29,17 @@ nextflow_pipeline {
             }
             vcf_files = vcf_files.sort { it.name }
 
+            // Fasta file for cram verification with nft-bam
+            def fasta = "https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/assembly/GCA_947369205.1_OX376310.1_CANBKR010000003.1.fasta"
+
+            def cram_files = []
+            def cram_outdir = file(params.outdir)
+            cram_outdir.eachFileRecurse(groovy.io.FileType.FILES) { cram_file ->
+                if (cram_file.name.endsWith('.cram')) {
+                    cram_files << cram_file
+                }
+            }
+
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
@@ -41,7 +52,9 @@ nextflow_pipeline {
                     // All files with stable contents
                     stable_path,
                     // VCF variant MD5 checksums
-                    vcf_files.collect { file -> file.getName() + ":md5," + path(file.toString()).vcf.variantsMD5 }
+                    vcf_files.collect { file -> file.getName() + ":md5," + path(file.toString()).vcf.variantsMD5 },
+                    // CRAM MD5 checksums
+                    cram_files.collect { file -> file.getName() + ":md5," + cram(file.toString(), fasta).readsMD5 }
                 ).match() }
             )
         }
