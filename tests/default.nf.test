@@ -40,7 +40,7 @@ nextflow_pipeline {
                     // All files with stable contents
                     stable_path,
                     // VCF variant MD5 checksums
-                    vcf_files.collect { file -> [ path(file.toString()).vcf.variantsMD5 ] }
+                    vcf_files.collect { file -> [ file.getName() + ":md5," + path(file.toString()).vcf.variantsMD5 ] }
                 ).match() }
             )
         }

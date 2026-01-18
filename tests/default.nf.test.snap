@@ -54,22 +54,22 @@
             ],
             [
                 [
-                    "42a624ef2f85dfb8c730b20457b49398"
+                    "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_bam_deepvariant.g.vcf.gz:md5,42a624ef2f85dfb8c730b20457b49398"
                 ],
                 [
-                    "169e9b8e8f54797db257ddaa429c35f3"
+                    "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_bam_deepvariant.vcf.gz:md5,169e9b8e8f54797db257ddaa429c35f3"
                 ],
                 [
-                    "42a624ef2f85dfb8c730b20457b49398"
+                    "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_cram_deepvariant.g.vcf.gz:md5,42a624ef2f85dfb8c730b20457b49398"
                 ],
                 [
-                    "169e9b8e8f54797db257ddaa429c35f3"
+                    "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_cram_deepvariant.vcf.gz:md5,169e9b8e8f54797db257ddaa429c35f3"
                 ],
                 [
-                    "dad466fb4f27eb6cdf63eabddaa12fae"
+                    "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz:md5,dad466fb4f27eb6cdf63eabddaa12fae"
                 ],
                 [
-                    "d6d5b4260158c33f7959dca8c78fd8df"
+                    "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz:md5,d6d5b4260158c33f7959dca8c78fd8df"
                 ]
             ]
         ],
@@ -77,6 +77,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-05T15:09:53.500259174"
+        "timestamp": "2026-01-17T22:49:35.578423423"
     }
 }
