@@ -55,24 +55,20 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_vcf.stats.visual_report.html:md5,494d889110776fe783af2aa99c5db42e"
             ],
             [
-                [
-                    "a82bcaa26c16328cf19b72beee49b80d"
-                ],
-                [
-                    "d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                [
-                    "cd89541bae31e32523a4329c59277148"
-                ],
-                [
-                    "c3145668dc0fe2cc98a97a1e14345649"
-                ]
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz:md5,a82bcaa26c16328cf19b72beee49b80d",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz:md5,cd89541bae31e32523a4329c59277148",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz:md5,c3145668dc0fe2cc98a97a1e14345649"
+            ],
+            [
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.cram:md5,8687ba1f97f527df6dda7b5ad73b245e",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.cram:md5,49774288f3270c0d31fc7139a1f33a49"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-05T18:10:39.165060193"
+        "timestamp": "2026-01-17T23:12:52.497322641"
     }
 }
