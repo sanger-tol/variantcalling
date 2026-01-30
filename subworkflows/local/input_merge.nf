@@ -39,7 +39,7 @@ workflow INPUT_MERGE {
         .map { sample, meta, bam_cram_list ->
             [ [ id: sample,
                 datatype: meta.datatype ],
-                bam_cram_list ] }
+                bam_cram_list.sort() ] }
         .set { grouped_reads_with_meta }
 
     // call samtool merge
