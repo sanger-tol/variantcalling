@@ -39,6 +39,7 @@ nextflow_pipeline {
                     cram_files << cram_file
                 }
             }
+            cram_files = cram_files.sort { it.name }
 
             assertAll(
                 { assert workflow.success},
