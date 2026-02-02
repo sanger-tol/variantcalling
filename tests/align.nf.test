@@ -1,0 +1,63 @@
+nextflow_pipeline {
+
+    name "Test pipeline in align mode"
+    script "../main.nf"
+    tag "pipeline"
+    profile "test_align"
+
+    test("-profile test_align") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            // stable_name: All files + folders in ${params.outdir}/ with a stable name
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_path: All files in ${params.outdir}/ with stable content
+            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+
+            // Collect VCF files and their variant MD5 checksums
+            def vcf_files = []
+            def vcf_outdir = file(params.outdir)
+            vcf_outdir.eachFileRecurse(groovy.io.FileType.FILES) { vcf_file ->
+                if (vcf_file.name.endsWith('.vcf.gz')) {
+                    vcf_files << vcf_file
+                }
+            }
+            vcf_files = vcf_files.sort { it.name }
+
+            // Fasta file for cram verification with nft-bam
+            def fasta = "https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/assembly/GCA_947369205.1_OX376310.1_CANBKR010000003.1.fasta"
+
+            def cram_files = []
+            def cram_outdir = file(params.outdir)
+            cram_outdir.eachFileRecurse(groovy.io.FileType.FILES) { cram_file ->
+                if (cram_file.name.endsWith('.cram')) {
+                    cram_files << cram_file
+                }
+            }
+            cram_files = cram_files.sort { it.name }
+
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    // removeNextflowVersion("$outputDir/pipeline_info/variantcalling_software_mqc_versions.yml"),
+                    // All stable path name, with a relative path
+                    stable_name,
+                    // All files with stable contents
+                    stable_path,
+                    // VCF variant MD5 checksums
+                    vcf_files.collect { file -> file.getName() + ":md5," + path(file.toString()).vcf.variantsMD5 },
+                    // CRAM MD5 checksums
+                    cram_files.collect { file -> file.getName() + ":md5," + cram(file.toString(), fasta).readsMD5 }
+                ).match() }
+            )
+        }
+    }
+}
