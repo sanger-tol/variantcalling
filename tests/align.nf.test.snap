@@ -61,7 +61,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz:md5,c3145668dc0fe2cc98a97a1e14345649"
             ],
             [
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.cram:md5,8687ba1f97f527df6dda7b5ad73b245e",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1.cram:md5,e34a3e0c89e931b165c6f45317fc044a",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.cram:md5,49774288f3270c0d31fc7139a1f33a49"
             ]
         ],
@@ -69,6 +69,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-17T23:12:52.497322641"
+        "timestamp": "2026-02-06T09:32:52.161607513"
     }
 }
