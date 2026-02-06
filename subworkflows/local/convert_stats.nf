@@ -15,7 +15,7 @@ workflow CONVERT_STATS {
 
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Convert BAM to CRAM
     SAMTOOLS_VIEW ( bam, fasta, [], [] )

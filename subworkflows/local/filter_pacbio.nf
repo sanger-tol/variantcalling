@@ -20,7 +20,7 @@ workflow FILTER_PACBIO {
 
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
 
     // Convert from PacBio BAM to Samtools BAM

@@ -14,7 +14,7 @@ workflow INPUT_FILTER_SPLIT {
     interval           // file: /path/to/intervals.bed
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // MODULE: Unzip the fasta if zipped

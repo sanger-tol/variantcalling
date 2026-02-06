@@ -16,7 +16,7 @@ workflow ALIGN_PACBIO {
 
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
 
     // Filter BAM and output as FASTQ

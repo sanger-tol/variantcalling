@@ -112,7 +112,7 @@ workflow PIPELINE_INITIALISATION {
         .set { ch_validated_samplesheet }
 
     // Creat channel for mandatory parameters
-    ch_fasta = Channel.fromPath(fasta)
+    ch_fasta = channel.fromPath(fasta)
 
     // Creat channel for optional parameters
     if (params.fai){
@@ -122,19 +122,19 @@ workflow PIPELINE_INITIALISATION {
         ){
             exit 1, 'Reference fasta and its index file format not matched!'
         }
-        ch_fai = Channel.fromPath(fai)
+        ch_fai = channel.fromPath(fai)
     } else {
-        ch_fai = Channel.empty()
+        ch_fai = channel.empty()
     }
 
-    if (params.interval){ ch_interval = Channel.fromPath(params.interval) } else { ch_interval = Channel.empty() }
+    if (params.interval){ ch_interval = channel.fromPath(params.interval) } else { ch_interval = channel.empty() }
 
     if ( (params.include_positions) && (params.exclude_positions) ){
         exit 1, 'Only one positions file can be given to include or exclude!'
     } else if (params.include_positions){
-        ch_positions = Channel.fromPath(include_positions)
+        ch_positions = channel.fromPath(include_positions)
     } else if (params.exclude_positions){
-        ch_positions = Channel.fromPath(exclude_positions)
+        ch_positions = channel.fromPath(exclude_positions)
     } else {
         ch_positions = []
     }

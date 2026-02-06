@@ -17,7 +17,7 @@ workflow DEEPVARIANT_CALLER {
     max_length     // [ val(meta_max_length) - maximum chromosome length in the fasta file  ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     reads_fasta
     | map { meta, cram, crai, interval, meta_fasta, fasta, fai ->

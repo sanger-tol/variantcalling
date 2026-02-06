@@ -106,7 +106,7 @@ workflow VARIANTCALLING {
 
         } else {
 
-            Channel.fromPath ( params.vector_db )
+            channel.fromPath ( params.vector_db )
             | set { ch_vector_db }
 
         }
@@ -177,7 +177,7 @@ workflow VARIANTCALLING {
     //
     // Collate and save software versions
     //
-    def topic_versions = Channel.topic("versions")
+    def topic_versions = channel.topic("versions")
         .distinct()
         .branch { entry ->
             versions_file: entry instanceof Path

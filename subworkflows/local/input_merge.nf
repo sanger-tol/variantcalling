@@ -12,7 +12,7 @@ workflow INPUT_MERGE {
     reads              // channel: [ val(meta), data ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // group input meta data together by sample name
     reads

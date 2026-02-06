@@ -11,7 +11,7 @@ workflow PROCESS_VCF {
     site_pi_positions // path to positions file to include or exclude
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // call vcftools for per site nucleotide diversity
     VCFTOOLS_SITE_PI(
