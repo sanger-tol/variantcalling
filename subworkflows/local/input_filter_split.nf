@@ -19,21 +19,19 @@ workflow INPUT_FILTER_SPLIT {
     //
     // MODULE: Unzip the fasta if zipped
     //
-    fasta
-    | branch { _meta, fa ->
-        gzipped: fa.name.endsWith('.gz')
-        unzipped: true
-    }
-    | set { ch_fasta }
+    ch_fasta = fasta
+        .branch { _meta, fa ->
+            gzipped: fa.name.endsWith('.gz')
+            unzipped: true
+        }
 
     GUNZIP (
         ch_fasta.gzipped
     )
     ch_versions  = ch_versions.mix ( GUNZIP.out.versions )
 
-    GUNZIP.out.gunzip
-    | mix ( ch_fasta.unzipped )
-    | set { ch_fasta_to_split }
+    ch_fasta_to_split = GUNZIP.out.gunzip
+        .mix ( ch_fasta.unzipped )
 
     //
     // MODULE: Split the Fasta file in chunks
@@ -42,11 +40,10 @@ workflow INPUT_FILTER_SPLIT {
     ch_versions = ch_versions.mix ( SEQKIT_SPLIT2.out.versions )
 
     // Add pertinent meta maps to the chunks
-    SEQKIT_SPLIT2.out.reads
-    | map { _meta, fastas -> fastas }
-    | flatten
-    | map { fa -> [ [id: fa.baseName, total_length: fa.size()], fa ] }
-    | set { ch_split_fastas }
+    ch_split_fastas = SEQKIT_SPLIT2.out.reads
+        .map { _meta, fastas -> fastas }
+        .flatten()
+        .map { fa -> [ [id: fa.baseName, total_length: fa.size()], fa ] }
 
     //
     // MODULE: Index the chunks
@@ -55,9 +52,8 @@ workflow INPUT_FILTER_SPLIT {
     ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
 
     // join fasta with corresponding fai file
-    ch_split_fastas
-    | join ( SAMTOOLS_FAIDX.out.fai )
-    | set { fasta_fai }
+    fasta_fai = ch_split_fastas
+        .join ( SAMTOOLS_FAIDX.out.fai )
 
     // filter reads
     ch_fasta = fasta.map { _meta, fasta_path -> [ [ 'id': fasta_path.baseName ], fasta_path ] }.first()
@@ -66,11 +62,10 @@ workflow INPUT_FILTER_SPLIT {
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
 
     // combine reads with splitted references
-    SAMTOOLS_VIEW.out.cram
-    | join ( SAMTOOLS_VIEW.out.crai )
-    | combine(interval.ifEmpty([[]]))
-    | combine ( fasta_fai )
-    | set { cram_crai_fasta_fai }
+    cram_crai_fasta_fai = SAMTOOLS_VIEW.out.cram
+        .join ( SAMTOOLS_VIEW.out.crai )
+        .combine(interval.ifEmpty([[]]))
+        .combine ( fasta_fai )
 
     emit:
     reads_fasta    = cram_crai_fasta_fai  // channel: [ val(meta), cram, crai, interval, val(meta_fasta), fasta, fai ]

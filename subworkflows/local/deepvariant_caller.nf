@@ -19,20 +19,19 @@ workflow DEEPVARIANT_CALLER {
     main:
     ch_versions = channel.empty()
 
-    reads_fasta
-    | map { meta, cram, crai, interval, meta_fasta, _fasta, _fai ->
-        [
+    cram_crai = reads_fasta
+        .map { meta, cram, crai, interval, meta_fasta, _fasta, _fai ->
             [
-                id:       meta.id + "_" + meta_fasta.id,
-                sample:   meta.id,
-                type:     meta.datatype,
-                fasta_id: meta_fasta.id.tokenize(".")[0..-2].join(".") // Strip the suffix added by seqkit
-            ],
-            cram,
-            crai,
-            interval
-        ] }
-    | set { cram_crai }
+                [
+                    id:       meta.id + "_" + meta_fasta.id,
+                    sample:   meta.id,
+                    type:     meta.datatype,
+                    fasta_id: meta_fasta.id.tokenize(".")[0..-2].join(".") // Strip the suffix added by seqkit
+                ],
+                cram,
+                crai,
+                interval
+            ] }
 
     // fasta
     fasta = reads_fasta.map { _meta, _cram, _crai, _interval, meta_fasta, fasta, _fai -> [ meta_fasta, fasta ] }
@@ -49,7 +48,7 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = ch_versions.mix ( DEEPVARIANT.out.versions.first() )
 
     // group the vcf files together by sample
-    DEEPVARIANT.out.vcf
+    vcf = DEEPVARIANT.out.vcf
         .join(DEEPVARIANT.out.vcf_index)
         .map { meta, vcf, index -> [
             [ id: [meta.fasta_id, meta.type, meta.sample].join(".") ],
@@ -57,14 +56,13 @@ workflow DEEPVARIANT_CALLER {
             index
         ] }
         .groupTuple()
-        .set { vcf }
 
     // concat vcf files
     BCFTOOLS_CONCAT_VCF ( vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_VCF.out.versions.first() )
 
     // group the g vcf files together by sample
-    DEEPVARIANT.out.gvcf
+    g_vcf = DEEPVARIANT.out.gvcf
         .join(DEEPVARIANT.out.gvcf_index)
         .map { meta, gvcf, index -> [
             [ id: [meta.fasta_id, meta.type, meta.sample].join(".") ],
@@ -72,7 +70,6 @@ workflow DEEPVARIANT_CALLER {
             index
         ] }
         .groupTuple()
-        .set { g_vcf }
 
     // concat g vcf files
     BCFTOOLS_CONCAT_GVCF ( g_vcf )
@@ -85,14 +82,13 @@ workflow DEEPVARIANT_CALLER {
 
     // index the compressed files in two formats for maximum compatibility (each has its own limitation)
     // select the type of index to use based on the maximum sequence length
-    ch_compressed_vcf
+    tabix_selector = ch_compressed_vcf
         .combine(max_length)
         .map { meta_vcf, vcf_path, meta -> [ meta_vcf + meta, vcf_path ] }
         .branch { meta, _vcf_path ->
             tbi_and_csi: meta.max_length < 2**29
             only_csi:    meta.max_length < 2**32
         }
-        .set { tabix_selector }
 
     // do the indexing on the compatible gvcf files
     ch_indexed_vcf_csi = TABIX_CSI ( tabix_selector.tbi_and_csi.mix(tabix_selector.only_csi) ).csi

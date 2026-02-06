@@ -105,11 +105,9 @@ workflow PIPELINE_INITIALISATION {
     // Custom validation for pipeline parameters
     //
 
-    channel
+    ch_samplesheet = channel
         .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
-        .set { ch_samplesheet }
-    validateInputSamplesheet( ch_samplesheet )
-        .set { ch_validated_samplesheet }
+    ch_validated_samplesheet = validateInputSamplesheet( ch_samplesheet )
 
     // Creat channel for mandatory parameters
     ch_fasta = channel.fromPath(fasta)

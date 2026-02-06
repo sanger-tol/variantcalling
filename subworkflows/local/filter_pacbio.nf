@@ -24,9 +24,7 @@ workflow FILTER_PACBIO {
 
 
     // Convert from PacBio BAM to Samtools BAM
-    reads
-    | map { meta, bam -> [ meta, bam, [] ] }
-    | set { ch_pacbio }
+    ch_pacbio = reads.map { meta, bam -> [ meta, bam, [] ] }
 
     SAMTOOLS_CONVERT (ch_pacbio, [ [], [] ], [], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_CONVERT.out.versions.first() )
@@ -48,7 +46,7 @@ workflow FILTER_PACBIO {
 
 
     // Nucleotide BLAST
-    db.map{path -> [ [], path]}.set{ch_db}
+    ch_db = db.map{path -> [ [], path]}
     BLAST_BLASTN ( GUNZIP.out.gunzip, ch_db )
     ch_versions = ch_versions.mix ( BLAST_BLASTN.out.versions.first() )
 
@@ -59,18 +57,15 @@ workflow FILTER_PACBIO {
 
 
     // Create filtered BAM file
-    SAMTOOLS_CONVERT.out.bam
-    | join ( SAMTOOLS_CONVERT.out.csi )
-    | join ( PACBIO_FILTER.out.list )
-    | set { ch_reads_and_list }
+    ch_reads_and_list = SAMTOOLS_CONVERT.out.bam
+        .join ( SAMTOOLS_CONVERT.out.csi )
+        .join ( PACBIO_FILTER.out.list )
 
-    ch_reads_and_list
-    | map { meta, bam, csi, _list -> [meta, bam, csi] }
-    | set { ch_reads }
+    ch_reads = ch_reads_and_list
+        .map { meta, bam, csi, _list -> [meta, bam, csi] }
 
-    ch_reads_and_list
-    | map { _meta, _bam, _csi, list -> list }
-    | set { ch_lists }
+    ch_lists = ch_reads_and_list
+        .map { _meta, _bam, _csi, list -> list }
 
     SAMTOOLS_FILTER ( ch_reads, [ [], [] ], ch_lists, [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_FILTER.out.versions.first() )

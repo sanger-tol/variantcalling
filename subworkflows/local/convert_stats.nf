@@ -23,9 +23,8 @@ workflow CONVERT_STATS {
 
 
     // Combine CRAM and CRAI into one channel
-    SAMTOOLS_VIEW.out.cram
-    | join ( SAMTOOLS_VIEW.out.crai )
-    | set { ch_cram_crai }
+    ch_cram_crai = SAMTOOLS_VIEW.out.cram
+        .join ( SAMTOOLS_VIEW.out.crai )
 
 
     // Calculate statistics

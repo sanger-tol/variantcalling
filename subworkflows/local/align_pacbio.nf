@@ -30,10 +30,9 @@ workflow ALIGN_PACBIO {
 
 
     // Collect all alignment output by sample name
-    MINIMAP2_ALIGN.out.bam
-    | map { meta, bam -> [['id': meta.sample, 'datatype': meta.datatype, 'sample': meta.sample ], bam] }
-    | groupTuple ( by: [0] )
-    | set { ch_bams }
+    ch_bams = MINIMAP2_ALIGN.out.bam
+        .map { meta, bam -> [['id': meta.sample, 'datatype': meta.datatype, 'sample': meta.sample ], bam] }
+        .groupTuple(by: [0])
 
 
     // Merge
@@ -42,9 +41,8 @@ workflow ALIGN_PACBIO {
 
 
     // Convert merged BAM to CRAM and calculate indices and statistics
-    SAMTOOLS_MERGE.out.bam
-    | map { meta, bam -> [ meta, bam, [] ] }
-    | set { ch_sort }
+    ch_sort = SAMTOOLS_MERGE.out.bam
+        .map { meta, bam -> [ meta, bam, [] ] }
 
     CONVERT_STATS ( ch_sort, fasta )
     ch_versions = ch_versions.mix ( CONVERT_STATS.out.versions )

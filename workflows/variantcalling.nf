@@ -46,12 +46,12 @@ workflow VARIANTCALLING {
     // Channel for reference genome
     //
     // Remenber to fix the fasta.size with total_length in the next merge
-    ch_fasta
-    | map { fasta -> [ [
-                        'id': fasta.baseName -  ~/.fa\w*$/,
-                        'single_end': true,                     // For SEQKIT_SPLIT2
-                    ], fasta ] }
-    | set { ch_genome }
+    ch_genome = ch_fasta
+        .map { fasta -> [ [
+                            'id': fasta.baseName -  ~/.fa\w*$/,
+                            'single_end': true,                     // For SEQKIT_SPLIT2
+                        ], fasta ]
+        }
 
 
     //
@@ -67,9 +67,8 @@ workflow VARIANTCALLING {
         ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
 
     } else {
-        ch_fai
+        ch_genome_index = ch_fai
             .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-            .set { ch_genome_index }
 
         ch_genome_index_fai  = ch_genome_index
         if ( !params.fai.endsWith(".fai") ) {
@@ -78,17 +77,16 @@ workflow VARIANTCALLING {
         }
     }
 
-    ch_genome
-    | combine ( ch_genome_index_fai )
-    | map { meta_fa, fa, _meta_fai, fai ->
+    ch_genome_info = ch_genome
+        .combine(ch_genome_index_fai)
+        .map { meta_fa, fa, _meta_fai, fai ->
             [ meta_fa + get_sequence_map(fai), fa, fai ] }
-    | collect
-    | multiMap { meta, fa, fai ->
-        meta: meta
-        fasta: [ meta, fa ]
-        index: [ meta, fai ]
-    }
-    | set { ch_genome_info }
+        .collect()
+        .multiMap { meta, fa, fai ->
+            meta: meta
+            fasta: [ meta, fa ]
+            index: [ meta, fai ]
+        }
 
 
     //
@@ -98,16 +96,14 @@ workflow VARIANTCALLING {
 
         if ( params.vector_db.endsWith( '.tar.gz' ) ) {
 
-            UNTAR ( [ [:], params.vector_db ] ).untar
-            | map { _meta, file -> file }
-            | set { ch_vector_db }
+            ch_vector_db = UNTAR ( [ [:], params.vector_db ] ).untar
+                .map { _meta, file -> file }
             ch_versions = ch_versions.mix ( UNTAR.out.versions )
 
 
         } else {
 
-            channel.fromPath ( params.vector_db )
-            | set { ch_vector_db }
+            ch_vector_db = channel.fromPath( params.vector_db )
 
         }
 
@@ -118,9 +114,8 @@ workflow VARIANTCALLING {
         )
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 
-        ALIGN_PACBIO.out.cram
+        ch_aligned_reads = ALIGN_PACBIO.out.cram
             .join( ALIGN_PACBIO.out.crai )
-            .set{ ch_aligned_reads }
 
     } else {
 
@@ -162,9 +157,8 @@ workflow VARIANTCALLING {
     //
     // Convert VCF channel meta id
     //
-    DEEPVARIANT_CALLER.out.vcf
+    vcf = DEEPVARIANT_CALLER.out.vcf
         .map{ _meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
-        .set{ vcf }
 
 
     //
