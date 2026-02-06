@@ -20,7 +20,7 @@ workflow INPUT_FILTER_SPLIT {
     // MODULE: Unzip the fasta if zipped
     //
     fasta
-    | branch { meta, fa ->
+    | branch { _meta, fa ->
         gzipped: fa.name.endsWith('.gz')
         unzipped: true
     }
@@ -43,7 +43,7 @@ workflow INPUT_FILTER_SPLIT {
 
     // Add pertinent meta maps to the chunks
     SEQKIT_SPLIT2.out.reads
-    | map { meta, fastas -> fastas }
+    | map { _meta, fastas -> fastas }
     | flatten
     | map { fa -> [ [id: fa.baseName, total_length: fa.size()], fa ] }
     | set { ch_split_fastas }
@@ -60,7 +60,7 @@ workflow INPUT_FILTER_SPLIT {
     | set { fasta_fai }
 
     // filter reads
-    ch_fasta = fasta.map { meta, fasta -> [ [ 'id': fasta.baseName ], fasta ] }.first()
+    ch_fasta = fasta.map { _meta, fasta_path -> [ [ 'id': fasta_path.baseName ], fasta_path ] }.first()
 
     SAMTOOLS_VIEW ( reads, ch_fasta, [], [] )
     ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )

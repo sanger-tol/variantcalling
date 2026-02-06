@@ -29,7 +29,7 @@ workflow PIPELINE_INITIALISATION {
     take:
     version           // boolean: Display version and exit
     validate_params   // boolean: Boolean whether to validate parameters against the schema at runtime
-    monochrome_logs   // boolean: Do not use coloured log outputs
+    _monochrome_logs  // boolean: Do not use coloured log outputs
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
@@ -38,7 +38,7 @@ workflow PIPELINE_INITIALISATION {
     show_hidden       // boolean: Show hidden parameters in the help message
     fasta
     fai
-    interval
+    _interval
     include_positions
     exclude_positions
 
@@ -106,7 +106,7 @@ workflow PIPELINE_INITIALISATION {
     //
 
     channel
-        .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
+        .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
         .set { ch_samplesheet }
     validateInputSamplesheet( ch_samplesheet )
         .set { ch_validated_samplesheet }
@@ -215,12 +215,15 @@ def validateInputSamplesheet(channel) {
         meta.sample = meta.sample.replace(" ", "_")
 
         // Validate that the file path is non-empty and has a valid format
-        if ( !datafile || !validFormats.any { datafile.toString().endsWith(it) } ) {
+        if ( !datafile || !validFormats.any { ext -> datafile.toString().endsWith(ext) } ) {
         error( "Data file is required and must have a valid extension: ${datafile}" )
         }
 
+        def platform = ""
         if ( meta.datatype == "pacbio" ) {
             platform = "PACBIO"
+        } else {
+            error( "Unsupported datatype: ${meta.datatype}. Supported datatypes are: pacbio" )
         }
         meta.read_group  = "\'@RG\\tID:" + datafile.toString().split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
 

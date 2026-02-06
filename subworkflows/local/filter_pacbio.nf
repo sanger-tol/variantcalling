@@ -48,7 +48,7 @@ workflow FILTER_PACBIO {
 
 
     // Nucleotide BLAST
-    db.map{db -> [ [], db]}.set{ch_db}
+    db.map{path -> [ [], path]}.set{ch_db}
     BLAST_BLASTN ( GUNZIP.out.gunzip, ch_db )
     ch_versions = ch_versions.mix ( BLAST_BLASTN.out.versions.first() )
 
@@ -65,11 +65,11 @@ workflow FILTER_PACBIO {
     | set { ch_reads_and_list }
 
     ch_reads_and_list
-    | map { meta, bam, csi, list -> [meta, bam, csi] }
+    | map { meta, bam, csi, _list -> [meta, bam, csi] }
     | set { ch_reads }
 
     ch_reads_and_list
-    | map { meta, bam, csi, list -> list }
+    | map { _meta, _bam, _csi, list -> list }
     | set { ch_lists }
 
     SAMTOOLS_FILTER ( ch_reads, [ [], [] ], ch_lists, [] )

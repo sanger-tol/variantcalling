@@ -20,7 +20,7 @@ workflow DEEPVARIANT_CALLER {
     ch_versions = channel.empty()
 
     reads_fasta
-    | map { meta, cram, crai, interval, meta_fasta, fasta, fai ->
+    | map { meta, cram, crai, interval, meta_fasta, _fasta, _fai ->
         [
             [
                 id:       meta.id + "_" + meta_fasta.id,
@@ -35,10 +35,10 @@ workflow DEEPVARIANT_CALLER {
     | set { cram_crai }
 
     // fasta
-    fasta = reads_fasta.map { meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fasta ] }
+    fasta = reads_fasta.map { _meta, _cram, _crai, _interval, meta_fasta, fasta, _fai -> [ meta_fasta, fasta ] }
 
     // fai
-    fai = reads_fasta.map{ meta, cram, crai, interval, meta_fasta, fasta, fai -> [ meta_fasta, fai ] }
+    fai = reads_fasta.map{ _meta, _cram, _crai, _interval, meta_fasta, _fasta, fai -> [ meta_fasta, fai ] }
 
     // split fasta in compressed format, no gzi index file needed
     gzi = [ [], [] ]
@@ -87,8 +87,8 @@ workflow DEEPVARIANT_CALLER {
     // select the type of index to use based on the maximum sequence length
     ch_compressed_vcf
         .combine(max_length)
-        .map { meta_vcf, vcf, meta -> [ meta_vcf + meta, vcf ] }
-        .branch { meta, vcf ->
+        .map { meta_vcf, vcf_path, meta -> [ meta_vcf + meta, vcf_path ] }
+        .branch { meta, _vcf_path ->
             tbi_and_csi: meta.max_length < 2**29
             only_csi:    meta.max_length < 2**32
         }

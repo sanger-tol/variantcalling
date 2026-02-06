@@ -16,7 +16,7 @@ workflow INPUT_MERGE {
 
     // group input meta data together by sample name
     reads
-        .map{ meta, bam_cram -> [ meta.sample, meta ] }
+        .map{ meta, _bam_cram -> [ meta.sample, meta ] }
         .groupTuple()
         .set{ grouped_reads_meta }
 

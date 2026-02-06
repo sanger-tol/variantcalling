@@ -80,7 +80,7 @@ workflow VARIANTCALLING {
 
     ch_genome
     | combine ( ch_genome_index_fai )
-    | map { meta_fa, fa, meta_fai, fai ->
+    | map { meta_fa, fa, _meta_fai, fai ->
             [ meta_fa + get_sequence_map(fai), fa, fai ] }
     | collect
     | multiMap { meta, fa, fai ->
@@ -99,7 +99,7 @@ workflow VARIANTCALLING {
         if ( params.vector_db.endsWith( '.tar.gz' ) ) {
 
             UNTAR ( [ [:], params.vector_db ] ).untar
-            | map { meta, file -> file }
+            | map { _meta, file -> file }
             | set { ch_vector_db }
             ch_versions = ch_versions.mix ( UNTAR.out.versions )
 
@@ -163,7 +163,7 @@ workflow VARIANTCALLING {
     // Convert VCF channel meta id
     //
     DEEPVARIANT_CALLER.out.vcf
-        .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+        .map{ _meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
         .set{ vcf }
 
 
@@ -204,7 +204,7 @@ workflow VARIANTCALLING {
         ).set { ch_collated_versions }
 
     emit:
-    versions = ch_versions   // channel: [ path(versions.yml) ]
+    versions = ch_collated_versions   // channel: [ path(versions.yml) ]
 }
 
 
@@ -219,9 +219,9 @@ def get_sequence_map(fai_file) {
     def total_length   = 0
     fai_file.eachLine { line ->
         def lspl       = line.split('\t')
-        def chrom      = lspl[0]
+        // def chrom      = lspl[0]
         def length     = lspl[1].toLong()
-        n_sequences ++
+        n_sequences += 1
         total_length  += length
         if (length > max_length) {
             max_length = length
