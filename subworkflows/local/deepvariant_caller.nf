@@ -98,11 +98,9 @@ workflow DEEPVARIANT_CALLER {
 
     // generate vcf stats report
     VCF_STATS_REPORT ( BCFTOOLS_CONCAT_VCF.out.vcf )
-    ch_versions = ch_versions.mix ( VCF_STATS_REPORT.out.versions.first() )
 
     // generate g vcf stats report
     GVCF_STATS_REPORT ( BCFTOOLS_CONCAT_GVCF.out.vcf )
-    ch_versions = ch_versions.mix ( GVCF_STATS_REPORT.out.versions.first() )
 
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf) ]

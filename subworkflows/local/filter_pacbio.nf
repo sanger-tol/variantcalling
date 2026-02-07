@@ -42,7 +42,6 @@ workflow FILTER_PACBIO {
 
     // Gunzip FASTA file to BLAST
     GUNZIP ( SAMTOOLS_FASTA.out.other )
-    ch_versions = ch_versions.mix ( GUNZIP.out.versions.first() )
 
 
     // Nucleotide BLAST

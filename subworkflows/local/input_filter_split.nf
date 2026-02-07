@@ -28,7 +28,6 @@ workflow INPUT_FILTER_SPLIT {
     GUNZIP (
         ch_fasta.gzipped
     )
-    ch_versions  = ch_versions.mix ( GUNZIP.out.versions )
 
     ch_fasta_to_split = GUNZIP.out.gunzip
         .mix ( ch_fasta.unzipped )
