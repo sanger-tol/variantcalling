@@ -12,7 +12,7 @@
                     },
                     "blast/blastn": {
                         "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "git_sha": "051e7c60dbdcc5d96ce7814c31426ce776f5319b",
                         "installed_by": ["modules"]
                     },
                     "deepvariant/rundeepvariant": {

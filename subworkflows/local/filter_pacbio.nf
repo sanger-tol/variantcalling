@@ -46,7 +46,7 @@ workflow FILTER_PACBIO {
 
     // Nucleotide BLAST
     ch_db = db.map{path -> [ [], path]}
-    BLAST_BLASTN ( GUNZIP.out.gunzip, ch_db )
+    BLAST_BLASTN ( GUNZIP.out.gunzip, ch_db, [], [], [] )
     ch_versions = ch_versions.mix ( BLAST_BLASTN.out.versions.first() )
 
 
