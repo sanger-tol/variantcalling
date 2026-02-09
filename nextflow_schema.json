@@ -53,7 +53,7 @@
                 "fasta": {
                     "type": "string",
                     "exists": true,
-                    "description": "Path to FASTA genome file, either fasta or fast.gz.",
+                    "description": "Path to FASTA genome file, either fasta or fasta.gz.",
                     "format": "file-path"
                 },
                 "fai": {
