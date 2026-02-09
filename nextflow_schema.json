@@ -33,7 +33,7 @@
                     "type": "string",
                     "default": "${projectDir}/assets/vectorDB.tar.gz",
                     "description": "Path to directory or tar.gz archive for pre-built PacBio vector database.",
-                    "format": "file-path"
+                    "format": "path"
                 },
                 "email": {
                     "type": "string",
@@ -53,11 +53,14 @@
                 "fasta": {
                     "type": "string",
                     "exists": true,
-                    "description": "Path to FASTA genome file, either fasta or fast.gz."
+                    "description": "Path to FASTA genome file, either fasta or fast.gz.",
+                    "format": "file-path"
                 },
                 "fai": {
                     "type": "string",
-                    "description": "Path to the index file of the FASTA genome file, either fai or gzi."
+                    "description": "Path to the index file of the FASTA genome file, either fai or gzi.",
+                    "format": "file-path",
+                    "exists": true
                 },
                 "align": {
                     "type": "boolean",
@@ -65,7 +68,9 @@
                 },
                 "interval": {
                     "type": "string",
-                    "description": "Interval bed file."
+                    "description": "Interval bed file.",
+                    "format": "file-path",
+                    "exists": true
                 },
                 "split_fasta_cutoff": {
                     "type": "integer",
@@ -75,11 +80,15 @@
                 },
                 "include_positions": {
                     "type": "string",
-                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position."
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "format": "file-path",
+                    "exists": true
                 },
                 "exclude_positions": {
                     "type": "string",
-                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "format": "file-path",
+                    "exists": true
                 }
             },
             "required": ["fasta", "split_fasta_cutoff"]
