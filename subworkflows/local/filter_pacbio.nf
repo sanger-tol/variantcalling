@@ -15,67 +15,63 @@ include { SAMTOOLS_FASTQ                    } from '../../modules/nf-core/samtoo
 
 workflow FILTER_PACBIO {
     take:
-    reads    // channel: [ val(meta), /path/to/datafile ]
-    db       // channel: /path/to/vector_db
-
+    reads // channel: [ val(meta), /path/to/datafile ]
+    db // channel: /path/to/vector_db
 
     main:
     ch_versions = channel.empty()
 
 
     // Convert from PacBio BAM to Samtools BAM
-    ch_pacbio = reads.map { meta, bam -> [ meta, bam, [] ] }
+    ch_pacbio = reads.map { meta, bam -> [meta, bam, []] }
 
-    SAMTOOLS_CONVERT (ch_pacbio, [ [], [] ], [], [] )
-    ch_versions = ch_versions.mix ( SAMTOOLS_CONVERT.out.versions.first() )
+    SAMTOOLS_CONVERT(ch_pacbio, [[], []], [], [])
+    ch_versions = ch_versions.mix(SAMTOOLS_CONVERT.out.versions.first())
 
 
     // Collate BAM file to create interleaved FASTA
-    SAMTOOLS_COLLATE ( SAMTOOLS_CONVERT.out.bam, [[],[]] )
-    ch_versions = ch_versions.mix ( SAMTOOLS_COLLATE.out.versions.first() )
+    SAMTOOLS_COLLATE(SAMTOOLS_CONVERT.out.bam, [[], []])
+    ch_versions = ch_versions.mix(SAMTOOLS_COLLATE.out.versions.first())
 
 
     // Convert BAM to FASTA
-    SAMTOOLS_FASTA ( SAMTOOLS_COLLATE.out.bam, true )
-    ch_versions = ch_versions.mix ( SAMTOOLS_FASTA.out.versions.first() )
+    SAMTOOLS_FASTA(SAMTOOLS_COLLATE.out.bam, true)
+    ch_versions = ch_versions.mix(SAMTOOLS_FASTA.out.versions.first())
 
 
     // Gunzip FASTA file to BLAST
-    GUNZIP ( SAMTOOLS_FASTA.out.other )
+    GUNZIP(SAMTOOLS_FASTA.out.other)
 
 
     // Nucleotide BLAST
-    ch_db = db.map{path -> [ [], path]}
-    BLAST_BLASTN ( GUNZIP.out.gunzip, ch_db, [], [], [] )
-    ch_versions = ch_versions.mix ( BLAST_BLASTN.out.versions.first() )
+    ch_db = db.map { path -> [[], path] }
+    BLAST_BLASTN(GUNZIP.out.gunzip, ch_db, [], [], [])
+    ch_versions = ch_versions.mix(BLAST_BLASTN.out.versions.first())
 
 
     // Filter BLAST output
-    PACBIO_FILTER ( BLAST_BLASTN.out.txt )
-    ch_versions = ch_versions.mix ( PACBIO_FILTER.out.versions.first() )
+    PACBIO_FILTER(BLAST_BLASTN.out.txt)
+    ch_versions = ch_versions.mix(PACBIO_FILTER.out.versions.first())
 
 
     // Create filtered BAM file
     ch_reads_and_list = SAMTOOLS_CONVERT.out.bam
-        .join ( SAMTOOLS_CONVERT.out.csi )
-        .join ( PACBIO_FILTER.out.list )
+        .join(SAMTOOLS_CONVERT.out.csi)
+        .join(PACBIO_FILTER.out.list)
 
-    ch_reads = ch_reads_and_list
-        .map { meta, bam, csi, _list -> [meta, bam, csi] }
+    ch_reads = ch_reads_and_list.map { meta, bam, csi, _list -> [meta, bam, csi] }
 
-    ch_lists = ch_reads_and_list
-        .map { _meta, _bam, _csi, list -> list }
+    ch_lists = ch_reads_and_list.map { _meta, _bam, _csi, list -> list }
 
-    SAMTOOLS_FILTER ( ch_reads, [ [], [] ], ch_lists, [] )
-    ch_versions = ch_versions.mix ( SAMTOOLS_FILTER.out.versions.first() )
+    SAMTOOLS_FILTER(ch_reads, [[], []], ch_lists, [])
+    ch_versions = ch_versions.mix(SAMTOOLS_FILTER.out.versions.first())
 
 
     // Convert BAM to FASTQ
-    SAMTOOLS_FASTQ ( SAMTOOLS_FILTER.out.unselected, true )
-    ch_versions = ch_versions.mix ( SAMTOOLS_FASTQ.out.versions.first() )
-
+    SAMTOOLS_FASTQ(SAMTOOLS_FILTER.out.unselected, true)
+    ch_versions = ch_versions.mix(SAMTOOLS_FASTQ.out.versions.first())
 
     emit:
-    fastq    = SAMTOOLS_FASTQ.out.other    // channel: [ meta, /path/to/fastq ]
-    versions = ch_versions                 // channel: [ versions.yml ]
+    fastq    = SAMTOOLS_FASTQ.out.other // channel: [ meta, /path/to/fastq ]
+    versions = ch_versions // channel: [ versions.yml ]
 }

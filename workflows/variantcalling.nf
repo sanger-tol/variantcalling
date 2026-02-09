@@ -4,11 +4,11 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { ALIGN_PACBIO       } from '../subworkflows/local/align_pacbio'
-include { INPUT_MERGE        } from '../subworkflows/local/input_merge'
-include { INPUT_FILTER_SPLIT } from '../subworkflows/local/input_filter_split'
-include { DEEPVARIANT_CALLER } from '../subworkflows/local/deepvariant_caller'
-include { PROCESS_VCF        } from '../subworkflows/local/process_vcf'
+include { ALIGN_PACBIO           } from '../subworkflows/local/align_pacbio'
+include { INPUT_MERGE            } from '../subworkflows/local/input_merge'
+include { INPUT_FILTER_SPLIT     } from '../subworkflows/local/input_filter_split'
+include { DEEPVARIANT_CALLER     } from '../subworkflows/local/deepvariant_caller'
+include { PROCESS_VCF            } from '../subworkflows/local/process_vcf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,13 +31,12 @@ include { UNTAR                  } from '../modules/nf-core/untar/main'
 // Info required for completion email and summary
 
 workflow VARIANTCALLING {
-
     take:
-    ch_reads            // channel: samplesheet read in from --input
-    ch_fasta            // channel: fasta file read in from --fasta
-    ch_fai              // channel: fai file read in from --fai
-    ch_interval         // channel: interval file read in from --interval
-    ch_positions        // channel: positions to include or exclude in the variant calling
+    ch_reads // channel: samplesheet read in from --input
+    ch_fasta // channel: fasta file read in from --fasta
+    ch_fai // channel: fai file read in from --fai
+    ch_interval // channel: interval file read in from --interval
+    ch_positions // channel: positions to include or exclude in the variant calling
 
     main:
     ch_versions = channel.empty()
@@ -46,126 +45,123 @@ workflow VARIANTCALLING {
     // Channel for reference genome
     //
     // Remenber to fix the fasta.size with total_length in the next merge
-    ch_genome = ch_fasta
-        .map { fasta -> [ [
-                            'id': fasta.baseName -  ~/.fa\w*$/,
-                            'single_end': true,                     // For SEQKIT_SPLIT2
-                        ], fasta ]
-        }
+    ch_genome = ch_fasta.map { fasta ->
+        [
+            [
+                'id': fasta.baseName - ~/.fa\w*$/,
+                'single_end': true,
+            ],
+            fasta,
+        ]
+    }
 
 
     //
     // Check reference fasta index given or not
     //
-    if( !params.fai ) {
+    if (!params.fai) {
 
-        SAMTOOLS_FAIDX ( ch_genome,  [[], []] )
-        ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+        SAMTOOLS_FAIDX(ch_genome, [[], []])
+        ch_versions = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
 
         // generate fai that is used to determine the maximum length of chromosome
         ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
-        ch_genome_index     = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
+        ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
+    }
+    else {
+        ch_genome_index = ch_fai.map { fai -> [['id': fai.baseName], fai] }
 
-    } else {
-        ch_genome_index = ch_fai
-            .map { fai -> [ [ 'id': fai.baseName ], fai ] }
-
-        ch_genome_index_fai  = ch_genome_index
-        if ( !params.fai.endsWith(".fai") ) {
-            ch_genome_index_fai = SAMTOOLS_FAIDX ( ch_genome,  [[], []] ).fai
-            ch_versions         = ch_versions.mix( SAMTOOLS_FAIDX.out.versions )
+        ch_genome_index_fai = ch_genome_index
+        if (!params.fai.endsWith(".fai")) {
+            ch_genome_index_fai = SAMTOOLS_FAIDX(ch_genome, [[], []]).fai
+            ch_versions = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
         }
     }
 
     ch_genome_info = ch_genome
         .combine(ch_genome_index_fai)
         .map { meta_fa, fa, _meta_fai, fai ->
-            [ meta_fa + get_sequence_map(fai), fa, fai ] }
+            [meta_fa + get_sequence_map(fai), fa, fai]
+        }
         .collect()
         .multiMap { meta, fa, fai ->
             meta: meta
-            fasta: [ meta, fa ]
-            index: [ meta, fai ]
+            fasta: [meta, fa]
+            index: [meta, fai]
         }
 
 
     //
     // SUBWORKFLOW: align reads if required
     //
-    if( params.align ) {
+    if (params.align) {
 
-        if ( params.vector_db.endsWith( '.tar.gz' ) ) {
+        if (params.vector_db.endsWith('.tar.gz')) {
 
-            ch_vector_db = UNTAR ( [ [:], params.vector_db ] ).untar
-                .map { _meta, file -> file }
-            ch_versions = ch_versions.mix ( UNTAR.out.versions )
+            ch_vector_db = UNTAR([[:], params.vector_db]).untar.map { _meta, file -> file }
+            ch_versions = ch_versions.mix(UNTAR.out.versions)
+        }
+        else {
 
-
-        } else {
-
-            ch_vector_db = channel.fromPath( params.vector_db )
-
+            ch_vector_db = channel.fromPath(params.vector_db)
         }
 
-        ALIGN_PACBIO (
+        ALIGN_PACBIO(
             ch_genome_info.fasta,
             ch_reads,
-            ch_vector_db
+            ch_vector_db,
         )
-        ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
+        ch_versions = ch_versions.mix(ALIGN_PACBIO.out.versions)
 
-        ch_aligned_reads = ALIGN_PACBIO.out.cram
-            .join( ALIGN_PACBIO.out.crai )
-
-    } else {
+        ch_aligned_reads = ALIGN_PACBIO.out.cram.join(ALIGN_PACBIO.out.crai)
+    }
+    else {
 
         //
         // SUBWORKFLOW: merge the input reads by sample name
         //
-        INPUT_MERGE (
+        INPUT_MERGE(
             ch_genome_info.fasta,
             ch_genome_info.index,
             ch_reads,
         )
-        ch_versions = ch_versions.mix( INPUT_MERGE.out.versions )
+        ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
         ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
-
     }
 
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
     //
-    INPUT_FILTER_SPLIT (
+    INPUT_FILTER_SPLIT(
         ch_genome_info.fasta,
         ch_aligned_reads,
         ch_interval,
     )
-    ch_versions = ch_versions.mix( INPUT_FILTER_SPLIT.out.versions )
+    ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
 
 
     //
     // SUBWORKFLOW: call deepvariant
     //
-    DEEPVARIANT_CALLER (
+    DEEPVARIANT_CALLER(
         INPUT_FILTER_SPLIT.out.reads_fasta,
         ch_genome_info.meta,
     )
-    ch_versions = ch_versions.mix( DEEPVARIANT_CALLER.out.versions )
+    ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
 
 
     //
     // Convert VCF channel meta id
     //
-    vcf = DEEPVARIANT_CALLER.out.vcf
-        .map{ _meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+    vcf = DEEPVARIANT_CALLER.out.vcf.map { _meta, vcf -> [[id: vcf.baseName], vcf] }
 
 
     //
     // Process VCF output files
     //
-    PROCESS_VCF( vcf, ch_positions )
-    ch_versions = ch_versions.mix( PROCESS_VCF.out.versions )
+    PROCESS_VCF(vcf, ch_positions)
+    ch_versions = ch_versions.mix(PROCESS_VCF.out.versions)
 
 
     //
@@ -180,9 +176,9 @@ workflow VARIANTCALLING {
 
     def topic_versions_string = topic_versions.versions_tuple
         .map { process, tool, version ->
-            [ process[process.lastIndexOf(':')+1..-1], "  ${tool}: ${version}" ]
+            [process[process.lastIndexOf(':') + 1..-1], "  ${tool}: ${version}"]
         }
-        .groupTuple(by:0)
+        .groupTuple(by: 0)
         .map { process, tool_versions ->
             tool_versions.unique().sort()
             "${process}:\n${tool_versions.join('\n')}"
@@ -192,13 +188,14 @@ workflow VARIANTCALLING {
         .mix(topic_versions_string)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
-            name:  'variantcalling_software_'  + 'versions.yml',
+            name: 'variantcalling_software_' + 'versions.yml',
             sort: true,
-            newLine: true
-        ).set { ch_collated_versions }
+            newLine: true,
+        )
+        .set { ch_collated_versions }
 
     emit:
-    versions = ch_collated_versions   // channel: [ path(versions.yml) ]
+    versions = ch_collated_versions // channel: [ path(versions.yml) ]
 }
 
 
@@ -208,31 +205,25 @@ workflow VARIANTCALLING {
 //
 
 def get_sequence_map(fai_file) {
-    def n_sequences    = 0
-    def max_length     = 0
-    def total_length   = 0
+    def n_sequences = 0
+    def max_length = 0
+    def total_length = 0
     fai_file.eachLine { line ->
-        def lspl       = line.split('\t')
+        def lspl = line.split('\t')
         // def chrom      = lspl[0]
-        def length     = lspl[1].toLong()
+        def length = lspl[1].toLong()
         n_sequences += 1
-        total_length  += length
+        total_length += length
         if (length > max_length) {
             max_length = length
         }
     }
 
     def sequence_map = [:]
-    sequence_map.n_sequences    = n_sequences
-    sequence_map.total_length   = total_length
+    sequence_map.n_sequences = n_sequences
+    sequence_map.total_length = total_length
     if (n_sequences) {
         sequence_map.max_length = max_length
     }
     return sequence_map
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
