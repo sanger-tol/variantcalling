@@ -86,7 +86,7 @@
                 },
                 "exclude_positions": {
                     "type": "string",
-                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude. Each line of the input file should contain a (tab-separated) chromosome and position.",
                     "format": "file-path",
                     "exists": true
                 }
