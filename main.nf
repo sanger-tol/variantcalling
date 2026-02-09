@@ -26,9 +26,8 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_vari
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
 workflow SANGERTOL_VARIANTCALLING {
-
     take:
-    input       // channel: samplesheet read in from --input
+    input // channel: samplesheet read in from --input
     fasta
     fai
     interval
@@ -39,12 +38,12 @@ workflow SANGERTOL_VARIANTCALLING {
     //
     // WORKFLOW: Run pipeline
     //
-    VARIANTCALLING (
+    VARIANTCALLING(
         input,
         fasta,
         fai,
         interval,
-        include_exclude_positions
+        include_exclude_positions,
     )
 }
 /*
@@ -54,12 +53,10 @@ workflow SANGERTOL_VARIANTCALLING {
 */
 
 workflow {
-
-    main:
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    PIPELINE_INITIALISATION(
         params.version,
         params.validate_params,
         params.monochrome_logs,
@@ -79,17 +76,17 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    SANGERTOL_VARIANTCALLING (
+    SANGERTOL_VARIANTCALLING(
         PIPELINE_INITIALISATION.out.input,
         PIPELINE_INITIALISATION.out.fasta,
         PIPELINE_INITIALISATION.out.fai,
         PIPELINE_INITIALISATION.out.interval,
-        PIPELINE_INITIALISATION.out.positions
+        PIPELINE_INITIALISATION.out.positions,
     )
     //
     // SUBWORKFLOW: Run completion tasks
     //
-    PIPELINE_COMPLETION (
+    PIPELINE_COMPLETION(
         params.email,
         params.email_on_fail,
         params.plaintext_email,
@@ -98,9 +95,3 @@ workflow {
         params.hook_url,
     )
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
