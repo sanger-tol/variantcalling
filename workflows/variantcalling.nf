@@ -151,12 +151,6 @@ workflow VARIANTCALLING {
 
 
     //
-    // Convert VCF channel meta id
-    //
-    vcf = DEEPVARIANT_CALLER.out.vcf.map { _meta, vcf -> [[id: vcf.baseName], vcf] }
-
-
-    //
     // Collate and save software versions
     //
     def topic_versions = channel.topic("versions")
