@@ -90,16 +90,6 @@
                         "git_sha": "55a02f55949516773979bbff82bf3f6bdb09456e",
                         "installed_by": ["modules"]
                     },
-                    "tabix/bgzip": {
-                        "branch": "master",
-                        "git_sha": "52a49a8807214ba93b0fdc9fa401876d9845f62a",
-                        "installed_by": ["modules"]
-                    },
-                    "tabix/tabix": {
-                        "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
-                        "installed_by": ["modules"]
-                    },
                     "untar": {
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
@@ -123,6 +113,17 @@
                         "branch": "master",
                         "git_sha": "fdc08b8b1ae74f56686ce21f7ea11ad11990ce57",
                         "installed_by": ["subworkflows"]
+                    }
+                }
+            }
+        },
+        "https://github.com/sanger-tol/nf-core-modules.git": {
+            "modules": {
+                "sanger-tol": {
+                    "bgziptabix": {
+                        "branch": "main",
+                        "git_sha": "d87a6e1f034a64bfec4befec1d5d9f398c4239ec",
+                        "installed_by": ["modules"]
                     }
                 }
             }

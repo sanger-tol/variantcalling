@@ -7,9 +7,7 @@ include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF          } from '../../modules/
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF         } from '../../modules/nf-core/bcftools/concat/main'
 include { DEEPVARIANT_VCFSTATSREPORT as VCF_STATS_REPORT  } from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
 include { DEEPVARIANT_VCFSTATSREPORT as GVCF_STATS_REPORT } from '../../modules/nf-core/deepvariant/vcfstatsreport/main'
-include { TABIX_BGZIP as BGZIP                            } from '../../modules/nf-core/tabix/bgzip/main'
-include { TABIX_TABIX as TABIX_CSI                        } from '../../modules/nf-core/tabix/tabix/main'
-include { TABIX_TABIX as TABIX_TBI                        } from '../../modules/nf-core/tabix/tabix/main'
+include { BGZIPTABIX                                      } from '../../modules/sanger-tol/bgziptabix/main'
 
 workflow DEEPVARIANT_CALLER {
     take:
@@ -17,7 +15,6 @@ workflow DEEPVARIANT_CALLER {
     max_length // [ val(meta_max_length) - maximum chromosome length in the fasta file  ]
 
     main:
-    ch_versions = channel.empty()
 
     cram_crai = reads_fasta.map { meta, cram, crai, interval, meta_fasta, _fasta, _fai ->
         [
@@ -77,25 +74,10 @@ workflow DEEPVARIANT_CALLER {
     BCFTOOLS_CONCAT_GVCF(g_vcf)
 
     // compress the vcf and gvcf files
-    vcf_to_compress = BCFTOOLS_CONCAT_VCF.out.vcf.mix(BCFTOOLS_CONCAT_GVCF.out.vcf)
-    ch_compressed_vcf = BGZIP(vcf_to_compress).output
-    ch_versions = ch_versions.mix(BGZIP.out.versions.first())
-
-    // index the compressed files in two formats for maximum compatibility (each has its own limitation)
-    // select the type of index to use based on the maximum sequence length
-    tabix_selector = ch_compressed_vcf
+    vcf_to_compress = BCFTOOLS_CONCAT_VCF.out.vcf
+        .mix(BCFTOOLS_CONCAT_GVCF.out.vcf)
         .combine(max_length)
-        .map { meta_vcf, vcf_path, meta -> [meta_vcf + meta, vcf_path] }
-        .branch { meta, _vcf_path ->
-            tbi_and_csi: meta.max_length < 2 ** 29
-            only_csi: meta.max_length < 2 ** 32
-        }
-
-    // do the indexing on the compatible gvcf files
-    ch_indexed_vcf_csi = TABIX_CSI(tabix_selector.tbi_and_csi.mix(tabix_selector.only_csi)).csi
-    ch_versions = ch_versions.mix(TABIX_CSI.out.versions.first())
-    ch_indexed_vcf_tbi = TABIX_TBI(tabix_selector.tbi_and_csi).tbi
-    ch_versions = ch_versions.mix(TABIX_TBI.out.versions.first())
+    ch_compressed_vcf = BGZIPTABIX(vcf_to_compress, [[], [], []]).gz_index
 
     // generate vcf stats report
     VCF_STATS_REPORT(BCFTOOLS_CONCAT_VCF.out.vcf)
@@ -106,10 +88,9 @@ workflow DEEPVARIANT_CALLER {
     emit:
     vcf               = BCFTOOLS_CONCAT_VCF.out.vcf // channel: [ val(meta), path(vcf) ]
     gvcf              = BCFTOOLS_CONCAT_GVCF.out.vcf // channel: [ val(meta), path(gvcf) ]
-    compressed_vcf    = ch_compressed_vcf // channel: [ val(meta), path(output)]
-    vcf_csi           = ch_indexed_vcf_csi // channel: [ val(meta), path(csi)]
-    vcf_tbi           = ch_indexed_vcf_tbi // channel: [ val(meta), path(tbi)]
+    compressed_vcf    = ch_compressed_vcf // channel: [ val(meta), path(vcf), path(gzi)]
+    vcf_csi           = BGZIPTABIX.out.csi // channel: [ val(meta), path(csi)]
+    vcf_tbi           = BGZIPTABIX.out.tbi // channel: [ val(meta), path(tbi)]
     vcf_stats_report  = VCF_STATS_REPORT.out.report // channel: [ val(meta), path(report) ]
     gvcf_stats_report = GVCF_STATS_REPORT.out.report // channel: [ val(meta), path(report) ]
-    versions          = ch_versions // channel: [ versions.yml ]
 }

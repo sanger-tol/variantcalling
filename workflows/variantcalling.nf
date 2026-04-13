@@ -128,9 +128,8 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER(
         INPUT_FILTER_SPLIT.out.reads_fasta,
-        ch_genome_info.meta,
+        ch_genome_info.meta.max_length,
     )
-    ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
 
 
     //

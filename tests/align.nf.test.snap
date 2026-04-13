@@ -1,7 +1,7 @@
 {
     "-profile test_align": {
         "content": [
-            66,
+            58,
             [
                 "pipeline_info",
                 "pipeline_info/variantcalling_software_versions.yml",
@@ -18,15 +18,19 @@
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.stats",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz.csi",
+                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz.gzi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz.tbi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz.csi",
+                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz.gzi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz.tbi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.csi",
+                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.gzi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.tbi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.csi",
+                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.gzi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.tbi",
                 "variant_calling/report",
                 "variant_calling/report/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_gvcf.stats.visual_report.html",
@@ -61,6 +65,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-04-13T21:17:22.217235894"
+        "timestamp": "2026-04-13T16:05:03.643461204"
     }
 }
