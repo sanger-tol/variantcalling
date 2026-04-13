@@ -8,7 +8,6 @@ include { ALIGN_PACBIO           } from '../subworkflows/local/align_pacbio'
 include { INPUT_MERGE            } from '../subworkflows/local/input_merge'
 include { INPUT_FILTER_SPLIT     } from '../subworkflows/local/input_filter_split'
 include { DEEPVARIANT_CALLER     } from '../subworkflows/local/deepvariant_caller'
-include { PROCESS_VCF            } from '../subworkflows/local/process_vcf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,19 +148,6 @@ workflow VARIANTCALLING {
         ch_genome_info.meta,
     )
     ch_versions = ch_versions.mix(DEEPVARIANT_CALLER.out.versions)
-
-
-    //
-    // Convert VCF channel meta id
-    //
-    vcf = DEEPVARIANT_CALLER.out.vcf.map { _meta, vcf -> [[id: vcf.baseName], vcf] }
-
-
-    //
-    // Process VCF output files
-    //
-    PROCESS_VCF(vcf, ch_positions)
-    ch_versions = ch_versions.mix(PROCESS_VCF.out.versions)
 
 
     //

@@ -1,7 +1,7 @@
 {
     "-profile test_align": {
         "content": [
-            70,
+            66,
             [
                 "pipeline_info",
                 "pipeline_info/variantcalling_software_versions.yml",
@@ -19,16 +19,12 @@
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz.csi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.g.vcf.gz.tbi",
-                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.het",
-                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.sites.pi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz.csi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.vcf.gz.tbi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.csi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.tbi",
-                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.het",
-                "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.sites.pi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.csi",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.tbi",
@@ -45,10 +41,6 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.flagstat:md5,2c5d67733407c8eddc2a7d59e035606e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.idxstats:md5,122ade711785188461e196872324044b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX.stats:md5,e7699a813f03dd0c2918fcd2f1f18532",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.het:md5,e9888822bd247b43aeb55d85c82b95eb",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_deepvariant.sites.pi:md5,b49a3d302ff671b076049feda11bbcba",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.het:md5,e9888822bd247b43aeb55d85c82b95eb",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.sites.pi:md5,e4d9cc0bf14399879cbecb9880f1f198",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_gvcf.stats.visual_report.html:md5,e99a752a1592b9c32ebb8fb38257f1b4",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1XXXXX_vcf.stats.visual_report.html:md5,2ba7339364b63c3395d748ecc888698b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_gvcf.stats.visual_report.html:md5,1f41a93785be16ed788acf4a54e041ea",
@@ -69,6 +61,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-02-09T17:58:32.867434526"
+        "timestamp": "2026-04-12T15:02:37.79923157"
     }
 }

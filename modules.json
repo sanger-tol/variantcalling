@@ -104,11 +104,6 @@
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
                         "installed_by": ["modules"]
-                    },
-                    "vcftools": {
-                        "branch": "master",
-                        "git_sha": "c58771f3403b7005f2ae0fd277b378961002b127",
-                        "installed_by": ["modules"]
                     }
                 }
             },
