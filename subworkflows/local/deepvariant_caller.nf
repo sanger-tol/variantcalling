@@ -45,7 +45,6 @@ workflow DEEPVARIANT_CALLER {
 
     // call deepvariant
     DEEPVARIANT(cram_crai, fasta, fai, gzi, par_bed)
-    ch_versions = ch_versions.mix(DEEPVARIANT.out.versions.first())
 
     // group the vcf files together by sample
     vcf = DEEPVARIANT.out.vcf
@@ -61,7 +60,6 @@ workflow DEEPVARIANT_CALLER {
 
     // concat vcf files
     BCFTOOLS_CONCAT_VCF(vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT_VCF.out.versions.first())
 
     // group the g vcf files together by sample
     g_vcf = DEEPVARIANT.out.gvcf
@@ -77,7 +75,6 @@ workflow DEEPVARIANT_CALLER {
 
     // concat g vcf files
     BCFTOOLS_CONCAT_GVCF(g_vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT_GVCF.out.versions.first())
 
     // compress the vcf and gvcf files
     vcf_to_compress = BCFTOOLS_CONCAT_VCF.out.vcf.mix(BCFTOOLS_CONCAT_GVCF.out.vcf)

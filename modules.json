@@ -7,7 +7,7 @@
                 "nf-core": {
                     "bcftools/concat": {
                         "branch": "master",
-                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
+                        "git_sha": "4b21e2cd1a9ea70e22b502cb45ee147410824760",
                         "installed_by": ["modules"]
                     },
                     "blast/blastn": {
@@ -17,12 +17,12 @@
                     },
                     "deepvariant/rundeepvariant": {
                         "branch": "master",
-                        "git_sha": "dd78204eb24332ec3cdd512fa9a83898f9728842",
+                        "git_sha": "c5a6eb24293c7f53cfd4296551573136645e954a",
                         "installed_by": ["modules"]
                     },
                     "deepvariant/vcfstatsreport": {
                         "branch": "master",
-                        "git_sha": "5c9f8d5b7671237c906abadc9ff732b301ca15ca",
+                        "git_sha": "ff05d8eb10c1191d87119ff6cfcbbc8ef110afdf",
                         "installed_by": ["modules"]
                     },
                     "gunzip": {
