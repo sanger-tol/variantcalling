@@ -10,21 +10,17 @@ include { CONVERT_STATS  } from '../../subworkflows/local/convert_stats'
 
 workflow ALIGN_PACBIO {
     take:
-    fasta // channel: [ val(meta), /path/to/fasta[.gz] ]
+    fasta // channel: [ val(meta), /path/to/fasta[.gz], /path/to/fai ]
     reads // channel: [ val(meta), /path/to/datafile ]
     db // channel: /path/to/vector_db
 
     main:
-    ch_versions = channel.empty()
-
-
     // Filter BAM and output as FASTQ
     FILTER_PACBIO(reads, db)
-    ch_versions = ch_versions.mix(FILTER_PACBIO.out.versions)
 
 
     // Align Fastq to Genome
-    MINIMAP2_ALIGN(FILTER_PACBIO.out.fastq, fasta, true, false, false, false)
+    MINIMAP2_ALIGN(FILTER_PACBIO.out.fastq, fasta.map { meta, fa, _fai -> [meta, fa] }, true, false, false, false)
 
 
     // Collect all alignment output by sample name
@@ -35,20 +31,17 @@ workflow ALIGN_PACBIO {
             def bams = orig_id_bams
                 .sort { a, b -> a[0] <=> b[0]} // sort by id to ensure consistent order
                 .collect { id_bam -> id_bam[1] }
-            [meta, bams]
+            [meta, bams, []]
         }
 
 
     // Merge
-    SAMTOOLS_MERGE(ch_bams, [[], []], [[], []])
-    ch_versions = ch_versions.mix(SAMTOOLS_MERGE.out.versions.first())
+    SAMTOOLS_MERGE(ch_bams, [[], [], [], []])
 
 
     // Convert merged BAM to CRAM and calculate indices and statistics
     ch_sort = SAMTOOLS_MERGE.out.bam.map { meta, bam -> [meta, bam, []] }
-
     CONVERT_STATS(ch_sort, fasta)
-    ch_versions = ch_versions.mix(CONVERT_STATS.out.versions)
 
     emit:
     cram     = CONVERT_STATS.out.cram // channel: [ val(meta), /path/to/cram ]
@@ -56,5 +49,4 @@ workflow ALIGN_PACBIO {
     stats    = CONVERT_STATS.out.stats // channel: [ val(meta), /path/to/stats ]
     idxstats = CONVERT_STATS.out.idxstats // channel: [ val(meta), /path/to/idxstats ]
     flagstat = CONVERT_STATS.out.flagstat // channel: [ val(meta), /path/to/flagstat ]
-    versions = ch_versions // channel: [ versions.yml ]
 }

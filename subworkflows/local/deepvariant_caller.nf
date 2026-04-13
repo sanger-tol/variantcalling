@@ -11,12 +11,13 @@ include { BGZIPTABIX                                      } from '../../modules/
 
 workflow DEEPVARIANT_CALLER {
     take:
-    reads_fasta // [ val(meta), cram, crai, interval, val(meta_fasta), fasta, fai ]
+    reads_fasta // [ val(meta), cram, crai, interval, val(meta_fasta), fasta, no_fai, fai ]
     max_length // [ val(meta_max_length) - maximum chromosome length in the fasta file  ]
 
     main:
 
-    cram_crai = reads_fasta.map { meta, cram, crai, interval, meta_fasta, _fasta, _fai ->
+    ch_deepvariant = reads_fasta.multiMap { meta, cram, crai, interval, meta_fasta, fasta, _no_fai, fai ->
+        cram_crai:
         [
             [
                 id: meta.id + "_" + meta_fasta.id,
@@ -28,20 +29,16 @@ workflow DEEPVARIANT_CALLER {
             crai,
             interval,
         ]
+        fasta: [meta_fasta, fasta]
+        fai: [meta_fasta, fai]
     }
-
-    // fasta
-    fasta = reads_fasta.map { _meta, _cram, _crai, _interval, meta_fasta, fasta, _fai -> [meta_fasta, fasta] }
-
-    // fai
-    fai = reads_fasta.map { _meta, _cram, _crai, _interval, meta_fasta, _fasta, fai -> [meta_fasta, fai] }
 
     // split fasta in compressed format, no gzi index file needed
     gzi = [[], []]
     par_bed = [[], []]
 
     // call deepvariant
-    DEEPVARIANT(cram_crai, fasta, fai, gzi, par_bed)
+    DEEPVARIANT(ch_deepvariant.cram_crai, ch_deepvariant.fasta, ch_deepvariant.fai, gzi, par_bed)
 
     // group the vcf files together by sample
     vcf = DEEPVARIANT.out.vcf

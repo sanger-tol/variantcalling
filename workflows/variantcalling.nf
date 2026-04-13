@@ -49,27 +49,26 @@ workflow VARIANTCALLING {
                 'single_end': true,
             ],
             fasta,
+            [],
         ]
     }
 
 
-    SAMTOOLS_FAIDX(ch_genome, [[], []])
-    ch_versions = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
+    SAMTOOLS_FAIDX(ch_genome, false)
 
     // generate fai that is used to determine the maximum length of chromosome
     // also add the gzi if present as it is needed for bgzip-ed genomes
     ch_genome_info = ch_genome
        .join( SAMTOOLS_FAIDX.out.fai )
        .join( SAMTOOLS_FAIDX.out.gzi, remainder: true )
-       .map { meta, fa, fai, gzi ->
+       .map { meta, fa, _no_fai, fai, gzi ->
            def index_file = (fa.name.endsWith('.gz') && gzi) ? [fai, gzi] : fai
            [meta + get_sequence_map(fai), fa, index_file]
         }
         .collect()
         .multiMap { meta, fa, fai ->
             meta: meta
-            fasta: [meta, fa]
-            index: [meta, fai]
+            fasta: [meta, fa, fai]
         }
 
 
@@ -81,7 +80,6 @@ workflow VARIANTCALLING {
         if (params.vector_db.endsWith('.tar.gz')) {
 
             ch_vector_db = UNTAR([[:], params.vector_db]).untar.map { _meta, file -> file }
-            ch_versions = ch_versions.mix(UNTAR.out.versions)
         }
         else {
 
@@ -93,7 +91,6 @@ workflow VARIANTCALLING {
             ch_reads,
             ch_vector_db,
         )
-        ch_versions = ch_versions.mix(ALIGN_PACBIO.out.versions)
 
         ch_aligned_reads = ALIGN_PACBIO.out.cram.join(ALIGN_PACBIO.out.crai)
     }
@@ -104,10 +101,8 @@ workflow VARIANTCALLING {
         //
         INPUT_MERGE(
             ch_genome_info.fasta,
-            ch_genome_info.index,
             ch_reads,
         )
-        ch_versions = ch_versions.mix(INPUT_MERGE.out.versions)
         ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
     }
 
@@ -120,7 +115,6 @@ workflow VARIANTCALLING {
         ch_aligned_reads,
         ch_interval,
     )
-    ch_versions = ch_versions.mix(INPUT_FILTER_SPLIT.out.versions)
 
 
     //
@@ -128,7 +122,7 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER(
         INPUT_FILTER_SPLIT.out.reads_fasta,
-        ch_genome_info.meta.max_length,
+        ch_genome_info.meta.map { meta -> meta.max_length },
     )
 
 
