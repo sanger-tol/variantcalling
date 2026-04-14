@@ -29,8 +29,14 @@ workflow ALIGN_PACBIO {
 
     // Collect all alignment output by sample name
     ch_bams = MINIMAP2_ALIGN.out.bam
-        .map { meta, bam -> [['id': meta.sample, 'datatype': meta.datatype, 'sample': meta.sample], bam] }
+        .map { meta, bam -> [['id': meta.sample, 'datatype': meta.datatype, 'sample': meta.sample], [meta.id, bam]] }
         .groupTuple(by: [0])
+        .map { meta, orig_id_bams ->
+            def bams = orig_id_bams
+                .sort { a, b -> a[0] <=> b[0]} // sort by id to ensure consistent order
+                .collect { id_bam -> id_bam[1] }
+            [meta, bams]
+        }
 
 
     // Merge
