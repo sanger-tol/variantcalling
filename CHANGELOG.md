@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When merging reads from multiple runs, order the read files by metadata
   information to ensure reproducibility.
 
+### Parameters
+
+| Old parameter       | New parameter |
+| ------------------- | ------------- |
+| --include_positions |               |
+| --exclude_positions |               |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
 ### Software dependencies
 
 Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
@@ -115,47 +124,11 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 - Bug fix when index fai file given for reference fasta file
 
-### Parameters
-
-This release with the following initial parameters:
-
-| Old parameter | New parameter |
-| ------------- | ------------- |
-
-> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
-
-### Software dependencies
-
-Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
-
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-
-> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
-
 ## [[1.1.1](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.1)] - Shang Tang (patch 1) - [2024-02-02]
 
 ### Enhancements & fixes
 
 - Bug fix when reference fasta file name end with .fa or .fa.gz
-
-### Parameters
-
-This release with the following initial parameters:
-
-| Old parameter | New parameter |
-| ------------- | ------------- |
-
-> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
-
-### Software dependencies
-
-Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
-
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-
-> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
 ## [[1.1.0](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.0)] - Shang Tang - [2023-12-20]
 
@@ -171,8 +144,6 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 - Use VCFtools to calculate heterozygosity.
 
 ### Parameters
-
-This release with the following initial parameters:
 
 | Old parameter | New parameter       |
 | ------------- | ------------------- |
@@ -216,7 +187,7 @@ Initial release of sanger-tol/variantcalling, created with the [nf-core](https:/
 
 ### Parameters
 
-This release with the following initial parameters:
+This release has the following initial parameters:
 
 | Old parameter | New parameter        |
 | ------------- | -------------------- |

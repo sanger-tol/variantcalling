@@ -31,7 +31,6 @@ workflow SANGERTOL_VARIANTCALLING {
     fasta
     fai
     interval
-    include_exclude_positions
 
     main:
 
@@ -43,7 +42,6 @@ workflow SANGERTOL_VARIANTCALLING {
         fasta,
         fai,
         interval,
-        include_exclude_positions,
     )
 }
 /*
@@ -69,8 +67,6 @@ workflow {
         params.fasta,
         params.fai,
         params.interval,
-        params.include_positions,
-        params.exclude_positions,
     )
 
     //
@@ -81,7 +77,6 @@ workflow {
         PIPELINE_INITIALISATION.out.fasta,
         PIPELINE_INITIALISATION.out.fai,
         PIPELINE_INITIALISATION.out.interval,
-        PIPELINE_INITIALISATION.out.positions,
     )
     //
     // SUBWORKFLOW: Run completion tasks

@@ -35,7 +35,6 @@ workflow VARIANTCALLING {
     ch_fasta // channel: fasta file read in from --fasta
     ch_fai // channel: fai file read in from --fai
     ch_interval // channel: interval file read in from --interval
-    ch_positions // channel: positions to include or exclude in the variant calling
 
     main:
     ch_versions = channel.empty()
