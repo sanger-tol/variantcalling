@@ -36,7 +36,6 @@ workflow PIPELINE_INITIALISATION {
     help_full // boolean: Show the full help message
     show_hidden // boolean: Show hidden parameters in the help message
     fasta
-    fai
     _interval
 
     main:
@@ -108,17 +107,6 @@ workflow PIPELINE_INITIALISATION {
     // Creat channel for mandatory parameters
     ch_fasta = channel.fromPath(fasta)
 
-    // Creat channel for optional parameters
-    if (params.fai) {
-        if ((params.fasta.endsWith('.gz') && params.fai.endsWith('.fai')) || (!params.fasta.endsWith('.gz') && params.fai.endsWith('.gzi'))) {
-            exit(1, 'Reference fasta and its index file format not matched!')
-        }
-        ch_fai = channel.fromPath(fai)
-    }
-    else {
-        ch_fai = channel.empty()
-    }
-
     if (params.interval) {
         ch_interval = channel.fromPath(params.interval)
     }
@@ -129,7 +117,6 @@ workflow PIPELINE_INITIALISATION {
     emit:
     input     = ch_validated_samplesheet
     fasta     = ch_fasta
-    fai       = ch_fai
     interval  = ch_interval
     versions  = ch_versions
 }

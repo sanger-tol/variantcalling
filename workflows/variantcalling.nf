@@ -33,7 +33,6 @@ workflow VARIANTCALLING {
     take:
     ch_reads // channel: samplesheet read in from --input
     ch_fasta // channel: fasta file read in from --fasta
-    ch_fai // channel: fai file read in from --fai
     ch_interval // channel: interval file read in from --interval
 
     main:
