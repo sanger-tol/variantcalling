@@ -62,7 +62,7 @@ workflow VARIANTCALLING {
        .join( SAMTOOLS_FAIDX.out.fai )
        .join( SAMTOOLS_FAIDX.out.gzi, remainder: true )
        .map { meta, fa, fai, gzi ->
-           def index_file = fa.name.endsWith('.gz') ? [fai, gzi] : fai
+           def index_file = (fa.name.endsWith('.gz') && gzi) ? [fai, gzi] : fai
            [meta + get_sequence_map(fai), fa, index_file]
         }
         .collect()
