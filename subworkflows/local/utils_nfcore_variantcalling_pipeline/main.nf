@@ -38,8 +38,6 @@ workflow PIPELINE_INITIALISATION {
     fasta
     fai
     _interval
-    include_positions
-    exclude_positions
 
     main:
 
@@ -128,25 +126,11 @@ workflow PIPELINE_INITIALISATION {
         ch_interval = channel.empty()
     }
 
-    if (params.include_positions && params.exclude_positions) {
-        exit(1, 'Only one positions file can be given to include or exclude!')
-    }
-    else if (params.include_positions) {
-        ch_positions = channel.fromPath(include_positions)
-    }
-    else if (params.exclude_positions) {
-        ch_positions = channel.fromPath(exclude_positions)
-    }
-    else {
-        ch_positions = []
-    }
-
     emit:
     input     = ch_validated_samplesheet
     fasta     = ch_fasta
     fai       = ch_fai
     interval  = ch_interval
-    positions = ch_positions
     versions  = ch_versions
 }
 
