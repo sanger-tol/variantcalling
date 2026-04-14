@@ -54,32 +54,16 @@ workflow VARIANTCALLING {
     }
 
 
-    //
-    // Check reference fasta index given or not
-    //
-    if (!params.fai) {
+    SAMTOOLS_FAIDX(ch_genome, [[], []])
 
-        SAMTOOLS_FAIDX(ch_genome, [[], []])
-        ch_versions = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
-
-        // generate fai that is used to determine the maximum length of chromosome
-        ch_genome_index_fai = SAMTOOLS_FAIDX.out.fai
-        ch_genome_index = params.fasta.endsWith('.gz') ? SAMTOOLS_FAIDX.out.gzi : SAMTOOLS_FAIDX.out.fai
-    }
-    else {
-        ch_genome_index = ch_fai.map { fai -> [['id': fai.baseName], fai] }
-
-        ch_genome_index_fai = ch_genome_index
-        if (!params.fai.endsWith(".fai")) {
-            ch_genome_index_fai = SAMTOOLS_FAIDX(ch_genome, [[], []]).fai
-            ch_versions = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
-        }
-    }
-
+    // generate fai that is used to determine the maximum length of chromosome
+    // also add the gzi if present as it is needed for bgzip-ed genomes
     ch_genome_info = ch_genome
-        .combine(ch_genome_index_fai)
-        .map { meta_fa, fa, _meta_fai, fai ->
-            [meta_fa + get_sequence_map(fai), fa, fai]
+       .join( SAMTOOLS_FAIDX.out.fai )
+       .join( SAMTOOLS_FAIDX.out.gzi, remainder: true )
+       .map { meta, fa, fai, gzi ->
+           def index_file = fa.name.endsWith('.gz') ? [fai, gzi] : fai
+           [meta + get_sequence_map(fai), fa, index_file]
         }
         .collect()
         .multiMap { meta, fa, fai ->

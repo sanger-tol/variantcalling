@@ -56,12 +56,6 @@
                     "description": "Path to FASTA genome file, either fasta or fasta.gz.",
                     "format": "file-path"
                 },
-                "fai": {
-                    "type": "string",
-                    "description": "Path to the index file of the FASTA genome file, either fai or gzi.",
-                    "format": "file-path",
-                    "exists": true
-                },
                 "align": {
                     "type": "boolean",
                     "description": "Align the input reads to the reference"
