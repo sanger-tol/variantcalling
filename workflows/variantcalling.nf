@@ -55,6 +55,7 @@ workflow VARIANTCALLING {
 
 
     SAMTOOLS_FAIDX(ch_genome, [[], []])
+    ch_versions = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
 
     // generate fai that is used to determine the maximum length of chromosome
     // also add the gzi if present as it is needed for bgzip-ed genomes
