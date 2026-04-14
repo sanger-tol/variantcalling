@@ -10,7 +10,7 @@ include { CONVERT_STATS  } from '../../subworkflows/local/convert_stats'
 
 workflow ALIGN_PACBIO {
     take:
-    fasta // channel: [ val(meta), /path/to/fasta ]
+    fasta // channel: [ val(meta), /path/to/fasta[.gz] ]
     reads // channel: [ val(meta), /path/to/datafile ]
     db // channel: /path/to/vector_db
 

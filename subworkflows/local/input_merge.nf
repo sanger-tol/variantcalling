@@ -7,8 +7,8 @@ include { SAMTOOLS_SORT  } from '../../modules/nf-core/samtools/sort'
 
 workflow INPUT_MERGE {
     take:
-    fasta // channel: [ val(meta), /path/to/genome.fasta or /path/to/genome.fasta.gz ]
-    fai // channel: [ val(meta), /path/to/genome.*.fai or /path/to/genome.fasta.gz.gzi ]
+    fasta // channel: [ val(meta), /path/to/fasta[.gz] ]
+    fai // channel: [ val(meta), /path/to/[fai,gzi] ]
     reads // channel: [ val(meta), data ]
 
     main:

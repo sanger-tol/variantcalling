@@ -9,7 +9,7 @@ include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
 
 workflow INPUT_FILTER_SPLIT {
     take:
-    fasta // [ val(meta, /path/to/genome.fasta[.gz] ]
+    fasta // [ val(meta), /path/to/fasta[.gz] ]
     reads // [ val(meta), data, index ]
     interval // file: /path/to/intervals.bed
 

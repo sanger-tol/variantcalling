@@ -29,7 +29,6 @@ workflow SANGERTOL_VARIANTCALLING {
     take:
     input // channel: samplesheet read in from --input
     fasta
-    fai
     interval
 
     main:
@@ -40,7 +39,6 @@ workflow SANGERTOL_VARIANTCALLING {
     VARIANTCALLING(
         input,
         fasta,
-        fai,
         interval,
     )
 }
@@ -65,7 +63,6 @@ workflow {
         params.help_full,
         params.show_hidden,
         params.fasta,
-        params.fai,
         params.interval,
     )
 
@@ -75,7 +72,6 @@ workflow {
     SANGERTOL_VARIANTCALLING(
         PIPELINE_INITIALISATION.out.input,
         PIPELINE_INITIALISATION.out.fasta,
-        PIPELINE_INITIALISATION.out.fai,
         PIPELINE_INITIALISATION.out.interval,
     )
     //
