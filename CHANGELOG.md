@@ -225,7 +225,7 @@ Initial release of sanger-tol/variantcalling, created with the [nf-core](https:/
 
 ### Parameters
 
-This release with the following initial parameters:
+This release has the following initial parameters:
 
 | Old parameter | New parameter        |
 | ------------- | -------------------- |
