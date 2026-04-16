@@ -30,9 +30,12 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency  | Old version | New version |
 | ----------- | ----------- | ----------- |
-| vcftools    | 0.1.16      |             |
 | bcftools    | 1.20        | 1.23.1      |
+| blastn      | 2.15.0      | 2.16.0      |
 | DeepVariant | 1.9.0       | 1.10.0      |
+| minimap2    | 2.28        | 2.29        |
+| samtools    | 1.20,1.21   | 1.21,1.23.1 |
+| vcftools    | 0.1.16      |             |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
@@ -111,8 +114,9 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | bcftools    | 1.17        | 1.20        |
 | blastn      | 2.14.1      | 2.15.0      |
 | DeepVariant | 1.5.0       | 1.6.1       |
+| minimap2    | 2.24        | 2.28        |
 | Python      | 3.8.3       | 3.9.1       |
-| samtools    | 1.17        | 1.21        |
+| samtools    | 1.17        | 1.20,1.21   |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
