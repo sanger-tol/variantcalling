@@ -44,7 +44,7 @@ workflow INPUT_FILTER_SPLIT {
     //
     // MODULE: Index the chunks
     //
-    SAMTOOLS_FAIDX(ch_split_fastas, [[], []])
+    SAMTOOLS_FAIDX(ch_split_fastas, false)
 
     // join fasta with corresponding fai file
     fasta_fai = ch_split_fastas.join(SAMTOOLS_FAIDX.out.fai)
