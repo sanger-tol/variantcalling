@@ -2,9 +2,51 @@
     "-profile test": {
         "content": [
             35,
+            {
+                "BCFTOOLS_CONCAT_GVCF": {
+                    "bcftools": "1.23.1"
+                },
+                "BCFTOOLS_CONCAT_VCF": {
+                    "bcftools": "1.23.1"
+                },
+                "BGZIPTABIX": {
+                    "bgzip": 1.21,
+                    "tabix": 1.21
+                },
+                "DEEPVARIANT": {
+                    "deepvariant": "1.10.0"
+                },
+                "GUNZIP": {
+                    "gunzip": 1.13
+                },
+                "GVCF_STATS_REPORT": {
+                    "deepvariant": "1.10.0"
+                },
+                "SAMTOOLS_FAIDX": {
+                    "samtools": "1.23.1"
+                },
+                "SAMTOOLS_MERGE": {
+                    "samtools": "1.23.1"
+                },
+                "SAMTOOLS_SORT": {
+                    "samtools": "1.23.1"
+                },
+                "SAMTOOLS_VIEW": {
+                    "samtools": "1.23.1"
+                },
+                "SEQKIT_SPLIT2": {
+                    "seqkit": "2.9.0"
+                },
+                "VCF_STATS_REPORT": {
+                    "deepvariant": "1.10.0"
+                },
+                "Workflow": {
+                    "sanger-tol/variantcalling": "v1.2.0dev"
+                }
+            },
             [
                 "pipeline_info",
-                "pipeline_info/variantcalling_software_versions.yml",
+                "pipeline_info/variantcalling_software_mqc_versions.yml",
                 "variant_calling",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_bam_deepvariant.g.vcf.gz",
                 "variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_bam_deepvariant.g.vcf.gz.csi",
@@ -59,6 +101,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-04-13T16:07:17.109795151"
+        "timestamp": "2026-04-16T18:23:56.332692541"
     }
 }

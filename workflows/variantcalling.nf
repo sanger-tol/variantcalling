@@ -150,7 +150,7 @@ workflow VARIANTCALLING {
         .mix(topic_versions_string)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
-            name: 'variantcalling_software_' + 'versions.yml',
+            name: 'variantcalling_software_mqc_'  + 'versions.yml',
             sort: true,
             newLine: true,
         )
