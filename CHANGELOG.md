@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [variantcomposition](https://github.com/sanger-tol/variantcomposition).
 - When merging reads from multiple runs, order the read files by metadata
   information to ensure reproducibility.
+- Updated all modules, including DeepVariant to 1.10.0 and bcftools to 1.23.1
 
 ### Parameters
 
