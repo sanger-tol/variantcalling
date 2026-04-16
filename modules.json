@@ -13,7 +13,8 @@
                     "blast/blastn": {
                         "branch": "master",
                         "git_sha": "3a9acfe9865ac6f63bc48667657bfb8293613f56",
-                        "installed_by": ["modules"]
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/blast/blastn/blast-blastn.diff"
                     },
                     "deepvariant/rundeepvariant": {
                         "branch": "master",
