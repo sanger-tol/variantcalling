@@ -7,21 +7,17 @@ include { SAMTOOLS_SORT  } from '../../modules/nf-core/samtools/sort'
 
 workflow INPUT_MERGE {
     take:
-    fasta // channel: [ val(meta), /path/to/fasta[.gz] ]
-    fai // channel: [ val(meta), /path/to/[fai,gzi] ]
+    fasta // channel: [ val(meta), /path/to/fasta[.gz], /path/to/[fai,gzi]]
     reads // channel: [ val(meta), data ]
 
     main:
-    ch_versions = channel.empty()
-
     // group input meta data together by sample name
     grouped_reads_meta = reads
         .map { meta, _bam_cram -> [meta.sample, meta] }
         .groupTuple()
 
     // sort input reads
-    SAMTOOLS_SORT(reads, fasta)
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions)
+    SAMTOOLS_SORT(reads, fasta, [])
     sorted_reads = SAMTOOLS_SORT.out.bam
 
     // group input reads file by sample name
@@ -41,25 +37,21 @@ workflow INPUT_MERGE {
                     datatype: meta.datatype,
                 ],
                 bam_cram_list.sort(),
+                [],
             ]
         }
 
     // call samtool merge
     SAMTOOLS_MERGE(
         grouped_reads_with_meta,
-        fasta,
-        fai,
+        fasta.map { meta, fa, fai -> [meta, fa, fai, []] },
     )
-    ch_versions = ch_versions.mix(SAMTOOLS_MERGE.out.versions)
 
     // concat merged bam or cram together along with their index file
     indexed_merged_reads = SAMTOOLS_MERGE.out.bam
-        .join(SAMTOOLS_MERGE.out.csi)
-        .concat(
-            SAMTOOLS_MERGE.out.cram.join(SAMTOOLS_MERGE.out.crai)
-        )
+        .concat(SAMTOOLS_MERGE.out.cram)
+        .join(SAMTOOLS_MERGE.out.index)
 
     emit:
     indexed_merged_reads = indexed_merged_reads
-    versions             = ch_versions // channel: [ versions.yml ]
 }

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [variantcomposition](https://github.com/sanger-tol/variantcomposition).
 - When merging reads from multiple runs, order the read files by metadata
   information to ensure reproducibility.
+- Updated all modules, including DeepVariant to 1.10.0 and bcftools to 1.23.1
 
 ### Parameters
 
@@ -27,9 +28,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
 
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-| vcftools   | 0.1.16      |             |
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| bcftools    | 1.20        | 1.23.1      |
+| blastn      | 2.15.0      | 2.16.0      |
+| DeepVariant | 1.9.0       | 1.10.0      |
+| minimap2    | 2.28        | 2.29        |
+| samtools    | 1.20,1.21   | 1.21,1.23.1 |
+| vcftools    | 0.1.16      |             |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
@@ -55,8 +61,8 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 ### Enhancements & fixes
 
-- Update Deepvariant to version 1.9.0 (conda-free)
-- Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from Deepvariant
+- Update DeepVariant to version 1.9.0 (conda-free)
+- Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from DeepVariant
 - Compress and index concatenated VCFs
 
 ### Software dependencies
@@ -65,7 +71,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency  | Old version | New version |
 | ----------- | ----------- | ----------- |
-| Deepvariant | 1.6.1       | 1.9.0       |
+| DeepVariant | 1.6.1       | 1.9.0       |
 | HTSlib      |             | 1.21        |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
@@ -107,9 +113,10 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | ----------- | ----------- | ----------- |
 | bcftools    | 1.17        | 1.20        |
 | blastn      | 2.14.1      | 2.15.0      |
-| deepvariant | 1.5.0       | 1.6.1       |
+| DeepVariant | 1.5.0       | 1.6.1       |
+| minimap2    | 2.24        | 2.28        |
 | Python      | 3.8.3       | 3.9.1       |
-| samtools    | 1.17        | 1.21        |
+| samtools    | 1.17        | 1.20,1.21   |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 

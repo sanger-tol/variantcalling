@@ -12,7 +12,7 @@ process PACBIO_FILTER {
 
     output:
     tuple val(meta), path("*.blocklist"), emit: list
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gawk'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), topic: versions, emit: versions_gawk
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,10 +21,5 @@ process PACBIO_FILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pacbio_filter.sh ${txt} ${prefix}.blocklist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        GNU Awk: \$(echo \$(awk --version 2>&1) | grep -i awk | sed 's/GNU Awk //; s/,.*//')
-    END_VERSIONS
     """
 }
