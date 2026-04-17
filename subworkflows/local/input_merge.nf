@@ -41,7 +41,6 @@ workflow INPUT_MERGE {
             ]
         }
 
-    // TODO write index
     // call samtool merge
     SAMTOOLS_MERGE(
         grouped_reads_with_meta,
