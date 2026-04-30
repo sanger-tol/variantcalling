@@ -16,16 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update samplesheet to handle `sample` in form of `specimen/run`
 - Update outputs for `read_mapping` and `variant_analysis`
 - Added an option to control PacBio filtering when doing alignments (backported from #153)
+- Added an option to pass parameters to DeepVariant (#154)
 
 ### Parameters
 
-| Old parameter       | New parameter   |
-| ------------------- | --------------- |
-| --include_positions |                 |
-| --exclude_positions |                 |
-| --fai               |                 |
-|                     | --merge_output  |
-|                     | --filter_pacbio |
+| Old parameter       | New parameter            |
+| ------------------- | ------------------------ |
+| --include_positions |                          |
+| --exclude_positions |                          |
+| --fai               |                          |
+|                     | --merge_output           |
+|                     | --filter_pacbio          |
+|                     | --deepvariant_parameters |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 

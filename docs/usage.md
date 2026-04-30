@@ -44,6 +44,16 @@ specimen3/run3,pacbio,/path/to/data/file/file3.bam
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
+## DeepVariant parameters
+
+Parameters can be passed straight to DeepVariant via the `--deepvariant_parameters` option.
+Note that you will need to add a leading whitespace in front of `--`,
+otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcalling option.
+
+```
+nextflow run ... --deepvariant_parameters " --make_examples_extra_args='small_model_call_multiallelics=false'"
+```
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
