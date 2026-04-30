@@ -198,10 +198,13 @@ def validateInputSamplesheet(channel) {
         else {
             error("Unsupported datatype: ${meta.datatype}. Supported datatypes are: pacbio")
         }
-        meta.read_group = "\'@RG\\tID:" + datafile.toString().split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
 
-        seen[meta.sample] += 1
-        meta.id = "${meta.sample}_T${seen[meta.sample]}"
+        def sample_parts = meta.sample.toString().split("/", 2)
+        meta.specimen = sample_parts[0]
+        meta.run = sample_parts.length > 1 ? sample_parts[1] : ""
+        meta.datatype = meta.datatype.toLowerCase()
+        meta.id = meta.sample.replace("/",".")
+        meta.read_group = "\'@RG\\tID:" + datafile.simpleName + "\\tPL:" + platform + "\\tSM:" + meta.id + "\'"
 
         return [meta, datafile]
     }

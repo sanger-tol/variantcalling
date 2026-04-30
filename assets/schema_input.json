@@ -29,5 +29,6 @@
             }
         },
         "required": ["sample", "datatype", "datafile"]
-    }
+    },
+    "uniqueEntries": ["sample"]
 }
