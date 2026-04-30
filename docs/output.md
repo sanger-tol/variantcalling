@@ -57,12 +57,12 @@ The aligned PacBio read data is used to call variants with DeepVariant. This is 
 - `variant_analysis`/
   - `pacbio`/
     - <sample>/ (can be nested directories if `sample` contains `/`)
-      - Compressed VCF files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.vcf.gz`.
-      - Index of compressed VCF files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.vcf.gz.[tbi|csi]`.
-      - Compressed GVCF files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.g.vcf.gz`.
-      - Index of compressed GVCF files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.g.vcf.gz.[tbi|csi]`.
+      - Compressed VCF files: `<fasta_basename>.pacbio.<sample>[.minimap2].deepvariant.vcf.gz`. (`[.minimap2]` is present when running with `--align`; `/` in the sample name are replaced with `.`)
+      - Index of compressed VCF files: `<fasta_basename>.pacbio.<sample>[.minimap2].deepvariant.vcf.gz.[tbi|csi]`.
+      - Compressed GVCF files: `<fasta_basename>.pacbio.<sample>[.minimap2].deepvariant.g.vcf.gz`.
+      - Index of compressed GVCF files: `<fasta_basename>.pacbio.<sample>[.minimap2].deepvariant.g.vcf.gz.[tbi|csi]`.
       - `qc`
-        - HTML files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.[vcf|g.vcf].stats.visual_report.html`.
+        - HTML files: `<fasta_basename>.pacbio.<sample>[.minimap2].deepvariant.[vcf|g.vcf].stats.visual_report.html`.
 
 </details>
 
