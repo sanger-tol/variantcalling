@@ -11,47 +11,45 @@ workflow INPUT_MERGE {
     reads // channel: [ val(meta), data ]
 
     main:
-    // group input meta data together by sample name
-    grouped_reads_meta = reads
-        .map { meta, _bam_cram -> [meta.sample, meta] }
-        .groupTuple()
+    // Add fasta id to the reads meta
+    reads = reads.combine(fasta).map { meta, reads, meta_fasta, _fasta, _fai -> [meta + ['fasta_id': meta_fasta.id], reads] }
 
     // sort input reads
     SAMTOOLS_SORT(reads, fasta, [])
     sorted_reads = SAMTOOLS_SORT.out.bam
 
-    // group input reads file by sample name
-    grouped_reads = sorted_reads
-        .map { meta, bam_cram -> [meta.sample, bam_cram] }
+    grouped_reads_meta = sorted_reads
+        .map { meta, reads -> [meta.specimen, [meta, reads]] }
         .groupTuple()
+        .branch { specimen, meta_reads ->
+            to_merge: meta_reads.size() > 1
+            no_merge: true
+        }
 
-    // join grouped reads and meta
-    // use the first meta data for the combined reads
-    grouped_reads_with_meta = grouped_reads_meta
-        .map { sample, meta_list -> [sample, meta_list[0]] }
-        .join(grouped_reads)
-        .map { sample, meta, bam_cram_list ->
-            [
-                [
-                    id: sample,
-                    datatype: meta.datatype,
-                ],
-                bam_cram_list.sort(),
-                [],
-            ]
+    ch_reads_no_merge = grouped_reads_meta.no_merge.map { meta, reads -> [ reads[0][0], reads[0][1], [] ] }
+
+    ch_reads_to_merge = grouped_reads_meta.to_merge
+        .map { meta, orig_id_reads ->
+            def meta_read = orig_id_reads[0][0]
+            def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/merge", 'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.merge", 'run': "merge"]
+            def reads = orig_id_reads
+                .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
+                .collect { id_read -> id_read[1] }
+            [meta_read_new, reads, []]
         }
 
     // call samtool merge
     SAMTOOLS_MERGE(
-        grouped_reads_with_meta,
+        ch_reads_to_merge,
         fasta.map { meta, fa, fai -> [meta, fa, fai, []] },
     )
 
     // concat merged bam or cram together along with their index file
-    indexed_merged_reads = SAMTOOLS_MERGE.out.bam
+    merged_reads = SAMTOOLS_MERGE.out.bam
         .concat(SAMTOOLS_MERGE.out.cram)
         .join(SAMTOOLS_MERGE.out.index)
+        .mix(ch_reads_no_merge)
 
     emit:
-    indexed_merged_reads = indexed_merged_reads
+    merged_reads = merged_reads
 }

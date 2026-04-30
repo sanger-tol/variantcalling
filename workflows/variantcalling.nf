@@ -103,9 +103,9 @@ workflow VARIANTCALLING {
             ch_genome_info.fasta,
             ch_reads,
         )
-        ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
+        ch_aligned_reads = INPUT_MERGE.out.merged_reads
     }
-
+    ch_aligned_reads = ch_aligned_reads.map { meta, reads, index -> [meta + ['basename': reads.baseName], reads, index] }
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads
