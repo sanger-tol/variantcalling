@@ -45,8 +45,10 @@ process SAMTOOLS_MERGE {
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def index_type = file_type == "bam" ? "csi" : "crai"
     def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
+    def source_files_args = meta.merge_source ? "printf \"%s\" \"${meta.merge_source}\" > SOURCE.txt" : ""
     """
     touch ${prefix}.${file_type}
     ${index}
+    ${source_files_args}
     """
 }
