@@ -16,6 +16,7 @@ lint:
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/branch.yml
     - .github/workflows/linting.yml
+    - .gitignore
     - LICENSE
     - assets/email_template.html
     - .github/ISSUE_TEMPLATE/bug_report.yml
