@@ -177,7 +177,6 @@ workflow PIPELINE_COMPLETION {
 //
 
 def validateInputSamplesheet(channel) {
-    def seen = [:].withDefault { 0 }
     def validFormats = [".cram", ".bam"]
 
     return channel.map { row ->
