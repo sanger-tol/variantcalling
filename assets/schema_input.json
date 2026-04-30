@@ -9,8 +9,8 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "pattern": "^[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)?$",
+                "errorMessage": "Sample must contain only letters, numbers, '_', '-', and at most one '/' (format: 'specimen' or 'specimen/run')",
                 "meta": ["sample"]
             },
             "datatype": {

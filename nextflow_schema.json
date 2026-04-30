@@ -38,9 +38,9 @@
                 "merge_output": {
                     "type": "string",
                     "default": "merge",
-                    "minLength": 1,
+                    "pattern": "^[A-Za-z0-9._-]+$",
                     "description": "Non-empty string used as the suffix and output directory name for merged data files",
-                    "help_text": "Defines the suffix added to merged file names and name of output directory when multiple read files that share the same specimen are merged"
+                    "help_text": "Defines the suffix added to merged file names and name of output directory when multiple read files that share the same specimen are merged. Allowed characters are letters, numbers, dot (.), underscore (_), and hyphen (-)."
                 },
                 "email": {
                     "type": "string",
