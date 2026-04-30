@@ -16,7 +16,7 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Multiple runs of the same sample
 
-The `sample` identifiers have to be unique. When a sample (`specimen`) is re-sequenced more than once e.g. to increase sequencing depth, this field is highly recommended to be in form of `specimen/run`, where `specimen` the same and `run` is unique across these entries. Below is an example for the same sample sequenced across 3 lanes:
+The `sample` identifiers have to be unique. When a sample (`specimen`) is re-sequenced more than once e.g. to increase sequencing depth, this field is highly recommended to be in form of `specimen/run`, where `specimen` is the same and `run` is unique across these entries. Below is an example for the same sample sequenced across 3 lanes:
 
 ```csv title="samplesheet.csv"
 sample,datatype,datafile
