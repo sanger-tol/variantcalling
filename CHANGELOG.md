@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   information to ensure reproducibility.
 - Updated all modules, including DeepVariant to 1.10.0 and bcftools to 1.23.1
 - Update samplesheet to handle `sample` in form of `specimen/run`
-- Update outputs for `readmapping` and `variant_analysis` 
+- Update outputs for `readmapping` and `variant_analysis`
 
 ### Parameters
 
