@@ -31,7 +31,7 @@ workflow INPUT_MERGE {
     ch_reads_to_merge = grouped_reads_meta.to_merge
         .map { meta, orig_id_reads ->
             def meta_read = orig_id_reads[0][0]
-            def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/merge", 'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.merge", 'run': "merge"]
+            def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}", 'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.${params.merge_output}", 'run': "merge"]
             def reads = orig_id_reads
                 .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
                 .collect { id_read -> id_read[1] }

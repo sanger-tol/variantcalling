@@ -18,11 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Parameters
 
-| Old parameter       | New parameter |
-| ------------------- | ------------- |
-| --include_positions |               |
-| --exclude_positions |               |
-| --fai               |               |
+| Old parameter       | New parameter  |
+| ------------------- | -------------- |
+| --include_positions |                |
+| --exclude_positions |                |
+| --fai               |                |
+|                     | --merge_output |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 

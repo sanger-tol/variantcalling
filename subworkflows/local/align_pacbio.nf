@@ -40,7 +40,7 @@ workflow ALIGN_PACBIO {
     ch_bams_to_merge = ch_bams.to_merge
         .map { meta, orig_id_bams ->
             def meta_bam = orig_id_bams[0][0]
-            def meta_bam_new = meta_bam + ['sample': "${meta_bam.specimen}/merge", 'id': "${meta_bam.fasta_id}.${meta_bam.datatype}.${meta_bam.specimen}.merge", 'run': "merge"]
+            def meta_bam_new = meta_bam + ['sample': "${meta_bam.specimen}/${params.merge_output}", 'id': "${meta_bam.fasta_id}.${meta_bam.datatype}.${meta_bam.specimen}.${params.merge_output}", 'run': "merge"]
             def bams = orig_id_bams
                 .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
                 .collect { id_bam -> id_bam[1] }
