@@ -12,7 +12,7 @@ workflow INPUT_MERGE {
 
     main:
     // Add fasta id to the reads meta
-    reads = reads.combine(fasta).map { meta, reads, meta_fasta, _fasta, _fai -> [meta + ['fasta_id': meta_fasta.id], reads] }
+    reads = reads.combine(fasta).map { meta, reads, meta_fasta, _fasta, _fai -> [meta + ['fasta_id': meta_fasta.id, 'id':"${meta_fasta.id}.${meta.datatype}.${meta.id}"], reads] }
 
     // sort input reads
     SAMTOOLS_SORT(reads, fasta, [])
