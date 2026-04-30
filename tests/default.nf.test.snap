@@ -59,6 +59,7 @@
                 "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.gz.csi",
                 "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.gz.gzi",
                 "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/SOURCE.txt",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.stats.visual_report.html",
@@ -72,6 +73,7 @@
                 "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz.csi",
                 "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz.gzi",
                 "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/SOURCE.txt",
                 "variant_analysis/pacbio/SAMEA7521030_2/merge/qc",
                 "variant_analysis/pacbio/SAMEA7521030_2/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html",
                 "variant_analysis/pacbio/SAMEA7521030_2/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.stats.visual_report.html",
@@ -89,8 +91,10 @@
                 "variant_analysis/pacbio/SAMEA7521030_X/qc/SAMEA7521030_X.minimap2.deepvariant.vcf.stats.visual_report.html"
             ],
             [
+                "SOURCE.txt:md5,e30fa0754f9d79d9279413bdbb5fec9c",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html:md5,c16fe42da5be066a30a9fedbfc5f0cd4",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.stats.visual_report.html:md5,3db73f5a1d3eba1119d0f59e6bb15243",
+                "SOURCE.txt:md5,6749ca92d21ea1ce5fe427932de02583",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html:md5,3c26c07ccb2e7ecd2adff857d81edc6b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.stats.visual_report.html:md5,f3d5228abcab3ec98070f729713e777b",
                 "SAMEA7521030_X.minimap2.deepvariant.g.vcf.stats.visual_report.html:md5,454823a1590296f85ea983d2749fa55e",
@@ -105,7 +109,7 @@
                 "SAMEA7521030_X.minimap2.deepvariant.vcf.gz:md5,3670ede9c3b92fa2a58575ea1129aa62"
             ]
         ],
-        "timestamp": "2026-04-30T11:01:11.502549",
+        "timestamp": "2026-04-30T14:32:53.698893",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.04.0"

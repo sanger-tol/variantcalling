@@ -38,13 +38,14 @@ workflow ALIGN_PACBIO {
         .map { meta, bams -> [ bams[0][0], bams[0][1], [] ] }
 
     ch_bams_to_merge = ch_bams.to_merge
-        .map { meta, orig_id_bams ->
-            def meta_bam = orig_id_bams[0][0]
-            def meta_bam_new = meta_bam + ['sample': "${meta_bam.specimen}/${params.merge_output}", 'id': "${meta_bam.fasta_id}.${meta_bam.datatype}.${meta_bam.specimen}.${params.merge_output}", 'run': "merge"]
-            def bams = orig_id_bams
+        .map { meta, orig_id_reads ->
+            def meta_read = orig_id_reads[0][0]
+            def runs = orig_id_reads.collect { id_read -> id_read[0].run }
+            def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}", 'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.${params.merge_output}", 'run': "merge", 'merge_source': runs.sort().join("\n")]
+            def reads = orig_id_reads
                 .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
-                .collect { id_bam -> id_bam[1] }
-            [meta_bam_new, bams, []]
+                .collect { id_read -> id_read[1] }
+            [meta_read_new, reads, []]
         }
 
 
