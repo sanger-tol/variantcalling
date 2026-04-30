@@ -190,6 +190,8 @@ def validateInputSamplesheet(channel) {
             error("Data file is required and must have a valid extension: ${datafile}")
         }
 
+        meta.datatype = meta.datatype.toLowerCase()
+
         def platform = ""
         if (meta.datatype == "pacbio") {
             platform = "PACBIO"
@@ -201,7 +203,6 @@ def validateInputSamplesheet(channel) {
         def sample_parts = meta.sample.toString().split("/", 2)
         meta.specimen = sample_parts[0]
         meta.run = sample_parts.length > 1 ? sample_parts[1] : ""
-        meta.datatype = meta.datatype.toLowerCase()
         meta.id = meta.sample.replace("/",".")
         meta.read_group = "\'@RG\\tID:" + datafile.simpleName + "\\tPL:" + platform + "\\tSM:" + meta.id + "\'"
 
