@@ -17,7 +17,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 ### Read Alignments
 
-The unaligned PacBio read data is being filtered and aligned using `minimap2`. The CRAM files from the same sample will be merged.
+The unaligned PacBio read data is being filtered and aligned using `minimap2`. Reads from the same specimen (across multiple runs) will be merged into CRAM files.
 
 <details markdown="1">
 <summary>Output files</summary>
@@ -42,7 +42,7 @@ The statistics for the aligned CRAM files will be calculated using `samtools`.
     - <sample>/ (can be nested directories if `sample` contains `/`)
       - stats/
         - Comprehensive statistics from alignment file: `<fasta_basename>.pacbio.<sample>.minimap2.stats`.
-        - Number of alignments for each FLAG type: `<fasta_basename>.pacbio.<sample>.minimap2.flagstats`.
+        - Number of alignments for each FLAG type: `<fasta_basename>.pacbio.<sample>.minimap2.flagstat`.
         - Alignment summary statistics: `<fasta_basename>.pacbio.<sample>.minimap2.idxstats`.
 
 </details>
