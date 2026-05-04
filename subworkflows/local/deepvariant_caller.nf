@@ -88,7 +88,7 @@ workflow DEEPVARIANT_CALLER {
     // select the type of index to use based on the maximum sequence length
     ch_compressed_vcf
         .combine( max_length )
-        .map { meta_vcf, vcf, meta -> [ meta_vcf + meta, vcf ] }
+        .map { meta_vcf, vcf, meta -> [ meta + meta_vcf, vcf ] }
         .branch { meta, vcf ->
         tbi_and_csi: meta.max_length < 2**29
         only_csi:    meta.max_length < 2**32
