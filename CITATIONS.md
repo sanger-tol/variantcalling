@@ -36,6 +36,10 @@
 
   > Li H. New strategies to improve minimap2 alignment accuracy. Bioinformatics. 2021 Oct 8;37(23):4572–4. doi: 10.1093/bioinformatics/btab705. Epub ahead of print. PMID: 34623391; PMCID: PMC8652018.
 
+- [himut](https://www.biorxiv.org/content/10.64898/2025.12.28.691837v1)
+
+  > Lee, Sangjin, et al. "Somatic and germline mutational processes across the tree of life". https://doi.org/10.64898/2025.12.28.691837
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
