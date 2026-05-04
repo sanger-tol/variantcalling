@@ -36,10 +36,6 @@
 
   > Li H. New strategies to improve minimap2 alignment accuracy. Bioinformatics. 2021 Oct 8;37(23):4572–4. doi: 10.1093/bioinformatics/btab705. Epub ahead of print. PMID: 34623391; PMCID: PMC8652018.
 
-- [VCFTools](https://pubmed.ncbi.nlm.nih.gov/21653522/)
-
-  > Danecek P, Auton A, Abecasis G, et al.: The variant call format and VCFtools. Bioinformatics. 2011 Aug 1;27(15):2156-8. doi: 10.1093/bioinformatics/btr330. Epub 2011 Jun 7. PubMed PMID: 21653522; PubMed Central PMCID: PMC3137218.
-
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
