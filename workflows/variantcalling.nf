@@ -209,9 +209,9 @@ workflow VARIANTCALLING {
     //
 
     RUN_HIMUT (
-        ch_genome,
-        ch_genome_index_fai,
-        ch_assembly_report,
+        ch_genome_info.fasta,
+        ch_genome_info.index,
+        ch_assembly_report.collect(),
         INPUT_FILTER_SPLIT.out.bam_bai,
         vcf,
     )
