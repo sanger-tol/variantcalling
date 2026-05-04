@@ -214,8 +214,7 @@ workflow VARIANTCALLING {
         ch_genome,
         ch_genome_index_fai,
         ch_assembly_report,
-        INPUT_FILTER_SPLIT.out.bam,
-        INPUT_FILTER_SPLIT.out.bai,
+        INPUT_FILTER_SPLIT.out.bam_bai,
         DEEPVARIANT_CALLER.out.compressed_vcf,
         DEEPVARIANT_CALLER.out.vcf_tbi,
     )

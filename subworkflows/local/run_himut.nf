@@ -12,8 +12,7 @@ workflow RUN_HIMUT {
     fasta                // [ val(meta), fasta     ]
     fasta_index          // [ val(meta), fai       ]
     assembly_report      // [ assembly_report      ]
-    bam                  // [ val(meta), bam       ]
-    bam_index            // [ val(meta), bai       ]
+    bam_bai              // [ val(meta), bam, bai  ]
     vcf_input            // [ val(meta), vcf_input ]
     vcf_index            // [ val(meta), vcf_tbi   ]
 
@@ -21,7 +20,7 @@ workflow RUN_HIMUT {
     ch_versions = Channel.empty()
 
     // run Himut
-    HIMUT ( fasta, fasta_index, assembly_report, bam, bam_index, vcf_input, vcf_index )
+    HIMUT ( fasta, fasta_index, assembly_report, bam_bai, vcf_input, vcf_index )
     ch_versions = ch_versions.mix ( HIMUT.out.versions.first() )
 
     // compress the vcf outputs of Himut
