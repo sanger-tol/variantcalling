@@ -4,7 +4,6 @@
 
 include { DEEPVARIANT_RUNDEEPVARIANT as DEEPVARIANT       }   from '../../modules/nf-core/deepvariant/rundeepvariant/main'
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_VCF          }   from '../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_GVCF         }   from '../../modules/nf-core/bcftools/concat/main'
 include { TABIX_BGZIP as BGZIP                            }   from '../../modules/nf-core/tabix/bgzip/main'
 include { TABIX_TABIX as TABIX_CSI                        }   from '../../modules/nf-core/tabix/tabix/main'
 include { TABIX_TABIX as TABIX_TBI                        }   from '../../modules/nf-core/tabix/tabix/main'
@@ -61,24 +60,6 @@ workflow DEEPVARIANT_CALLER {
     BCFTOOLS_CONCAT_VCF ( vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_VCF.out.versions.first() )
 
-    // group the g vcf files together by sample
-    DEEPVARIANT.out.gvcf
-        .join(DEEPVARIANT.out.gvcf_index)
-        .map { meta, gvcf, index -> [
-            [ id: meta.fasta_id
-                + "." + meta.type
-                + "." + meta.sample
-            ],
-            gvcf,
-            index
-        ] }
-        .groupTuple()
-        .set { g_vcf }
-
-    // concat g vcf files
-    BCFTOOLS_CONCAT_GVCF ( g_vcf )
-    ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
-
     // we'll want to index the vcf in two formats for maximum compatibility (each has its own limitation)
     // selection of the type of index is based on the maximum sequence length
     BCFTOOLS_CONCAT_VCF.out.vcf
@@ -98,7 +79,7 @@ workflow DEEPVARIANT_CALLER {
         }
         .set { tabix_selector }
 
-    // do the indexing on the compatible gvcf files
+    // do the indexing on the compatible vcf files
     ch_indexed_vcf_csi = TABIX_CSI ( tabix_selector.tbi_and_csi.mix(tabix_selector.only_csi) ).csi
     ch_versions        = ch_versions.mix ( TABIX_CSI.out.versions.first() )
     ch_indexed_vcf_tbi = TABIX_TBI ( tabix_selector.tbi_and_csi ).tbi
@@ -106,7 +87,6 @@ workflow DEEPVARIANT_CALLER {
 
     emit:
     vcf      = BCFTOOLS_CONCAT_VCF.out.vcf           // channel: [ val(meta), path(vcf)    ]
-    gvcf     = BCFTOOLS_CONCAT_GVCF.out.vcf          // channel: [ val(meta), path(gvcf)   ]
     compressed_vcf    = ch_compressed_vcf            // channel: [ val(meta), path(output) ]
     vcf_csi  = ch_indexed_vcf_csi                    // channel: [ val(meta), path(csi)    ]
     vcf_tbi  = ch_indexed_vcf_tbi                    // channel: [ val(meta), path(tbi)    ]

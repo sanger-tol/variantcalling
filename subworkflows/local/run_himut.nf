@@ -36,7 +36,7 @@ workflow RUN_HIMUT {
         }
         .set { himut_tabix_selector }
 
-    // do the indexing on the compatible gvcf files
+    // do the indexing on the compatible vcf files
     ch_himut_vcf_csi   = TABIX_CSI ( himut_tabix_selector.tbi_and_csi.mix(himut_tabix_selector.only_csi) ).csi
     ch_versions        = ch_versions.mix ( TABIX_CSI.out.versions.first() )
     ch_himut_vcf_tbi   = TABIX_TBI ( himut_tabix_selector.tbi_and_csi ).tbi
