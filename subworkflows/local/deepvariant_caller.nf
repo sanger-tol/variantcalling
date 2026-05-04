@@ -79,16 +79,19 @@ workflow DEEPVARIANT_CALLER {
     BCFTOOLS_CONCAT_GVCF ( g_vcf )
     ch_versions = ch_versions.mix ( BCFTOOLS_CONCAT_GVCF.out.versions.first() )
 
-    // compress the vcf file as the input of Himut
-    vcf_to_compress   = BCFTOOLS_CONCAT_VCF.out.vcf
-    ch_compressed_vcf = BGZIP ( vcf_to_compress ).output
-    ch_versions       = ch_versions.mix ( BGZIP.out.versions.first() )
-
-    // index the compressed file in two formats for maximum compatibility (each has its own limitation)
-    // select the type of index to use based on the maximum sequence length
-    ch_compressed_vcf
+    // we'll want to index the vcf in two formats for maximum compatibility (each has its own limitation)
+    // selection of the type of index is based on the maximum sequence length
+    BCFTOOLS_CONCAT_VCF.out.vcf
         .combine( max_length )
         .map { meta_vcf, vcf, meta -> [ meta + meta_vcf, vcf ] }
+        .set { ch_vcf_with_seq_lengths }
+
+    // compress the vcf file as the input of Himut
+    ch_compressed_vcf = BGZIP ( ch_vcf_with_seq_lengths ).output
+    ch_versions       = ch_versions.mix ( BGZIP.out.versions.first() )
+
+    // do the selection
+    ch_compressed_vcf
         .branch { meta, vcf ->
         tbi_and_csi: meta.max_length < 2**29
         only_csi:    meta.max_length < 2**32
