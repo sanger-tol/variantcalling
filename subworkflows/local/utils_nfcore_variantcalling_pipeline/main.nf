@@ -209,6 +209,7 @@ def validateInputSamplesheet(channel) {
         meta.specimen = sample_parts[0]
         meta.run = sample_parts.length > 1 ? sample_parts[1] : ""
         meta.id = meta.sample.replace("/",".")
+        meta.basename = datafile.baseName
         meta.read_group = "\'@RG\\tID:" + datafile.simpleName + "\\tPL:" + platform + "\\tSM:" + meta.specimen + "\'"
 
         // INLINE DUPLICATE CHECK - happens immediately
