@@ -101,15 +101,15 @@
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html:md5,57289fbb7ebe57e9c845454b6287b5dc"
             ],
             [
-                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,a7a3df91599b390b501cf2b807f560eb",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
-                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,3670ede9c3b92fa2a58575ea1129aa62",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac"
             ]
         ],
-        "timestamp": "2026-05-05T12:33:00.278685",
+        "timestamp": "2026-05-05T15:03:16.569927",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.04.2"
