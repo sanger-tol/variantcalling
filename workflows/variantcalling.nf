@@ -199,25 +199,21 @@ workflow VARIANTCALLING {
 
 
     //
-    // convert VCF channel meta id
-    //
-    DEEPVARIANT_CALLER.out.vcf
-        .map{ meta, vcf -> [ [ id: vcf.baseName ], vcf ] }
+    // LOGIC: synchronise the vcf and its index
+    DEEPVARIANT_CALLER.out.compressed_vcf
+        .join ( DEEPVARIANT_CALLER.out.vcf_tbi )
         .set{ vcf }
-
 
     //
     // SUBWORKFLOW: run Himut
     //
 
     RUN_HIMUT (
-        ch_genome,
-        ch_genome_index_fai,
-        ch_assembly_report,
-        INPUT_FILTER_SPLIT.out.bam,
-        INPUT_FILTER_SPLIT.out.bai,
-        DEEPVARIANT_CALLER.out.compressed_vcf,
-        DEEPVARIANT_CALLER.out.vcf_tbi,
+        ch_genome_info.fasta,
+        ch_genome_info.index,
+        ch_assembly_report.collect(),
+        INPUT_FILTER_SPLIT.out.bam_bai,
+        vcf,
     )
     ch_versions = ch_versions.mix( RUN_HIMUT.out.versions )
 

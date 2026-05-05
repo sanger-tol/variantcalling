@@ -46,12 +46,14 @@ checkout DeepVariant
 merge BAM/CRAM
 commit id: "DEEPVARIANT"
 commit id: "BCFTOOLS_CONCAT_VCF" type: HIGHLIGHT
-branch "VCFtools" order: 7
-commit id: "VCFTOOLS_SITE_PI" type: HIGHLIGHT
-commit id: "VCFTOOLS_HET" type: HIGHLIGHT
+commit id: "BGZIP_DEEPVARIANT" type: HIGHLIGHT
+branch "himut" order: 7
+commit id: "HIMUT" type: HIGHLIGHT
+commit id: "BGZIP_HIMUT" type: HIGHLIGHT
+commit id: "TABIX_HIMUT" type: HIGHLIGHT
 checkout DeepVariant
-commit id: "BCFTOOLS_CONCAT_GVCF" type: HIGHLIGHT
+commit id: "TABIX_DEEPVARIANT" type: HIGHLIGHT
 checkout BAM/CRAM
-merge VCFtools
 merge DeepVariant
+merge himut
 commit id: "DUMPSOFTWAREVERSIONS" type: HIGHLIGHT

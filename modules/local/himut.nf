@@ -9,10 +9,8 @@ process HIMUT {
     tuple val(meta), path(fasta)
     tuple val(meta), path(fasta_index)
     path (assembly_report)
-    tuple val(meta), path(bam)
-    tuple val(meta), path(bam_index)
-    tuple val(meta), path(vcf_input)
-    tuple val(meta), path(vcf_index)
+    tuple val(meta), path(bam), path(bam_index)
+    tuple val(meta), path(vcf_input), path(vcf_index)
 
 
     output:

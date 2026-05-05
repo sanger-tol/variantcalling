@@ -12,16 +12,14 @@ workflow RUN_HIMUT {
     fasta                // [ val(meta), fasta     ]
     fasta_index          // [ val(meta), fai       ]
     assembly_report      // [ assembly_report      ]
-    bam                  // [ val(meta), bam       ]
-    bam_index            // [ val(meta), bai       ]
-    vcf_input            // [ val(meta), vcf_input ]
-    vcf_index            // [ val(meta), vcf_tbi   ]
+    bam_bai              // [ val(meta), bam, bai  ]
+    vcf_tbi              // [ val(meta), vcf, tbi  ]
 
     main:
     ch_versions = Channel.empty()
 
     // run Himut
-    HIMUT ( fasta, fasta_index, assembly_report, bam, bam_index, vcf_input, vcf_index )
+    HIMUT ( fasta, fasta_index, assembly_report, bam_bai, vcf_tbi )
     ch_versions = ch_versions.mix ( HIMUT.out.versions.first() )
 
     // compress the vcf outputs of Himut
@@ -38,7 +36,7 @@ workflow RUN_HIMUT {
         }
         .set { himut_tabix_selector }
 
-    // do the indexing on the compatible gvcf files
+    // do the indexing on the compatible vcf files
     ch_himut_vcf_csi   = TABIX_CSI ( himut_tabix_selector.tbi_and_csi.mix(himut_tabix_selector.only_csi) ).csi
     ch_versions        = ch_versions.mix ( TABIX_CSI.out.versions.first() )
     ch_himut_vcf_tbi   = TABIX_TBI ( himut_tabix_selector.tbi_and_csi ).tbi

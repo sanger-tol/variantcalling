@@ -80,9 +80,12 @@ workflow INPUT_FILTER_SPLIT {
     SAMTOOLS_INDEX ( filtered_bam )
     ch_versions = ch_versions.mix ( SAMTOOLS_INDEX.out.versions )
 
+    filtered_bam
+        .join ( SAMTOOLS_INDEX.out.bai )
+        .set { ch_bam_bai }
+
     emit:
-    bam            = filtered_bam            // channel: [ val(meta), bam ]
-    bai            = SAMTOOLS_INDEX.out.bai  // channel: [ val(meta), bai ]
+    bam_bai        = ch_bam_bai              // channel: [ val(meta), bam, bai ]
     reads_fasta    = bam_bai_fasta_fai       // channel: [ val(meta), bam, bai, interval, val(meta_fasta), fasta, fai ] // Attention: bai channel actually contains csi file
     versions       = ch_versions             // channel: [ versions.yml   ]
 }
