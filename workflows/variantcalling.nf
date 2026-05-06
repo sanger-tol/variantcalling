@@ -153,6 +153,7 @@ workflow VARIANTCALLING {
             ch_genome_info.fasta,
             INPUT_CHECK.out.reads,
             ch_vector_db,
+            params.filter_pacbio,
         )
         ch_versions = ch_versions.mix( ALIGN_PACBIO.out.versions )
 

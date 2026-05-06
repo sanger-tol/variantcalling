@@ -3,6 +3,22 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1.11-himut.5](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.11-himut.5)] - Zhou Jichang (patch 5) - [2026-05-07]
+
+### Enhancements & fixes
+
+- Added an option to control PacBio filtering when doing alignments (#153)
+
+### Parameters
+
+This release with the following initial parameters:
+
+| Old parameter | New parameter   |
+| ------------- | --------------- |
+|               | --filter_pacbio |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
 ## [[1.1.11-himut.4](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.11-himut.4)] - Zhou Jichang (patch 4) - [2026-05-05]
 
 ### Enhancements & fixes

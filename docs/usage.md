@@ -65,6 +65,9 @@ The pipeline will split the input fasta file into smaller files to run DeepVaria
 
 If the input BAM/CRAM files are not aligned, please add `--align` in your command. Please don't use this flag if the input files are already aligned because the current workflow will not align the aligned PacBio reads.
 
+By default, the alignment sub-workflow will filter out adaptors from the reads.
+If this is not desirable, add the `--filter_pacbio false` parameter to your run.
+
 ### Updating the pipeline
 
 When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
