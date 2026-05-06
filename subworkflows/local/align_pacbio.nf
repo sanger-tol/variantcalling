@@ -13,14 +13,22 @@ workflow ALIGN_PACBIO {
     fasta // channel: [ val(meta), /path/to/fasta[.gz], /path/to/fai ]
     reads // channel: [ val(meta), /path/to/datafile ]
     db // channel: /path/to/vector_db
+    filter // value: bool
 
     main:
-    // Filter BAM and output as FASTQ
-    FILTER_PACBIO(reads, db)
+
+    if (filter) {
+        // Filter BAM and output as FASTQ
+        FILTER_PACBIO(reads, db)
+        ch_reads = FILTER_PACBIO.out.fastq
+    } else {
+        ch_reads = reads
+    }
+
 
 
     // Align Fastq to Genome
-    fastq_filter = FILTER_PACBIO.out.fastq
+    fastq_filter = ch_reads
         .combine(fasta)
         .map { meta, fastq, meta_fasta, fasta, _fai -> [meta + ['fasta_id': meta_fasta.id, 'id':"${meta_fasta.id}.${meta.datatype}.${meta.id}"], fastq]}
     MINIMAP2_ALIGN(fastq_filter, fasta.map { meta, fa, _fai -> [meta, fa] }, true, false, false, false)

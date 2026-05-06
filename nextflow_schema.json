@@ -65,7 +65,13 @@
                 },
                 "align": {
                     "type": "boolean",
+                    "default": false,
                     "description": "Align the input reads to the reference"
+                },
+                "filter_pacbio": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Filter the PacBio reads for leftover adaptors"
                 },
                 "interval": {
                     "type": "string",

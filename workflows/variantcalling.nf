@@ -90,6 +90,7 @@ workflow VARIANTCALLING {
             ch_genome_info.fasta,
             ch_reads,
             ch_vector_db,
+            params.filter_pacbio,
         )
 
         ch_aligned_reads = ALIGN_PACBIO.out.cram
