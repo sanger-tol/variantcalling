@@ -95,7 +95,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "SOURCE.txt":
           type: file
-          description: Source file listing merged input files
+          description: Source file listing merged input runs
           pattern: "SOURCE.txt"
           ontologies: []
   versions_samtools:
