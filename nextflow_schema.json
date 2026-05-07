@@ -25,7 +25,7 @@
                 },
                 "deepvariant_parameters": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "^\\s*-.*$",
                     "description": "Command-line parameters to pass to DeepVariant.",
                     "fa_icon": "fas fa-scroll"
                 },
