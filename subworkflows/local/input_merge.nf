@@ -21,14 +21,14 @@ workflow INPUT_MERGE {
     grouped_reads_meta = sorted_reads
         .map { meta, reads -> [meta.specimen, [meta, reads]] }
         .groupTuple()
-        .branch { specimen, meta_reads ->
+        .branch { _specimen, meta_reads ->
             to_merge: meta_reads.size() > 1
             no_merge: true
         }
 
-    ch_reads_no_merge = grouped_reads_meta.no_merge.map { meta, reads -> [ reads[0][0], reads[0][1], [] ] }
+    ch_reads_no_merge = grouped_reads_meta.no_merge.map { _meta, reads -> [ reads[0][0], reads[0][1], [] ] }
     ch_reads_to_merge = grouped_reads_meta.to_merge
-        .map { meta, orig_id_reads ->
+        .map { _meta, orig_id_reads ->
             def meta_read = orig_id_reads[0][0]
             def runs = orig_id_reads.collect { id_read -> id_read[0].run }
             def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}",
