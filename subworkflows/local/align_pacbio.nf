@@ -50,10 +50,10 @@ workflow ALIGN_PACBIO {
             def meta_read = orig_id_reads[0][0]
             def runs = orig_id_reads.collect { id_read -> id_read[0].run }
             def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}", 'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.${params.merge_output}", 'run': "merge", 'merge_source': runs.sort().join("\n")]
-            def reads = orig_id_reads
+            def new_reads = orig_id_reads
                 .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
                 .collect { id_read -> id_read[1] }
-            [meta_read_new, reads, []]
+            [meta_read_new, new_reads, []]
         }
 
 
