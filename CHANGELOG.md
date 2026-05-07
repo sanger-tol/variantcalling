@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
-- Update to nf-core template version 3.5.1
+- Update to nf-core template version 3.5.2
+- Compatibility with Nextflow's "strict" parser
 - Removed the process_vcf sub-workflow, which is now in a new pipeline called
   [variantcomposition](https://github.com/sanger-tol/variantcomposition).
 - When merging reads from multiple runs, order the read files by metadata
