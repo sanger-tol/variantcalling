@@ -162,7 +162,7 @@
                 "https://pipelines.tol.sanger.ac.uk/variantcalling/dev/"
             ],
             "version": [
-                "1.2.0dev"
+                "2.0.0"
             ]
         },
         {
