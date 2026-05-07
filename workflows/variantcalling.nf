@@ -92,7 +92,9 @@ workflow VARIANTCALLING {
             ch_vector_db,
         )
 
-        ch_aligned_reads = ALIGN_PACBIO.out.cram.join(ALIGN_PACBIO.out.crai)
+        ch_aligned_reads = ALIGN_PACBIO.out.cram
+            .join(ALIGN_PACBIO.out.crai)
+            .map { meta, reads, index -> [meta + ['basename': reads.baseName], reads, index] }
     }
     else {
 
@@ -103,9 +105,8 @@ workflow VARIANTCALLING {
             ch_genome_info.fasta,
             ch_reads,
         )
-        ch_aligned_reads = INPUT_MERGE.out.indexed_merged_reads
+        ch_aligned_reads = INPUT_MERGE.out.merged_reads
     }
-
 
     //
     // SUBWORKFLOW: split the input fasta file and filter input reads

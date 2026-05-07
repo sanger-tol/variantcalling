@@ -177,8 +177,8 @@ workflow PIPELINE_COMPLETION {
 //
 
 def validateInputSamplesheet(channel) {
-    def seen = [:].withDefault { 0 }
     def validFormats = [".cram", ".bam"]
+    def seen_ids = [:]  // Track seen IDs for duplicate detection
 
     return channel.map { row ->
         def (meta, datafile) = row
@@ -191,6 +191,8 @@ def validateInputSamplesheet(channel) {
             error("Data file is required and must have a valid extension: ${datafile}")
         }
 
+        meta.datatype = meta.datatype.toLowerCase()
+
         def platform = ""
         if (meta.datatype == "pacbio") {
             platform = "PACBIO"
@@ -198,10 +200,23 @@ def validateInputSamplesheet(channel) {
         else {
             error("Unsupported datatype: ${meta.datatype}. Supported datatypes are: pacbio")
         }
-        meta.read_group = "\'@RG\\tID:" + datafile.toString().split('/')[-1].split('\\.')[0..-2].join('.') + "\\tPL:" + platform + "\\tSM:" + meta.sample + "\'"
 
-        seen[meta.sample] += 1
-        meta.id = "${meta.sample}_T${seen[meta.sample]}"
+        def sample = meta.sample.toString()
+        def sample_parts = sample.split("/", 2)
+        if (sample.contains("/") && (sample_parts[0] == "" || sample_parts.length < 2 || sample_parts[1] == "")) {
+            error("Sample must be formatted as 'specimen' or 'specimen/run' with non-empty components: ${meta.sample}")
+        }
+        meta.specimen = sample_parts[0]
+        meta.run = sample_parts.length > 1 ? sample_parts[1] : ""
+        meta.id = meta.sample.replace("/",".")
+        meta.basename = datafile.baseName
+        meta.read_group = "\'@RG\\tID:" + datafile.simpleName + "\\tPL:" + platform + "\\tSM:" + meta.specimen + "\'"
+
+        // INLINE DUPLICATE CHECK - happens immediately
+        if (seen_ids.containsKey(meta.id)) {
+            error("Sample cannot be duplicated (slash (`/`) and dot (`.`) treated as equivalent): ${meta.id}")
+        }
+        seen_ids[meta.id] = true
 
         return [meta, datafile]
     }

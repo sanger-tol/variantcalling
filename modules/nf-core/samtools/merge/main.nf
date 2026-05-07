@@ -15,6 +15,7 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("${prefix}.bam"), optional: true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional: true, emit: cram
     tuple val(meta), path("*.{bai,crai,csi}"), optional: true, emit: index
+    tuple val(meta), path("SOURCE.txt"), optional: true, emit: source_txt
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -25,6 +26,7 @@ process SAMTOOLS_MERGE {
     prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
+    def source_files_args = meta.merge_source ? "&& printf \"%s\" \"${meta.merge_source}\" > SOURCE.txt" : ""
     """
     # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
@@ -33,7 +35,7 @@ process SAMTOOLS_MERGE {
         ${args} \\
         ${reference} \\
         ${prefix}.${file_type} \\
-        ${input_files}
+        ${input_files} ${source_files_args}
     """
 
     stub:
@@ -42,8 +44,9 @@ process SAMTOOLS_MERGE {
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def index_type = file_type == "bam" ? "csi" : "crai"
     def index = args.contains("--write-index") ? "touch ${prefix}.${index_type}" : ""
+    def source_files_args = meta.merge_source ? "&& printf \"%s\" \"${meta.merge_source}\" > SOURCE.txt" : ""
     """
-    touch ${prefix}.${file_type}
+    touch ${prefix}.${file_type} ${source_files_args}
     ${index}
     """
 }

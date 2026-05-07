@@ -20,10 +20,11 @@ workflow DEEPVARIANT_CALLER {
         cram_crai:
         [
             [
-                id: meta.id + "_" + meta_fasta.id,
-                sample: meta.id,
+                id: meta.id,
+                sample: meta.sample,
                 type: meta.datatype,
-                fasta_id: meta_fasta.id.tokenize(".")[0..-2].join("."),
+                fasta_id: meta.fasta_id,
+                basename: meta.basename,
             ],
             cram,
             crai,
@@ -45,7 +46,7 @@ workflow DEEPVARIANT_CALLER {
         .join(DEEPVARIANT.out.vcf_index)
         .map { meta, vcf, index ->
             [
-                [id: [meta.fasta_id, meta.type, meta.sample].join(".")],
+                meta,
                 vcf,
                 index,
             ]
@@ -60,7 +61,7 @@ workflow DEEPVARIANT_CALLER {
         .join(DEEPVARIANT.out.gvcf_index)
         .map { meta, gvcf, index ->
             [
-                [id: [meta.fasta_id, meta.type, meta.sample].join(".")],
+                meta,
                 gvcf,
                 index,
             ]

@@ -9,14 +9,14 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)?$",
+                "errorMessage": "Sample name must be formatted as 'specimen' or 'specimen/run', both starting with a letter, and cannot contain spaces",
                 "meta": ["sample"]
             },
             "datatype": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Data type, and must be one of: 'pacbio'",
+                "errorMessage": "Data type, and must be 'pacbio'",
                 "enum": ["pacbio"],
                 "meta": ["datatype"]
             },
@@ -29,5 +29,6 @@
             }
         },
         "required": ["sample", "datatype", "datafile"]
-    }
+    },
+    "uniqueEntries": ["sample"]
 }
