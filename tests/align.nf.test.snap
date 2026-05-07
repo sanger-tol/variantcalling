@@ -129,7 +129,7 @@
                 "variant_analysis/pacbio/SAMEA7521030_X/ERR10224927_02_2/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.vcf.stats.visual_report.html"
             ],
             [
-                "SOURCE.txt:md5,ab5a59885dc2496ef2d7ab5e582a9569",
+                "SOURCE.txt:md5,4cb3ee552cdc244156debe9965d43154",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.flagstat:md5,46d82921bb895f051b6a82658c18286f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.idxstats:md5,7be1ca471671613630279bd5179b558f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030.merge.minimap2.stats:md5,b9d9900d8a235507d1da355251dd804f",
@@ -152,7 +152,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.cram:md5,49774288f3270c0d31fc7139a1f33a49"
             ]
         ],
-        "timestamp": "2026-04-30T17:51:00.387009",
+        "timestamp": "2026-05-07T12:31:07.898398",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.04.2"
