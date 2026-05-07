@@ -3,11 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.2.0dev - [date]
+## [[2.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.0)] - Qin Shi Huang - [2026-05-08]
 
 ### Enhancements & fixes
 
-- Update to nf-core template version 3.5.1
+- Update to nf-core template version 3.5.2
+- Compatibility with Nextflow's "strict" parser
 - Removed the process_vcf sub-workflow, which is now in a new pipeline called
   [variantcomposition](https://github.com/sanger-tol/variantcomposition).
 - When merging reads from multiple runs, order the read files by metadata
@@ -15,15 +16,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated all modules, including DeepVariant to 1.10.0 and bcftools to 1.23.1
 - Update samplesheet to handle `sample` in form of `specimen/run`
 - Update outputs for `read_mapping` and `variant_analysis`
+- Added an option to control PacBio filtering when doing alignments (backported from #153)
+- Added an option to pass parameters to DeepVariant (#154)
 
 ### Parameters
 
-| Old parameter       | New parameter  |
-| ------------------- | -------------- |
-| --include_positions |                |
-| --exclude_positions |                |
-| --fai               |                |
-|                     | --merge_output |
+| Old parameter       | New parameter            |
+| ------------------- | ------------------------ |
+| --include_positions |                          |
+| --exclude_positions |                          |
+| --fai               |                          |
+|                     | --merge_output           |
+|                     | --filter_pacbio          |
+|                     | --deepvariant_parameters |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 

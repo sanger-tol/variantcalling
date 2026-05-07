@@ -44,6 +44,16 @@ specimen3/run3,pacbio,/path/to/data/file/file3.bam
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
+## DeepVariant parameters
+
+Parameters can be passed straight to DeepVariant via the `--deepvariant_parameters` option.
+Note that you will need to add a leading whitespace in front of `--`,
+otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcalling option.
+
+```
+nextflow run ... --deepvariant_parameters " --make_examples_extra_args='small_model_call_multiallelics=false'"
+```
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
@@ -88,6 +98,9 @@ outdir: './results/'
 
 If the input BAM/CRAM files are not aligned, please add `--align` in your command. Please don't use this flag if the input files are already aligned because the current workflow will not align the aligned PacBio reads.
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
+
+By default, the alignment sub-workflow will filter out adaptors from the reads.
+If this is not desirable, add the `--filter_pacbio false` parameter to your run.
 
 ### Updating the pipeline
 

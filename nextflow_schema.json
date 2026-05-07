@@ -23,6 +23,12 @@
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
                 },
+                "deepvariant_parameters": {
+                    "type": "string",
+                    "pattern": "^\\s*-.*$",
+                    "description": "Command-line parameters to pass to DeepVariant.",
+                    "fa_icon": "fas fa-scroll"
+                },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
@@ -65,7 +71,13 @@
                 },
                 "align": {
                     "type": "boolean",
+                    "default": false,
                     "description": "Align the input reads to the reference"
+                },
+                "filter_pacbio": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Filter the PacBio reads for leftover adaptors"
                 },
                 "interval": {
                     "type": "string",

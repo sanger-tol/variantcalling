@@ -12,23 +12,23 @@ workflow INPUT_MERGE {
 
     main:
     // Add fasta id to the reads meta
-    reads = reads.combine(fasta).map { meta, reads, meta_fasta, _fasta, _fai -> [meta + ['fasta_id': meta_fasta.id, 'id':"${meta_fasta.id}.${meta.datatype}.${meta.id}"], reads] }
+    reads = reads.combine(fasta).map { meta, read_, meta_fasta, _fasta, _fai -> [meta + ['fasta_id': meta_fasta.id, 'id':"${meta_fasta.id}.${meta.datatype}.${meta.id}"], read_] }
 
     // sort input reads
     SAMTOOLS_SORT(reads, fasta, [])
     sorted_reads = SAMTOOLS_SORT.out.bam
 
     grouped_reads_meta = sorted_reads
-        .map { meta, reads -> [meta.specimen, [meta, reads]] }
+        .map { meta, reads_ -> [meta.specimen, [meta, reads_]] }
         .groupTuple()
-        .branch { specimen, meta_reads ->
+        .branch { _specimen, meta_reads ->
             to_merge: meta_reads.size() > 1
             no_merge: true
         }
 
-    ch_reads_no_merge = grouped_reads_meta.no_merge.map { meta, reads -> [ reads[0][0], reads[0][1], [] ] }
+    ch_reads_no_merge = grouped_reads_meta.no_merge.map { _meta, reads_ -> [ reads_[0][0], reads_[0][1], [] ] }
     ch_reads_to_merge = grouped_reads_meta.to_merge
-        .map { meta, orig_id_reads ->
+        .map { _meta, orig_id_reads ->
             def meta_read = orig_id_reads[0][0]
             def runs = orig_id_reads.collect { id_read -> id_read[0].run }
             def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}",
@@ -36,10 +36,10 @@ workflow INPUT_MERGE {
                                             'run': "merge",
                                             'merge_source': runs.sort().join("\n"),
                                             'basename': meta_read.basename.replaceAll(meta_read.run, params.merge_output) ]
-            def reads = orig_id_reads
+            def new_reads = orig_id_reads
                 .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
                 .collect { id_read -> id_read[1] }
-            [meta_read_new, reads, []]
+            [meta_read_new, new_reads, []]
         }
 
     // call samtool merge
