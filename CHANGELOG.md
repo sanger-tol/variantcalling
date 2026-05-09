@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1.11-himut.6](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.11-himut.6)] - Zhou Jichang (patch 6) - [2026-05-11]
+
+### Enhancements & fixes
+
+- Adjusted the resource requirement to make the pipeline more efficient on HPC
+
 ## [[1.1.11-himut.5](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.11-himut.5)] - Zhou Jichang (patch 5) - [2026-05-07]
 
 ### Enhancements & fixes
