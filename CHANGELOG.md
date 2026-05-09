@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update outputs for `read_mapping` and `variant_analysis`
 - Added an option to control PacBio filtering when doing alignments (backported from #153)
 - Added an option to pass parameters to DeepVariant (#154)
+- DeepVariant resources adjusted for better HPC utilisation (#158)
 
 ### Parameters
 
