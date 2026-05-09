@@ -40,13 +40,13 @@ authors:
     orcid: https://orcid.org/0000-0001-7029-0785
     website: https://github.com/yz533cb
 cff-version: 1.2.0
-date-released: "2026-05-07"
+date-released: "2026-05-10"
 doi: 10.5281/zenodo.7890527
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
   and all references from CITATIONS.md .
 repository-code: https://github.com/sanger-tol/variantcalling
-title: sanger-tol/variantcalling v2.0.0 - Qin Shi Huang [2026-05-08]
+title: sanger-tol/variantcalling v2.0.0 - Qin Shi Huang [2026-05-10]
 type: software
 url: https://pipelines.tol.sanger.ac.uk/variantcalling
 version: 2.0.0
