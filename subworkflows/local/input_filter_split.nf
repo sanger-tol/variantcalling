@@ -61,5 +61,5 @@ workflow INPUT_FILTER_SPLIT {
         .combine(fasta_fai)
 
     emit:
-    reads_fasta = cram_crai_fasta_fai // channel: [ val(meta), cram, crai, intervals, val(meta_fasta), fasta, fai ]
+    reads_fasta = cram_crai_fasta_fai // channel: [ val(meta), cram, crai, intervals, val(meta_fasta), fasta, [], fai ]
 }
