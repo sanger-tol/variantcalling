@@ -111,6 +111,9 @@ workflow PIPELINE_INITIALISATION {
         ch_intervals = channel.fromPath(intervals)
     }
     else {
+        if (params.interval) {
+            error("Parameter '--interval' has been removed. Please use '--intervals' instead.")
+        }
         ch_intervals = channel.empty()
     }
 
