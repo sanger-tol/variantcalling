@@ -3,65 +3,57 @@
 //
 
 include { SAMTOOLS_MERGE } from '../../modules/nf-core/samtools/merge'
-include { SAMTOOLS_SORT }  from '../../modules/nf-core/samtools/sort'
+include { SAMTOOLS_SORT  } from '../../modules/nf-core/samtools/sort'
 
 workflow INPUT_MERGE {
     take:
-    fasta              // channel: [ val(meta), /path/to/genome.fasta or /path/to/genome.fasta.gz ]
-    fai                // channel: [ val(meta), /path/to/genome.*.fai or /path/to/genome.fasta.gz.gzi ]
-    reads              // channel: [ val(meta), data ]
+    fasta // channel: [ val(meta), /path/to/fasta[.gz], /path/to/[fai,gzi]]
+    reads // channel: [ val(meta), data ]
 
     main:
-    ch_versions = Channel.empty()
-
-    // group input meta data together by sample name
-    reads
-     .map{ meta, bam_cram -> [ meta.sample, meta ] }
-     .groupTuple()
-     .set{ grouped_reads_meta }
+    // Add fasta id to the reads meta
+    reads = reads.combine(fasta).map { meta, read_, meta_fasta, _fasta, _fai -> [meta + ['fasta_id': meta_fasta.id, 'id':"${meta_fasta.id}.${meta.datatype}.${meta.id}"], read_] }
 
     // sort input reads
-    SAMTOOLS_SORT( reads, fasta )
-    ch_versions = ch_versions.mix ( SAMTOOLS_SORT.out.versions )
+    SAMTOOLS_SORT(reads, fasta, [])
     sorted_reads = SAMTOOLS_SORT.out.bam
 
-    // group input reads file by sample name
-    sorted_reads
-     .map{ meta, bam_cram -> [ meta.sample, bam_cram ] }
-     .groupTuple()
-     .set{ grouped_reads }
+    grouped_reads_meta = sorted_reads
+        .map { meta, reads_ -> [meta.specimen, [meta, reads_]] }
+        .groupTuple()
+        .branch { _specimen, meta_reads ->
+            to_merge: meta_reads.size() > 1
+            no_merge: true
+        }
 
-    // join grouped reads and meta
-    // use the first meta data for the combined reads
-    grouped_reads_meta
-     .map { sample, meta_list -> [sample, meta_list[0]] }
-     .join( grouped_reads )
-     .map { sample, meta, bam_cram_list -> [
-          [ id: sample,
-            datatype: meta.datatype
-          ],
-            bam_cram_list
-          ]}
-     .set { grouped_reads_with_meta }
+    ch_reads_no_merge = grouped_reads_meta.no_merge.map { _meta, reads_ -> [ reads_[0][0], reads_[0][1], [] ] }
+    ch_reads_to_merge = grouped_reads_meta.to_merge
+        .map { _meta, orig_id_reads ->
+            def meta_read = orig_id_reads[0][0]
+            def runs = orig_id_reads.collect { id_read -> id_read[0].run }
+            def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}",
+                                            'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.${params.merge_output}",
+                                            'run': "merge",
+                                            'merge_source': runs.sort().join("\n"),
+                                            'basename': meta_read.basename.replaceAll(meta_read.run, params.merge_output) ]
+            def new_reads = orig_id_reads
+                .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
+                .collect { id_read -> id_read[1] }
+            [meta_read_new, new_reads, []]
+        }
 
     // call samtool merge
-    SAMTOOLS_MERGE( grouped_reads_with_meta,
-                    fasta,
-                    fai
+    SAMTOOLS_MERGE(
+        ch_reads_to_merge,
+        fasta.map { meta, fa, fai -> [meta, fa, fai, []] },
     )
-    ch_versions = ch_versions.mix ( SAMTOOLS_MERGE.out.versions )
 
     // concat merged bam or cram together along with their index file
-    SAMTOOLS_MERGE.out.bam
-      .join(SAMTOOLS_MERGE.out.csi)
-      .concat(
-        SAMTOOLS_MERGE.out.cram
-         .join(SAMTOOLS_MERGE.out.crai)
-      )
-    .set{ indexed_merged_reads };
+    merged_reads = SAMTOOLS_MERGE.out.bam
+        .concat(SAMTOOLS_MERGE.out.cram)
+        .join(SAMTOOLS_MERGE.out.index)
+        .mix(ch_reads_no_merge)
 
     emit:
-    indexed_merged_reads = indexed_merged_reads
-    versions = ch_versions // channel: [ versions.yml ]
-
+    merged_reads = merged_reads
 }

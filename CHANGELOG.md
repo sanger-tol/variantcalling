@@ -3,6 +3,53 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[2.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.0)] - Qin Shi Huang - [2026-05-11]
+
+### Enhancements & fixes
+
+- Update to nf-core template version 3.5.2
+- Compatibility with Nextflow's "strict" parser
+- Removed the process_vcf sub-workflow, which is now in a new pipeline called
+  [variantcomposition](https://github.com/sanger-tol/variantcomposition).
+- When merging reads from multiple runs, order the read files by metadata
+  information to ensure reproducibility.
+- Updated all modules, including DeepVariant to 1.10.0 and bcftools to 1.23.1
+- Update samplesheet to handle `sample` in form of `specimen/run`
+- Update outputs for `read_mapping` and `variant_analysis`
+- Added an option to control PacBio filtering when doing alignments (backported from #153)
+- Added an option to pass parameters to DeepVariant (#154)
+- DeepVariant resources adjusted for better HPC utilisation (#158)
+- Renamed `--interval` to `--intervals` to match nf-core/sarek and GATK (#159)
+
+### Parameters
+
+| Old parameter       | New parameter            |
+| ------------------- | ------------------------ |
+| --include_positions |                          |
+| --exclude_positions |                          |
+| --fai               |                          |
+|                     | --merge_output           |
+|                     | --filter_pacbio          |
+|                     | --deepvariant_parameters |
+| --interval          | --intervals              |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| bcftools    | 1.20        | 1.23.1      |
+| blastn      | 2.15.0      | 2.16.0      |
+| DeepVariant | 1.9.0       | 1.10.0      |
+| minimap2    | 2.28        | 2.29        |
+| samtools    | 1.20,1.21   | 1.21,1.23.1 |
+| vcftools    | 0.1.16      |             |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
 ## [[1.1.10](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.10)] - Shang Tang (patch 10) - [2025-10-30]
 
 ### Enhancements & fixes
@@ -19,14 +66,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
-- Fix bug in subworkflow deepvariant_caller
+- Fixed the bug of meta inputs in `tabix` module in subworkflow deepvariant_caller
 
 ## [[1.1.7](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.7)] - Shang Tang (patch 7) - [2025-06-26]
 
 ### Enhancements & fixes
 
-- Update Deepvariant to version 1.9.0 (conda-free)
-- Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from Deepvariant
+- Update DeepVariant to version 1.9.0 (conda-free)
+- Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from DeepVariant
 - Compress and index concatenated VCFs
 
 ### Software dependencies
@@ -35,7 +82,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency  | Old version | New version |
 | ----------- | ----------- | ----------- |
-| Deepvariant | 1.6.1       | 1.9.0       |
+| DeepVariant | 1.6.1       | 1.9.0       |
 | HTSlib      |             | 1.21        |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
@@ -77,9 +124,10 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | ----------- | ----------- | ----------- |
 | bcftools    | 1.17        | 1.20        |
 | blastn      | 2.14.1      | 2.15.0      |
-| deepvariant | 1.5.0       | 1.6.1       |
+| DeepVariant | 1.5.0       | 1.6.1       |
+| minimap2    | 2.24        | 2.28        |
 | Python      | 3.8.3       | 3.9.1       |
-| samtools    | 1.17        | 1.21        |
+| samtools    | 1.17        | 1.20,1.21   |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
@@ -95,47 +143,11 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 - Bug fix when index fai file given for reference fasta file
 
-### Parameters
-
-This release with the following initial parameters:
-
-| Old parameter | New parameter |
-| ------------- | ------------- |
-
-> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
-
-### Software dependencies
-
-Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
-
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-
-> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
-
 ## [[1.1.1](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.1)] - Shang Tang (patch 1) - [2024-02-02]
 
 ### Enhancements & fixes
 
 - Bug fix when reference fasta file name end with .fa or .fa.gz
-
-### Parameters
-
-This release with the following initial parameters:
-
-| Old parameter | New parameter |
-| ------------- | ------------- |
-
-> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
-
-### Software dependencies
-
-Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
-
-| Dependency | Old version | New version |
-| ---------- | ----------- | ----------- |
-
-> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
 ## [[1.1.0](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.0)] - Shang Tang - [2023-12-20]
 
@@ -151,8 +163,6 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 - Use VCFtools to calculate heterozygosity.
 
 ### Parameters
-
-This release with the following initial parameters:
 
 | Old parameter | New parameter       |
 | ------------- | ------------------- |
@@ -196,7 +206,7 @@ Initial release of sanger-tol/variantcalling, created with the [nf-core](https:/
 
 ### Parameters
 
-This release with the following initial parameters:
+This release has the following initial parameters:
 
 | Old parameter | New parameter        |
 | ------------- | -------------------- |

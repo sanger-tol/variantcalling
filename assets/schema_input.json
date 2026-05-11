@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/sanger-tol/variantcalling/main/assets/schema_input.json",
     "title": "sanger-tol/variantcalling pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
@@ -9,20 +9,26 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces"
+                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)?$",
+                "errorMessage": "Sample name must be formatted as 'specimen' or 'specimen/run', both starting with a letter, and cannot contain spaces",
+                "meta": ["sample"]
             },
             "datatype": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Data type, and must be one of: 'pacbio'"
+                "errorMessage": "Data type, and must be 'pacbio'",
+                "enum": ["pacbio"],
+                "meta": ["datatype"]
             },
             "datafile": {
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.(bam|cram)$",
                 "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
             }
         },
         "required": ["sample", "datatype", "datafile"]
-    }
+    },
+    "uniqueEntries": ["sample"]
 }

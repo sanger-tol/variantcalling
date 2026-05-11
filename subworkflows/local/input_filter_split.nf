@@ -9,70 +9,57 @@ include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
 
 workflow INPUT_FILTER_SPLIT {
     take:
-    fasta              // [ val(meta, /path/to/genome.fasta[.gz] ]
-    reads              // [ val(meta), data, index ]
-    interval           // file: /path/to/intervals.bed
+    fasta // [ val(meta, /path/to/fasta[.gz], /path/to/fai) ]
+    reads // [ val(meta), data, index ]
+    intervals // file: /path/to/intervals.bed
 
     main:
-    ch_versions = Channel.empty()
-
     //
     // MODULE: Unzip the fasta if zipped
     //
-    fasta
-    | branch { meta, fa ->
+    ch_fasta = fasta.branch { meta, fa, _fai ->
         gzipped: fa.name.endsWith('.gz')
+            [meta, fa]
         unzipped: true
+            [meta, fa]
     }
-    | set { ch_fasta }
 
-    GUNZIP (
+    GUNZIP(
         ch_fasta.gzipped
     )
-    ch_versions  = ch_versions.mix ( GUNZIP.out.versions )
 
-    GUNZIP.out.gunzip
-    | mix ( ch_fasta.unzipped )
-    | set { ch_fasta_to_split }
+    ch_fasta_to_split = GUNZIP.out.gunzip.mix(ch_fasta.unzipped)
 
     //
     // MODULE: Split the Fasta file in chunks
     //
-    SEQKIT_SPLIT2 ( ch_fasta_to_split )
-    ch_versions = ch_versions.mix ( SEQKIT_SPLIT2.out.versions )
+    SEQKIT_SPLIT2(ch_fasta_to_split)
 
     // Add pertinent meta maps to the chunks
-    SEQKIT_SPLIT2.out.reads
-    | map { meta, fastas -> fastas }
-    | flatten
-    | map { fa -> [ [id: fa.baseName, total_length: fa.size()], fa ] }
-    | set { ch_split_fastas }
+    ch_split_fastas = SEQKIT_SPLIT2.out.reads
+        .map { _meta, fastas -> fastas }
+        .flatten()
+        .map { fa -> [[id: fa.baseName, total_length: fa.size()], fa, []] }
 
     //
     // MODULE: Index the chunks
     //
-    SAMTOOLS_FAIDX ( ch_split_fastas,  [[], []])
-    ch_versions = ch_versions.mix( SAMTOOLS_FAIDX.out.versions.first() )
+    SAMTOOLS_FAIDX(ch_split_fastas, false)
 
     // join fasta with corresponding fai file
-    ch_split_fastas
-    | join ( SAMTOOLS_FAIDX.out.fai )
-    | set { fasta_fai }
+    fasta_fai = ch_split_fastas.join(SAMTOOLS_FAIDX.out.fai)
 
-    //
-    // MODULE: filter the reads
-    //
-    SAMTOOLS_VIEW ( reads, fasta, [] )
-    ch_versions = ch_versions.mix ( SAMTOOLS_VIEW.out.versions.first() )
+    // filter reads
+    ch_fasta = fasta.map { _meta, fa, fai -> [['id': fa.baseName], fa, fai] }.first()
+
+    SAMTOOLS_VIEW(reads, ch_fasta, [[], []], [[], []], [])
 
     // combine reads with splitted references
-    SAMTOOLS_VIEW.out.cram
-    | join ( SAMTOOLS_VIEW.out.crai )
-    | combine(interval.ifEmpty([[]]))
-    | combine ( fasta_fai )
-    | set { cram_crai_fasta_fai }
+    cram_crai_fasta_fai = SAMTOOLS_VIEW.out.cram
+        .join(SAMTOOLS_VIEW.out.crai)
+        .combine(intervals.ifEmpty([[]]))
+        .combine(fasta_fai)
 
     emit:
-    reads_fasta    = cram_crai_fasta_fai  // channel: [ val(meta), cram, crai, interval, val(meta_fasta), fasta, fai ]
-    versions       = ch_versions          // channel: [ versions.yml ]
+    reads_fasta = cram_crai_fasta_fai // channel: [ val(meta), cram, crai, intervals, val(meta_fasta), fasta, [], fai ]
 }

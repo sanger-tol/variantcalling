@@ -1,4 +1,3 @@
-repository_type: pipeline
 lint:
   files_exist:
     - CODE_OF_CONDUCT.md
@@ -17,9 +16,30 @@ lint:
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/branch.yml
     - .github/workflows/linting.yml
+    - .gitignore
     - LICENSE
     - assets/email_template.html
     - .github/ISSUE_TEMPLATE/bug_report.yml
+    - .gitattributes
+  multiqc_config: false
   nextflow_config:
     - manifest.name
     - manifest.homePage
+    - config_defaults:
+        - params.vector_db
+        - params.tracedir
+nf_core_version: 3.5.2
+repository_type: pipeline
+template:
+  author: "@gq1"
+  description: Variant calling pipeline for PacBio data using DeepVariant
+  force: false
+  is_nfcore: false
+  name: variantcalling
+  org: sanger-tol
+  outdir: .
+  skip_features:
+    - igenomes
+    - multiqc
+    - fastqc
+  version: 2.0.0
