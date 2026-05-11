@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added an option to control PacBio filtering when doing alignments (backported from #153)
 - Added an option to pass parameters to DeepVariant (#154)
 - DeepVariant resources adjusted for better HPC utilisation (#158)
+- Renamed `--interval` to `--intervals` to match nf-core/sarek and GATK (#159)
 
 ### Parameters
 
@@ -30,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 |                     | --merge_output           |
 |                     | --filter_pacbio          |
 |                     | --deepvariant_parameters |
+| --interval          | --intervals              |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 

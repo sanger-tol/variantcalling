@@ -79,7 +79,7 @@
                     "default": true,
                     "description": "Filter the PacBio reads for leftover adaptors"
                 },
-                "interval": {
+                "intervals": {
                     "type": "string",
                     "description": "Interval bed file.",
                     "format": "file-path",

@@ -11,12 +11,12 @@ include { BGZIPTABIX                                      } from '../../modules/
 
 workflow DEEPVARIANT_CALLER {
     take:
-    reads_fasta // [ val(meta), cram, crai, interval, val(meta_fasta), fasta, no_fai, fai ]
+    reads_fasta // [ val(meta), cram, crai, intervals, val(meta_fasta), fasta, no_fai, fai ]
     max_length // [ val(meta_max_length) - maximum chromosome length in the fasta file  ]
 
     main:
 
-    ch_deepvariant = reads_fasta.multiMap { meta, cram, crai, interval, meta_fasta, fasta, _no_fai, fai ->
+    ch_deepvariant = reads_fasta.multiMap { meta, cram, crai, intervals, meta_fasta, fasta, _no_fai, fai ->
         cram_crai:
         [
             [
@@ -28,7 +28,7 @@ workflow DEEPVARIANT_CALLER {
             ],
             cram,
             crai,
-            interval,
+            intervals,
         ]
         fasta: [meta_fasta, fasta]
         fai: [meta_fasta, fai]
