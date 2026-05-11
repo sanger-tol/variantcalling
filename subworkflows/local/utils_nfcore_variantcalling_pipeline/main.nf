@@ -36,7 +36,7 @@ workflow PIPELINE_INITIALISATION {
     help_full // boolean: Show the full help message
     show_hidden // boolean: Show hidden parameters in the help message
     fasta
-    _intervals
+    intervals
 
     main:
 
@@ -107,8 +107,8 @@ workflow PIPELINE_INITIALISATION {
     // Creat channel for mandatory parameters
     ch_fasta = channel.fromPath(fasta)
 
-    if (params.intervals) {
-        ch_intervals = channel.fromPath(params.intervals)
+    if (intervals) {
+        ch_intervals = channel.fromPath(intervals)
     }
     else {
         ch_intervals = channel.empty()
