@@ -33,7 +33,7 @@ workflow VARIANTCALLING {
     take:
     ch_reads // channel: samplesheet read in from --input
     ch_fasta // channel: fasta file read in from --fasta
-    ch_interval // channel: interval file read in from --interval
+    ch_intervals // channel: intervals file read in from --intervals
 
     main:
     ch_versions = channel.empty()
@@ -115,7 +115,7 @@ workflow VARIANTCALLING {
     INPUT_FILTER_SPLIT(
         ch_genome_info.fasta,
         ch_aligned_reads,
-        ch_interval,
+        ch_intervals,
     )
 
 

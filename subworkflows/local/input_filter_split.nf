@@ -11,7 +11,7 @@ workflow INPUT_FILTER_SPLIT {
     take:
     fasta // [ val(meta, /path/to/fasta[.gz], /path/to/fai) ]
     reads // [ val(meta), data, index ]
-    interval // file: /path/to/intervals.bed
+    intervals // file: /path/to/intervals.bed
 
     main:
     //
@@ -57,9 +57,9 @@ workflow INPUT_FILTER_SPLIT {
     // combine reads with splitted references
     cram_crai_fasta_fai = SAMTOOLS_VIEW.out.cram
         .join(SAMTOOLS_VIEW.out.crai)
-        .combine(interval.ifEmpty([[]]))
+        .combine(intervals.ifEmpty([[]]))
         .combine(fasta_fai)
 
     emit:
-    reads_fasta = cram_crai_fasta_fai // channel: [ val(meta), cram, crai, interval, val(meta_fasta), fasta, fai ]
+    reads_fasta = cram_crai_fasta_fai // channel: [ val(meta), cram, crai, intervals, val(meta_fasta), fasta, [], fai ]
 }

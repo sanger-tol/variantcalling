@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[2.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.0)] - Qin Shi Huang - [2026-05-10]
+## [[2.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.0)] - Qin Shi Huang - [2026-05-11]
 
 ### Enhancements & fixes
 
@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added an option to control PacBio filtering when doing alignments (backported from #153)
 - Added an option to pass parameters to DeepVariant (#154)
 - DeepVariant resources adjusted for better HPC utilisation (#158)
+- Renamed `--interval` to `--intervals` to match nf-core/sarek and GATK (#159)
 
 ### Parameters
 
@@ -30,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 |                     | --merge_output           |
 |                     | --filter_pacbio          |
 |                     | --deepvariant_parameters |
+| --interval          | --intervals              |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
