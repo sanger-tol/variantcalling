@@ -100,7 +100,7 @@ workflow VARIANTCALLING {
     else {
 
         //
-        // SUBWORKFLOW: merge the input reads by sample name
+        // SUBWORKFLOW: merge the input reads by sample/specimen name
         //
         INPUT_MERGE(
             ch_genome_info.fasta,
