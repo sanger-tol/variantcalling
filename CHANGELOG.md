@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[2.0.1](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.1)] - Qin Shi Huang - [2026-05-15]
+
+### Enhancements & fixes
+
+- Adjust memory for (G)VCF_STATS_REPORTS processes based on input size
+
 ## [[2.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.0)] - Qin Shi Huang - [2026-05-11]
 
 ### Enhancements & fixes
