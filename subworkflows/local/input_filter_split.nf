@@ -16,7 +16,8 @@ workflow INPUT_FILTER_SPLIT {
     //
     // MODULE: Split the Fasta file in chunks
     //
-    SEQKIT_SPLIT2(fasta)
+    ch_fasta_for_split = fasta.map { meta, fa, fai -> [meta, fa] }
+    SEQKIT_SPLIT2(ch_fasta_for_split)
 
     // Add pertinent meta maps to the chunks
     ch_split_fastas = SEQKIT_SPLIT2.out.reads

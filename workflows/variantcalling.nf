@@ -52,15 +52,21 @@ workflow VARIANTCALLING {
             fasta,
             [],
         ]
-    }.branch { meta, fa, _fai ->
+    }
+
+    //
+    // MODULE: Unzip the fasta if zipped
+    //
+    ch_genome_branch = ch_genome.branch { meta, fa, _fai ->
         gzipped: fa.name.endsWith('.gz')
             [meta, fa]
         unzipped: true
-            [meta, fa]
+            [meta, fa, _fai]
     }
 
-    GUNZIP(ch_genome.gzipped)
-    ch_genome_uncompressed = GUNZIP.out.gunzip.mix(ch_genome.unzipped).map { meta, fa -> [meta, fa, []] }
+    ch_genome_uncompressed = GUNZIP(ch_genome_branch.gzipped).gunzip
+        .map { meta, fa -> [meta, fa, []] }
+        .mix(ch_genome_branch.unzipped)
 
     SAMTOOLS_FAIDX(ch_genome_uncompressed, false)
 
