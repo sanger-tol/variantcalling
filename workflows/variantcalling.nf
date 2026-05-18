@@ -42,7 +42,7 @@ workflow VARIANTCALLING {
     //
     // Channel for reference genome and uncompress it
     //
-    // Remenber to fix the fasta.size with total_length in the next merge
+    // Remember to fix the fasta.size with total_length in the next merge
     ch_genome = ch_fasta.map { fasta ->
         [
             [
@@ -50,23 +50,16 @@ workflow VARIANTCALLING {
                 'single_end': true,
             ],
             fasta,
-            [],
         ]
-    }
-
-    //
-    // MODULE: Unzip the fasta if zipped
-    //
-    ch_genome_branch = ch_genome.branch { meta, fa, _fai ->
+    }.branch { meta, fa ->
         gzipped: fa.name.endsWith('.gz')
-            [meta, fa]
         unzipped: true
-            [meta, fa, _fai]
     }
 
-    ch_genome_uncompressed = GUNZIP(ch_genome_branch.gzipped).gunzip
+    GUNZIP(ch_genome.gzipped)
+    ch_genome_uncompressed = GUNZIP.out.gunzip
+        .mix(ch_genome.unzipped)
         .map { meta, fa -> [meta, fa, []] }
-        .mix(ch_genome_branch.unzipped)
 
     SAMTOOLS_FAIDX(ch_genome_uncompressed, false)
 
