@@ -29,7 +29,8 @@
                     "gunzip": {
                         "branch": "master",
                         "git_sha": "96c57dfd98a0641886a67bd449fe33ee2ec0e374",
-                        "installed_by": ["modules"]
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/gunzip/gunzip.diff"
                     },
                     "minimap2/align": {
                         "branch": "master",

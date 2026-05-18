@@ -1,0 +1,35 @@
+Changes in component 'nf-core/gunzip'
+'modules/nf-core/gunzip/environment.yml' is unchanged
+'modules/nf-core/gunzip/meta.yml' is unchanged
+Changes in 'gunzip/main.nf':
+--- modules/nf-core/gunzip/main.nf
++++ modules/nf-core/gunzip/main.nf
+@@ -19,8 +19,9 @@
+ 
+     script:
+     def args = task.ext.args ?: ''
+-    def extension = (archive.toString() - '.gz').tokenize('.')[-1]
+-    def name = archive.toString() - '.gz' - ".${extension}"
++    def unzipped_name = archive.toString().replaceFirst(/\.gz$/, '')
++    def extension = unzipped_name.tokenize('.')[-1]
++    def name = unzipped_name - ".${extension}"
+     def prefix = task.ext.prefix ?: name
+     gunzip = prefix + ".${extension}"
+     """
+@@ -35,8 +36,9 @@
+     """
+ 
+     stub:
+-    def extension = (archive.toString() - '.gz').tokenize('.')[-1]
+-    def name = archive.toString() - '.gz' - ".${extension}"
++    def unzipped_name = archive.toString().replaceFirst(/\.gz$/, '')
++    def extension = unzipped_name.tokenize('.')[-1]
++    def name = unzipped_name - ".${extension}"
+     def prefix = task.ext.prefix ?: name
+     gunzip = prefix + ".${extension}"
+     """
+
+'modules/nf-core/gunzip/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/gunzip/tests/nextflow.config' is unchanged
+'modules/nf-core/gunzip/tests/main.nf.test' is unchanged
+************************************************************
