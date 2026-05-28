@@ -15,12 +15,13 @@ include { DEEPVARIANT_CALLER     } from '../subworkflows/local/deepvariant_calle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_variantcalling_pipeline'
-include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
-include { SAMTOOLS_FAIDX         } from '../modules/nf-core/samtools/faidx/main'
-include { UNTAR                  } from '../modules/nf-core/untar/main'
+include { paramsSummaryMap               } from 'plugin/nf-schema'
+include { softwareVersionsToYAML         } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText         } from '../subworkflows/local/utils_nfcore_variantcalling_pipeline'
+include { GUNZIP                         } from '../modules/nf-core/gunzip/main'
+include { SAMTOOLS_FAIDX                 } from '../modules/nf-core/samtools/faidx/main'
+include { UNTAR                          } from '../modules/nf-core/untar/main'
+include { BCFTOOLS_VIEW as FLAG_HOM_ALTS } from '../modules/nf-core/bcftools/view/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,6 +134,21 @@ workflow VARIANTCALLING {
         INPUT_FILTER_SPLIT.out.reads_fasta,
         ch_genome_info.meta.map { meta -> meta.max_length },
     )
+
+
+    //
+    // MODULE: flag homozygous alternative genotypes
+    //
+    if (params.flag_hom_alts) {
+        def sample_vcfs = DEEPVARIANT_CALLER.out.compressed_vcf
+            .filter { meta, vcf, _gzi -> meta.sample == params.flag_hom_alts && !vcf.name.contains(".g.vcf") }
+        FLAG_HOM_ALTS(
+            sample_vcfs,
+            [],
+            [],
+            [],
+        )
+    }
 
 
     //

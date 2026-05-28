@@ -63,6 +63,7 @@ The aligned PacBio read data is used to call variants with DeepVariant. This is 
       - Index of compressed GVCF files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.g.vcf.gz.[tbi|csi]`.
       - `qc`
         - HTML files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.[vcf|g.vcf].stats.visual_report.html`.
+        - Homozygous alternative genotypes report: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.hom_alts.vcf.gz[.tbi]` (optional).
 
 </details>
 

@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Enhancements & fixes
 
 - Support gzipped FASTA
+- Added a `--flag_hom_alts` option to flag homozygous alternative genotypes
+
+### Parameters
+
+| Old parameter | New parameter   |
+| ------------- | --------------- |
+|               | --flag_hom_alts |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
 ## [[2.0.1](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.1)] - Qin Shi Huang (patch 1) - [2026-05-15]
 
