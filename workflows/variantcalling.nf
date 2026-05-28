@@ -18,6 +18,7 @@ include { DEEPVARIANT_CALLER     } from '../subworkflows/local/deepvariant_calle
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_variantcalling_pipeline'
+include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
 include { SAMTOOLS_FAIDX         } from '../modules/nf-core/samtools/faidx/main'
 include { UNTAR                  } from '../modules/nf-core/untar/main'
 
@@ -39,9 +40,9 @@ workflow VARIANTCALLING {
     ch_versions = channel.empty()
 
     //
-    // Channel for reference genome
+    // Channel for reference genome and uncompress it
     //
-    // Remenber to fix the fasta.size with total_length in the next merge
+    // Remember to fix the fasta.size with total_length in the next merge
     ch_genome = ch_fasta.map { fasta ->
         [
             [
@@ -49,16 +50,22 @@ workflow VARIANTCALLING {
                 'single_end': true,
             ],
             fasta,
-            [],
         ]
+    }.branch { meta, fa ->
+        gzipped: fa.name.endsWith('.gz')
+        unzipped: true
     }
 
+    GUNZIP(ch_genome.gzipped)
+    ch_genome_uncompressed = GUNZIP.out.gunzip
+        .mix(ch_genome.unzipped)
+        .map { meta, fa -> [meta, fa, []] }
 
-    SAMTOOLS_FAIDX(ch_genome, false)
+    SAMTOOLS_FAIDX(ch_genome_uncompressed, false)
 
     // generate fai that is used to determine the maximum length of chromosome
     // also add the gzi if present as it is needed for bgzip-ed genomes
-    ch_genome_info = ch_genome
+    ch_genome_info = ch_genome_uncompressed
        .join( SAMTOOLS_FAIDX.out.fai )
        .join( SAMTOOLS_FAIDX.out.gzi, remainder: true )
        .map { meta, fa, _no_fai, fai, gzi ->
