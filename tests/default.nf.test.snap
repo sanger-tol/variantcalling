@@ -1,7 +1,7 @@
 {
     "-profile test": {
         "content": [
-            35,
+            36,
             {
                 "BCFTOOLS_CONCAT_GVCF": {
                     "bcftools": "1.23.1"
@@ -15,6 +15,9 @@
                 },
                 "DEEPVARIANT": {
                     "deepvariant": "1.10.0"
+                },
+                "FLAG_HOM_ALTS": {
+                    "bcftools": "1.23.1"
                 },
                 "GUNZIP": {
                     "gunzip": 1.13
@@ -62,6 +65,8 @@
                 "variant_analysis/pacbio/SAMEA7521030/merge/SOURCE.txt",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.hom_alts.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.hom_alts.vcf.gz.csi",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html",
                 "variant_analysis/pacbio/SAMEA7521030_2",
                 "variant_analysis/pacbio/SAMEA7521030_2/merge",
@@ -104,12 +109,13 @@
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,a7a3df91599b390b501cf2b807f560eb",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.hom_alts.vcf.gz:md5,c76a66013ac92839d271439a6aba27c4",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,3670ede9c3b92fa2a58575ea1129aa62",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac",
                 "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac"
             ]
         ],
-        "timestamp": "2026-06-04T09:47:02.695910333",
+        "timestamp": "2026-06-04T12:10:12.70554132",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
