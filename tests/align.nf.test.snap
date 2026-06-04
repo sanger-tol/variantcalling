@@ -1,7 +1,7 @@
 {
     "-profile test_align": {
         "content": [
-            59,
+            60,
             {
                 "BCFTOOLS_CONCAT_GVCF": {
                     "bcftools": "1.23.1"
@@ -18,6 +18,9 @@
                 },
                 "DEEPVARIANT": {
                     "deepvariant": "1.10.0"
+                },
+                "FLAG_HOM_ALTS": {
+                    "bcftools": "1.23.1"
                 },
                 "GUNZIP": {
                     "gunzip": 1.13
@@ -150,6 +153,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.g.vcf.gz:md5,6faaf6ecf0b7c5cc664d2da6f9a1069b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.gz:md5,f3230403ec480904033694159f064800",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.g.vcf.gz:md5,a82bcaa26c16328cf19b72beee49b80d",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.hom_alts.vcf.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.vcf.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
             ],
             [
