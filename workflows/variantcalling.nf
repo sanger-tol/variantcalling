@@ -142,6 +142,7 @@ workflow VARIANTCALLING {
     if (params.flag_hom_alts) {
         def sample_vcfs = DEEPVARIANT_CALLER.out.compressed_vcf
             .filter { meta, vcf, _gzi -> meta.sample == params.flag_hom_alts && !vcf.name.contains(".g.vcf") }
+            .ifEmpty { error("--flag_hom_alts '${params.flag_hom_alts}' did not match any sample in the VCF outputs. Check the sample name.") }
         FLAG_HOM_ALTS(
             sample_vcfs,
             [],
