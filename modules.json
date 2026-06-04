@@ -41,6 +41,11 @@
                         "git_sha": "5c9f8d5b7671237c906abadc9ff732b301ca15ca",
                         "installed_by": ["modules"]
                     },
+                    "pigz/compress": {
+                        "branch": "master",
+                        "git_sha": "c908ccaf0a5c802b6f8e814d8c5cf85da2364222",
+                        "installed_by": ["modules"]
+                    },
                     "samtools/collate": {
                         "branch": "master",
                         "git_sha": "156feda0cb6589cd29c04902004fa3b53bc00205",

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support gzipped FASTA
 - Added a `--flag_hom_alts` option to flag homozygous alternative genotypes
+- In alignment mode, the SAMTOOLS_STATS output is now compressed in gzip format
 
 ### Parameters
 
