@@ -48,6 +48,12 @@
                     "description": "Non-empty string used as the suffix and output directory name for merged data files",
                     "help_text": "Defines the suffix added to merged file names and name of output directory when multiple read files that share the same specimen are merged. Allowed characters are letters, numbers, dot (.), underscore (_), and hyphen (-)."
                 },
+                "flag_hom_alts": {
+                    "type": "string",
+                    "pattern": "^\\S+$",
+                    "description": "Name of the sample, specimen, or run, for which to flag homozygous alternative genotypes. The suffix '/merge' can be used in conjunction with --merge_output.",
+                    "help_text": "When the reads come from the same individual as used to make the genome assembly, we only expect homozygous reference and heterozygous calls. This option writes an extra VCF file with these calls."
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",

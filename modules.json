@@ -10,6 +10,11 @@
                         "git_sha": "4b21e2cd1a9ea70e22b502cb45ee147410824760",
                         "installed_by": ["modules"]
                     },
+                    "bcftools/view": {
+                        "branch": "master",
+                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "installed_by": ["modules"]
+                    },
                     "blast/blastn": {
                         "branch": "master",
                         "git_sha": "3a9acfe9865ac6f63bc48667657bfb8293613f56",
@@ -34,6 +39,11 @@
                     "minimap2/align": {
                         "branch": "master",
                         "git_sha": "5c9f8d5b7671237c906abadc9ff732b301ca15ca",
+                        "installed_by": ["modules"]
+                    },
+                    "pigz/compress": {
+                        "branch": "master",
+                        "git_sha": "c908ccaf0a5c802b6f8e814d8c5cf85da2364222",
                         "installed_by": ["modules"]
                     },
                     "samtools/collate": {
