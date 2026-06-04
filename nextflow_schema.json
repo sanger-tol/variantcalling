@@ -52,7 +52,7 @@
                     "type": "string",
                     "pattern": "^\\S+$",
                     "description": "Name of the sample, specimen, or run, for which to flag homozygous alternative genotypes. The suffix '/merge' can be used in conjunction with --merge_output.",
-                    "help_text": "When the reads come from the same individual as used to make the genome assembly, we only expect homozygous reference and heterozygous calls"
+                    "help_text": "When the reads come from the same individual as used to make the genome assembly, we only expect homozygous reference and heterozygous calls. This option writes an extra VCF file with these calls."
                 },
                 "email": {
                     "type": "string",

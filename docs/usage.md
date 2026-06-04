@@ -54,6 +54,15 @@ otherwise the pipeline's own parameter validation will consider it a sanger-tol/
 nextflow run ... --deepvariant_parameters " --make_examples_extra_args='small_model_call_multiallelics=false'"
 ```
 
+## QC
+
+The pipeline outputs include a HTML report from DeepVariant.
+
+There is also a `--flag_hom_alts` that can be used to generate a VCF file with
+homozygous alternative genotypes for that sample.
+The option is useful when calling variant on the same sample as used for the
+genome assembly, as in theory all its variants should be heterozygous.
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
