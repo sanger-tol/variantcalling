@@ -16,13 +16,25 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Multiple runs of the same sample
 
-The `sample` identifiers have to be unique. When a sample (`specimen`) is re-sequenced more than once e.g. to increase sequencing depth, this field is highly recommended to be in form of `specimen/run`, where `specimen` is the same and `run` is unique across these entries. Below is an example for the same sample sequenced across 3 lanes:
+When a specimen is re-sequenced more than once e.g. to increase sequencing depth,
+the `sample` identifier is highly recommended to be in form of `specimen/run`,
+where `specimen` is the same and `run` is unique across these entries.
+Below is an example for the same sample sequenced across 3 lanes:
 
 ```csv title="samplesheet.csv"
 sample,datatype,datafile
 specimen1/run1,pacbio,sample1_1.cram
 specimen1/run2,pacbio,sample1_2.cram
 specimen1/run3,pacbio,sample1_3.cram
+```
+
+However the following simplified samplesheet works too:
+
+```csv title="samplesheet.csv"
+sample,datatype,datafile
+specimen1,pacbio,sample1_1.cram
+specimen1,pacbio,sample1_2.cram
+specimen1,pacbio,sample1_3.cram
 ```
 
 ### Full samplesheet
@@ -36,11 +48,11 @@ specimen2/run2,pacbio,/path/to/data/file/file2.cram
 specimen3/run3,pacbio,/path/to/data/file/file3.bam
 ```
 
-| Column     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`   | Custom sample identifier. Must be unique across all entries. Spaces are automatically converted to underscores (`_`), so using underscores in the input is recommended for clarity. For specimens sequenced multiple times, use the format `specimen/run` where `specimen` is the same and `run` is unique for each run (e.g., `SAMEA7521030/ERR10224927`). The forward slash (`/`) is converted to a dot (`.`) in downstream processes. The `sample` field is also used to organize output analysis directories. |
-| `datatype` | Sequencing data type. Must be `pacbio`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `datafile` | The location for either BAM or CRAM file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Column     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `sample`   | Custom sample identifier. Spaces are automatically converted to underscores (`_`), so using underscores in the input is recommended for clarity. For specimens sequenced multiple times, use the format `specimen/run` where `specimen` is the same and `run` is unique for each run (e.g., `SAMEA7521030/ERR10224927`). The forward slash (`/`) is converted to a dot (`.`) in downstream processes. The `sample` field is also used to organize output analysis directories. |
+| `datatype` | Sequencing data type. Must be `pacbio`.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `datafile` | The location for either BAM or CRAM file.                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
