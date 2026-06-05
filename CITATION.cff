@@ -40,7 +40,7 @@ authors:
     orcid: https://orcid.org/0000-0001-7029-0785
     website: https://github.com/yz533cb
 cff-version: 1.2.0
-date-released: "2026-05-15"
+date-released: "2026-06-05"
 doi: 10.5281/zenodo.7890527
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
