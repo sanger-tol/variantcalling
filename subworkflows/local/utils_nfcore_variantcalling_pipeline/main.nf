@@ -181,7 +181,6 @@ workflow PIPELINE_COMPLETION {
 
 def validateInputSamplesheet(channel) {
     def validFormats = [".cram", ".bam"]
-    def seen_ids = [:]  // Track seen IDs for duplicate detection
 
     return channel.map { row ->
         def (meta, datafile) = row
@@ -214,12 +213,6 @@ def validateInputSamplesheet(channel) {
         meta.id = meta.sample.replace("/",".")
         meta.basename = datafile.baseName
         meta.read_group = "\'@RG\\tID:" + datafile.simpleName + "\\tPL:" + platform + "\\tSM:" + meta.specimen + "\'"
-
-        // INLINE DUPLICATE CHECK - happens immediately
-        if (seen_ids.containsKey(meta.id)) {
-            error("Sample cannot be duplicated (slash (`/`) and dot (`.`) treated as equivalent): ${meta.id}")
-        }
-        seen_ids[meta.id] = true
 
         return [meta, datafile]
     }
