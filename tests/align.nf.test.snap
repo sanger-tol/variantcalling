@@ -1,7 +1,7 @@
 {
     "-profile test_align": {
         "content": [
-            60,
+            92,
             {
                 "BCFTOOLS_CONCAT_GVCF": {
                     "bcftools": "1.23.1"
@@ -80,7 +80,7 @@
                     "deepvariant": "1.10.0"
                 },
                 "Workflow": {
-                    "sanger-tol/variantcalling": "v2.0.1"
+                    "sanger-tol/variantcalling": "v2.0.2"
                 }
             },
             [
@@ -97,6 +97,15 @@
                 "read_mapping/pacbio/SAMEA7521030/merge/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.flagstat",
                 "read_mapping/pacbio/SAMEA7521030/merge/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.idxstats",
                 "read_mapping/pacbio/SAMEA7521030/merge/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.stats.gz",
+                "read_mapping/pacbio/SAMEA7521030_2",
+                "read_mapping/pacbio/SAMEA7521030_2/merge",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.cram",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.cram.crai",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/SOURCE.txt",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/stats",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.flagstat",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.idxstats",
+                "read_mapping/pacbio/SAMEA7521030_2/merge/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.stats.gz",
                 "read_mapping/pacbio/SAMEA7521030_X",
                 "read_mapping/pacbio/SAMEA7521030_X/ERR10224927_02_2",
                 "read_mapping/pacbio/SAMEA7521030_X/ERR10224927_02_2/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.cram",
@@ -120,6 +129,19 @@
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html",
                 "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030_2",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/qc",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.stats.visual_report.html",
                 "variant_analysis/pacbio/SAMEA7521030_X",
                 "variant_analysis/pacbio/SAMEA7521030_X/ERR10224927_02_2",
                 "variant_analysis/pacbio/SAMEA7521030_X/ERR10224927_02_2/GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.g.vcf.gz",
@@ -141,30 +163,39 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.flagstat:md5,46d82921bb895f051b6a82658c18286f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.idxstats:md5,7be1ca471671613630279bd5179b558f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.stats.gz:md5,33c9284481eaadf7813857ac32fce4ad",
+                "SOURCE.txt:md5,25c03a093530e61e05211bcf0dda42d6",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.flagstat:md5,46d82921bb895f051b6a82658c18286f",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.idxstats:md5,7be1ca471671613630279bd5179b558f",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.stats.gz:md5,ef4cef251af26e75a9b2a51f02c91a4f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.flagstat:md5,2c5d67733407c8eddc2a7d59e035606e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.idxstats:md5,122ade711785188461e196872324044b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.stats.gz:md5,16a7605db4f3ba1ade72ff9fe3a32946",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html:md5,9f575012bae052d888fa6f1a29b0ee9e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.stats.visual_report.html:md5,d15483ca19af84878e7bf1da5f312015",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.stats.visual_report.html:md5,754a4959089abdd37e450cef0bdb9104",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.stats.visual_report.html:md5,23422f9f9d7809930e1fb505060df593",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.g.vcf.stats.visual_report.html:md5,ee14416e2322acc7861940d065eb10f2",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.vcf.stats.visual_report.html:md5,69d09bbe4a8e3f21840fe7292d440c9d"
             ],
             [
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.g.vcf.gz:md5,6faaf6ecf0b7c5cc664d2da6f9a1069b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.deepvariant.vcf.gz:md5,f3230403ec480904033694159f064800",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.g.vcf.gz:md5,6faaf6ecf0b7c5cc664d2da6f9a1069b",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.deepvariant.vcf.gz:md5,f3230403ec480904033694159f064800",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.g.vcf.gz:md5,a82bcaa26c16328cf19b72beee49b80d",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.hom_alts.vcf.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.deepvariant.vcf.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
             ],
             [
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.cram:md5,8687ba1f97f527df6dda7b5ad73b245e",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.cram:md5,e34a3e0c89e931b165c6f45317fc044a",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.cram:md5,49774288f3270c0d31fc7139a1f33a49"
             ]
         ],
-        "timestamp": "2026-06-04T15:14:55.560270085",
+        "timestamp": "2026-06-05T16:33:49.621760496",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.2"
+            "nextflow": "25.10.4"
         }
     }
 }
