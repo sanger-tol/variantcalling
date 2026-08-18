@@ -20,6 +20,7 @@ lint:
     - LICENSE
     - assets/email_template.html
     - .github/ISSUE_TEMPLATE/bug_report.yml
+    - .github/ISSUE_TEMPLATE/config.yml
     - .gitattributes
   multiqc_config: false
   nextflow_config:
@@ -28,7 +29,7 @@ lint:
     - config_defaults:
         - params.vector_db
         - params.tracedir
-nf_core_version: 3.5.2
+nf_core_version: 4.1.0
 repository_type: pipeline
 template:
   author: "@gq1"

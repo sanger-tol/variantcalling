@@ -38,7 +38,7 @@ workflow VARIANTCALLING {
     ch_intervals // channel: intervals file read in from --intervals
 
     main:
-    ch_versions = channel.empty()
+    def ch_versions = channel.empty()
 
     //
     // Channel for reference genome and uncompress it
@@ -172,16 +172,14 @@ workflow VARIANTCALLING {
             "${process}:\n${tool_versions.join('\n')}"
         }
 
-    softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
+    def ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
         .mix(topic_versions_string)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
             name: 'variantcalling_software_'  + 'versions.yml',
             sort: true,
-            newLine: true,
+            newLine: true
         )
-        .set { ch_collated_versions }
-
     emit:
     versions = ch_collated_versions // channel: [ path(versions.yml) ]
 }

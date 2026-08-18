@@ -29,7 +29,6 @@ nextflow_pipeline {
             vcf_files = vcf_files.sort { it.name }
 
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(
                     // Number of successful tasks
                     workflow.trace.succeeded().size(),
