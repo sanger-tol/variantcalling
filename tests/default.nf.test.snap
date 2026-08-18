@@ -1,0 +1,124 @@
+{
+    "-profile test": {
+        "content": [
+            36,
+            {
+                "BCFTOOLS_CONCAT_GVCF": {
+                    "bcftools": "1.23.1"
+                },
+                "BCFTOOLS_CONCAT_VCF": {
+                    "bcftools": "1.23.1"
+                },
+                "BGZIPTABIX": {
+                    "bgzip": 1.21,
+                    "tabix": 1.21
+                },
+                "DEEPVARIANT": {
+                    "deepvariant": "1.10.0"
+                },
+                "FLAG_HOM_ALTS": {
+                    "bcftools": "1.23.1"
+                },
+                "GUNZIP": {
+                    "gunzip": 1.13
+                },
+                "GVCF_STATS_REPORT": {
+                    "deepvariant": "1.10.0"
+                },
+                "SAMTOOLS_FAIDX": {
+                    "samtools": "1.23.1"
+                },
+                "SAMTOOLS_MERGE": {
+                    "samtools": "1.23.1"
+                },
+                "SAMTOOLS_SORT": {
+                    "samtools": "1.23.1"
+                },
+                "SAMTOOLS_VIEW": {
+                    "samtools": "1.23.1"
+                },
+                "SEQKIT_SPLIT2": {
+                    "seqkit": "2.9.0"
+                },
+                "VCF_STATS_REPORT": {
+                    "deepvariant": "1.10.0"
+                },
+                "Workflow": {
+                    "sanger-tol/variantcalling": "v2.0.2"
+                }
+            },
+            [
+                "pipeline_info",
+                "pipeline_info/variantcalling_software_versions.yml",
+                "variant_analysis",
+                "variant_analysis/pacbio",
+                "variant_analysis/pacbio/SAMEA7521030",
+                "variant_analysis/pacbio/SAMEA7521030/merge",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/SOURCE.txt",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.hom_alts.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.hom_alts.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030_2",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/SOURCE.txt",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/qc",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030_2/merge/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030_X",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.csi",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.gzi",
+                "variant_analysis/pacbio/SAMEA7521030_X/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz.tbi",
+                "variant_analysis/pacbio/SAMEA7521030_X/qc",
+                "variant_analysis/pacbio/SAMEA7521030_X/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html",
+                "variant_analysis/pacbio/SAMEA7521030_X/qc/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html"
+            ],
+            [
+                "SOURCE.txt:md5,8fcc07c661aa1eb8b6641b36be681b04",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html:md5,132668ce8de3c05e02488faccf7e80ca",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html:md5,ed31adac8869dbdcc777fd3e06a27edc",
+                "SOURCE.txt:md5,aae797485df164890d2155ea31a2839b",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html:md5,160fa42422803b27c9354e8bd021a182",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html:md5,56fd377ced50936b2d8bec5a16c6f817",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.stats.visual_report.html:md5,214a30f8de2bf2cb2b4d76850e7b9255",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.stats.visual_report.html:md5,25a25144e1490a2887cf39fc47c9b6bd"
+            ],
+            [
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,a7a3df91599b390b501cf2b807f560eb",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz:md5,baefd99c0378d99dd4580e322c23a303",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.hom_alts.vcf.gz:md5,c76a66013ac92839d271439a6aba27c4",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,3670ede9c3b92fa2a58575ea1129aa62",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac",
+                "GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz:md5,54531cd87ddea9810409d6c6143786ac"
+            ]
+        ],
+        "timestamp": "2026-06-05T16:36:50.586811107",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

@@ -13,7 +13,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { VARIANTCALLING  } from './workflows/variantcalling'
+include { VARIANTCALLING          } from './workflows/variantcalling'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_variantcalling_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_variantcalling_pipeline'
 /*
@@ -26,18 +26,20 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_vari
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
 workflow SANGERTOL_VARIANTCALLING {
-
     take:
-    samplesheet // channel: samplesheet read in from --input
+    input // channel: samplesheet read in from --input
+    fasta
+    intervals
 
     main:
 
     //
     // WORKFLOW: Run pipeline
     //
-    VARIANTCALLING (
-        samplesheet,
-        params.outdir,
+    VARIANTCALLING(
+        input,
+        fasta,
+        intervals,
     )
 }
 /*
@@ -47,12 +49,10 @@ workflow SANGERTOL_VARIANTCALLING {
 */
 
 workflow {
-
-    main:
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    PIPELINE_INITIALISATION(
         params.version,
         params.validate_params,
         params.monochrome_logs,
@@ -61,19 +61,23 @@ workflow {
         params.input,
         params.help,
         params.help_full,
-        params.show_hidden
+        params.show_hidden,
+        params.fasta,
+        params.intervals,
     )
 
     //
     // WORKFLOW: Run main workflow
     //
-    SANGERTOL_VARIANTCALLING (
-        PIPELINE_INITIALISATION.out.samplesheet
+    SANGERTOL_VARIANTCALLING(
+        PIPELINE_INITIALISATION.out.input,
+        PIPELINE_INITIALISATION.out.fasta,
+        PIPELINE_INITIALISATION.out.intervals,
     )
     //
     // SUBWORKFLOW: Run completion tasks
     //
-    PIPELINE_COMPLETION (
+    PIPELINE_COMPLETION(
         params.email,
         params.email_on_fail,
         params.plaintext_email,
@@ -81,9 +85,3 @@ workflow {
         params.monochrome_logs,
     )
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/

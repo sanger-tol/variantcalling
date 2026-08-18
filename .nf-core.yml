@@ -20,6 +20,7 @@ lint:
     - LICENSE
     - assets/email_template.html
     - .github/ISSUE_TEMPLATE/bug_report.yml
+    - .github/ISSUE_TEMPLATE/config.yml
     - .gitattributes
   multiqc_config: false
   nextflow_config:

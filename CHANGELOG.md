@@ -3,14 +3,263 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v2.0.2 - [unreleased<!-- TODO nf-core: replace with date on release -->]
+## [[2.1.0dev](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.0dev)] - release name - [release date]
 
-Initial release of sanger-tol/variantcalling, created with the [nf-core](https://nf-co.re/) template.
+### Enhancements & fixes
 
-### `Added`
+- Support gzipped FASTA
+- Added a `--flag_hom_alts` option to flag homozygous alternative genotypes
+- In alignment mode, the SAMTOOLS_STATS output is now compressed in gzip format
 
-### `Fixed`
+### Parameters
 
-### `Dependencies`
+| Old parameter | New parameter   |
+| ------------- | --------------- |
+|               | --flag_hom_alts |
 
-### `Deprecated`
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
+## [[2.0.2](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.2)] - Qin Shi Huang (patch 2) - [2026-06-05]
+
+### Enhancements & fixes
+
+- Reverted a bug that forced the samplesheet `sample` to have unique entries.
+
+## [[2.0.1](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.1)] - Qin Shi Huang (patch 1) - [2026-05-15]
+
+### Enhancements & fixes
+
+- Adjust memory for (G)VCF_STATS_REPORTS processes based on input size
+
+## [[2.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.0)] - Qin Shi Huang - [2026-05-11]
+
+### Enhancements & fixes
+
+- Update to nf-core template version 3.5.2
+- Compatibility with Nextflow's "strict" parser
+- Removed the process_vcf sub-workflow, which is now in a new pipeline called
+  [variantcomposition](https://github.com/sanger-tol/variantcomposition).
+- When merging reads from multiple runs, order the read files by metadata
+  information to ensure reproducibility.
+- Updated all modules, including DeepVariant to 1.10.0 and bcftools to 1.23.1
+- Update samplesheet to handle `sample` in form of `specimen/run`
+- Update outputs for `read_mapping` and `variant_analysis`
+- Added an option to control PacBio filtering when doing alignments (backported from #153)
+- Added an option to pass parameters to DeepVariant (#154)
+- DeepVariant resources adjusted for better HPC utilisation (#158)
+- Renamed `--interval` to `--intervals` to match nf-core/sarek and GATK (#159)
+
+### Parameters
+
+| Old parameter       | New parameter            |
+| ------------------- | ------------------------ |
+| --include_positions |                          |
+| --exclude_positions |                          |
+| --fai               |                          |
+|                     | --merge_output           |
+|                     | --filter_pacbio          |
+|                     | --deepvariant_parameters |
+| --interval          | --intervals              |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| bcftools    | 1.20        | 1.23.1      |
+| blastn      | 2.15.0      | 2.16.0      |
+| DeepVariant | 1.9.0       | 1.10.0      |
+| minimap2    | 2.28        | 2.29        |
+| samtools    | 1.20,1.21   | 1.21,1.23.1 |
+| vcftools    | 0.1.16      |             |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
+## [[1.1.10](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.10)] - Shang Tang (patch 10) - [2025-10-30]
+
+### Enhancements & fixes
+
+- Fixed a bug introduced in 1.1.9 whereby only the first sample would be aligned
+
+## [[1.1.9](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.9)] - Shang Tang (patch 9) - [2025-10-28]
+
+### Enhancements & fixes
+
+- Moved away from the channel operator `splitFasta` as it creates memory issues (#135)
+
+## [[1.1.8](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.8)] - Shang Tang (patch 8) - [2025-07-03]
+
+### Enhancements & fixes
+
+- Fixed the bug of meta inputs in `tabix` module in subworkflow deepvariant_caller
+
+## [[1.1.7](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.7)] - Shang Tang (patch 7) - [2025-06-26]
+
+### Enhancements & fixes
+
+- Update DeepVariant to version 1.9.0 (conda-free)
+- Add module [DEEPVARIANT_VCFSTATSREPORT](https://github.com/nf-core/modules/tree/master/modules/nf-core/deepvariant/vcfstatsreport) to generate visual report from DeepVariant
+- Compress and index concatenated VCFs
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| DeepVariant | 1.6.1       | 1.9.0       |
+| HTSlib      |             | 1.21        |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
+## [[1.1.6](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.6)] - Shang Tang (patch 6) - [2025-02-10]
+
+### Enhancements & fixes
+
+- Allow DeepVariant and BCFtools to handle CSI files
+- Deal with genomes >4GB in Minimap
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| nextflow   | 22.10.1     | 23.10.1     |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
+## [[1.1.5](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.5)] - Shang Tang (patch 5) - [2025-01-14]
+
+### Enhancements & fixes
+
+- Fix bug in alignment subworkflow
+
+## [[1.1.4](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.4)] - Shang Tang (patch 4) - [2024-12-05]
+
+### Enhancements & fixes
+
+- Module updates and remove Anaconda references
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| bcftools    | 1.17        | 1.20        |
+| blastn      | 2.14.1      | 2.15.0      |
+| DeepVariant | 1.5.0       | 1.6.1       |
+| minimap2    | 2.24        | 2.28        |
+| Python      | 3.8.3       | 3.9.1       |
+| samtools    | 1.17        | 1.20,1.21   |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
+## [[1.1.3](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.3)] - Shang Tang (patch 3) - [2024-05-24]
+
+### Enhancements & fixes
+
+- Fixed the bug in the filtering of multiple PacBio files
+
+## [[1.1.2](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.2)] - Shang Tang (patch 2) - [2024-03-14]
+
+### Enhancements & fixes
+
+- Bug fix when index fai file given for reference fasta file
+
+## [[1.1.1](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.1)] - Shang Tang (patch 1) - [2024-02-02]
+
+### Enhancements & fixes
+
+- Bug fix when reference fasta file name end with .fa or .fa.gz
+
+## [[1.1.0](https://github.com/sanger-tol/variantcalling/releases/tag/1.1.0)] - Shang Tang - [2023-12-20]
+
+### Enhancements & fixes
+
+- Updated the CI procedure to use "sanger-tol" rather than "nf-core" names.
+- Renamed Sanger related Github CI test workflows.
+- nf-core template was updated from 2.7 to 2.8.
+- Removed BAM/CRAM index files from the sample sheets.
+- Made fasta index file optional from the inputs.
+- Imported PacBio readmapping sub-workflows from [sanger-tol/readmapping pipeline](https://github.com/sanger-tol/readmapping/). Therefore, the pipeline can run on unaligned BAM/CRAM samples now.
+- Use VCFtools to calculate per site nucleotide diversity.
+- Use VCFtools to calculate heterozygosity.
+
+### Parameters
+
+| Old parameter | New parameter       |
+| ------------- | ------------------- |
+| --gzi         |                     |
+|               | --vector_db         |
+|               | --align             |
+|               | --include_positions |
+|               | --exclude_positions |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| DeepVariant | 1.4.0       | 1.5.0       |
+| samtools    | 1.16.1      | 1.17        |
+| bcftools    | 1.16.1      | 1.17        |
+| python      | 3.11.0      | 3.11.4      |
+| vcftools    |             | 0.1.16      |
+| blast       |             | 2.14.1+     |
+| gunzip:     |             | 1.10        |
+| minimap2    |             | 2.24-r1122  |
+| awk         |             | 5.1.0       |
+| untar       |             | 1.30        |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
+
+## [[1.0.0](https://github.com/sanger-tol/variantcalling/releases/tag/1.0.0)] - Xia Yu - [2023-05-03]
+
+Initial release of sanger-tol/variantcalling, created with the [nf-core](https://nf-co.re/) tools.
+
+### Enhancements & fixes
+
+- Created with [nf-core](https://github/nf-core/tools) template v2.7.2.
+- Allows calling variants using DeepVariant for PacBio long read data.
+- Significant speed improvements made by splitting the genome before calling variants.
+- Outputs both vcf and gvcf formats.
+
+### Parameters
+
+This release has the following initial parameters:
+
+| Old parameter | New parameter        |
+| ------------- | -------------------- |
+|               | --input              |
+|               | --fasta              |
+|               | --fai                |
+|               | --gzi                |
+|               | --interval           |
+|               | --split_fasta_cutoff |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
+### Software dependencies
+
+Note, since the pipeline is using Nextflow DSL2, each process will be run with its own [Biocontainer](https://biocontainers.pro/#/registry). This means that on occasion it is entirely possible for the pipeline to be using different versions of the same tool. However, the overall software dependency changes compared to the last release have been listed below for reference. Only `Docker` or `Singularity` containers are supported, `conda` is not supported.
+
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| DeepVariant |             | 1.4.0       |
+| samtools    |             | 1.16.1      |
+| bcftools    |             | 1.16.1      |
+| nextflow    |             | 22.10.6     |
+| python      |             | 3.11.0      |
+| python      |             | 3.8.3       |
+| pigz        |             | 2.3.4       |
+| yaml        |             | 6.0         |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.

@@ -13,19 +13,33 @@ nextflow_pipeline {
         }
 
         then {
-            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
-            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            // stable_content: All files in ${params.outdir}/ with stable content
-            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
-            assert workflow.success
+            // stable_name: All files + folders in ${params.outdir}/ with a stable name
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_path: All files in ${params.outdir}/ with stable content
+            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+
+            // Collect VCF files and their variant MD5 checksums
+            def vcf_files = []
+            def vcf_outdir = file(params.outdir)
+            vcf_outdir.eachFileRecurse(groovy.io.FileType.FILES) { vcf_file ->
+                if (vcf_file.name.endsWith('.vcf.gz')) {
+                    vcf_files << vcf_file
+                }
+            }
+            vcf_files = vcf_files.sort { it.name }
+
             assertAll(
                 { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
-                    removeNextflowVersion("$outputDir/pipeline_info/variantcalling_software_mqc_versions.yml"),
+                    removeNextflowVersion("$outputDir/pipeline_info/variantcalling_software_versions.yml"),
                     // All stable path name, with a relative path
                     stable_path,
                     // All files with stable contents
-                    stable_content
+                    stable_path,
+                    // VCF variant MD5 checksums
+                    vcf_files.collect { file -> file.getName() + ":md5," + path(file.toString()).vcf.variantsMD5 }.sort()
                 ).match() }
             )
         }

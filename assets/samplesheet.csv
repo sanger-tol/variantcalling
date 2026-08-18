@@ -1,3 +1,5 @@
-sample,fastq_1,fastq_2
-SAMPLE_PAIRED_END,/path/to/fastq/files/AEG588A1_S1_L002_R1_001.fastq.gz,/path/to/fastq/files/AEG588A1_S1_L002_R2_001.fastq.gz
-SAMPLE_SINGLE_END,/path/to/fastq/files/AEG588A4_S4_L003_R1_001.fastq.gz,
+sample,datatype,datafile
+sample1,pacbio,/path/to/data/file/file1.bam
+sample2,pacbio,/path/to/data/file/file2.cram
+sample3,pacbio,/path/to/data/file/file3-1.bam
+sample3,pacbio,/path/to/data/file/file3-2.cram

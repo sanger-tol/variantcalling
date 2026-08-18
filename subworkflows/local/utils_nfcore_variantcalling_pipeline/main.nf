@@ -24,17 +24,18 @@ include { UTILS_NEXTFLOW_PIPELINE   } from '../../nf-core/utils_nextflow_pipelin
 */
 
 workflow PIPELINE_INITIALISATION {
-
     take:
-    version           // boolean: Display version and exit
-    validate_params   // boolean: Boolean whether to validate parameters against the schema at runtime
-    monochrome_logs   // boolean: Do not use coloured log outputs
+    version // boolean: Display version and exit
+    validate_params // boolean: Boolean whether to validate parameters against the schema at runtime
+    _monochrome_logs // boolean: Do not use coloured log outputs
     nextflow_cli_args //   array: List of positional nextflow CLI args
-    outdir            //  string: The output directory where the results will be saved
-    input             //  string: Path to input samplesheet
-    help              // boolean: Display help message and exit
-    help_full         // boolean: Show the full help message
-    show_hidden       // boolean: Show hidden parameters in the help message
+    outdir //  string: The output directory where the results will be saved
+    input //  string: Path to input samplesheet
+    help // boolean: Display help message and exit
+    help_full // boolean: Show the full help message
+    show_hidden // boolean: Show hidden parameters in the help message
+    fasta
+    intervals
 
     main:
 
@@ -43,26 +44,40 @@ workflow PIPELINE_INITIALISATION {
     //
     // Print version and exit if required and dump pipeline parameters to JSON file
     //
-    UTILS_NEXTFLOW_PIPELINE (
+    UTILS_NEXTFLOW_PIPELINE(
         version,
         true,
         outdir,
-        workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
+        workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1,
     )
 
     //
     // Validate parameters and generate parameter summary to stdout
     //
 
-    def before_text = ""
-    def after_text = ""
-    if (monochrome_logs) {
-        before_text = before_text.replaceAll(/\033\[[0-9;]*m/, '')
-    }
+    before_text = """
+-\033[2m----------------------------------------------------\033[0m-
+\033[0;34m   _____                               \033[0;32m _______   \033[0;31m _\033[0m
+\033[0;34m  / ____|                              \033[0;32m|__   __|  \033[0;31m| |\033[0m
+\033[0;34m | (___   __ _ _ __   __ _  ___ _ __ \033[0m ___ \033[0;32m| |\033[0;33m ___ \033[0;31m| |\033[0m
+\033[0;34m  \\___ \\ / _` | '_ \\ / _` |/ _ \\ '__|\033[0m|___|\033[0;32m| |\033[0;33m/ _ \\\033[0;31m| |\033[0m
+\033[0;34m  ____) | (_| | | | | (_| |  __/ |        \033[0;32m| |\033[0;33m (_) \033[0;31m| |____\033[0m
+\033[0;34m |_____/ \\__,_|_| |_|\\__, |\\___|_|        \033[0;32m|_|\033[0;33m\\___/\033[0;31m|______|\033[0m
+\033[0;34m                      __/ |\033[0m
+\033[0;34m                     |___/\033[0m
+\033[0;35m  ${workflow.manifest.name} ${workflow.manifest.version}\033[0m
+-\033[2m----------------------------------------------------\033[0m-
+        """
+    after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { doi -> "    https://doi.org/${doi.trim().replace('https://doi.org/', '')}" }.join("\n")}${workflow.manifest.doi ? "\n" : ""}
+* The nf-core framework
+    https://doi.org/10.1038/s41587-020-0439-x
 
-    command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --outdir <OUTDIR>"
+* Software dependencies
+    https://github.com/sanger-tol/variantcalling/blob/main/CITATIONS.md
+"""
+    command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --fasta genome.fasta.gz --outdir <OUTDIR>"
 
-    UTILS_NFSCHEMA_PLUGIN (
+    UTILS_NFSCHEMA_PLUGIN(
         workflow,
         validate_params,
         null,
@@ -78,37 +93,35 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE (
+    UTILS_NFCORE_PIPELINE(
         nextflow_cli_args
     )
 
     //
-    // Create channel from input file provided through params.input
+    // Custom validation for pipeline parameters
     //
 
-    channel
-        .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
+    ch_samplesheet = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
+    ch_validated_samplesheet = validateInputSamplesheet(ch_samplesheet)
+
+    // Creat channel for mandatory parameters
+    ch_fasta = channel.fromPath(fasta)
+
+    if (intervals) {
+        ch_intervals = channel.fromPath(intervals)
+    }
+    else {
+        if (params.interval) {
+            error("Parameter '--interval' has been removed. Please use '--intervals' instead.")
         }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
-        .set { ch_samplesheet }
+        ch_intervals = channel.empty()
+    }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    input     = ch_validated_samplesheet
+    fasta     = ch_fasta
+    intervals = ch_intervals
+    versions  = ch_versions
 }
 
 /*
@@ -118,12 +131,11 @@ workflow PIPELINE_INITIALISATION {
 */
 
 workflow PIPELINE_COMPLETION {
-
     take:
-    email           //  string: email address
-    email_on_fail   //  string: email address sent on pipeline failure
+    email //  string: email address
+    email_on_fail //  string: email address sent on pipeline failure
     plaintext_email // boolean: Send plain-text email instead of HTML
-    outdir          //    path: Path to output directory where results will be published
+    outdir //    path: Path to output directory where results will be published
     monochrome_logs // boolean: Disable ANSI colour codes in log output
 
     main:
@@ -141,7 +153,7 @@ workflow PIPELINE_COMPLETION {
                 plaintext_email,
                 outdir,
                 monochrome_logs,
-                []
+                [],
             )
         }
 
@@ -163,38 +175,66 @@ workflow PIPELINE_COMPLETION {
 //
 // Validate channels from input samplesheet
 //
-def validateInputSamplesheet(input) {
-    def (metas, fastqs) = input[1..2]
 
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
+def validateInputSamplesheet(channel) {
+    def validFormats = [".cram", ".bam"]
+
+    return channel.map { row ->
+        def (meta, datafile) = row
+
+        // Replace spaces with underscores in sample names
+        meta.sample = meta.sample.replace(" ", "_")
+
+        // Validate that the file path is non-empty and has a valid format
+        if (!datafile || !validFormats.any { ext -> datafile.toString().endsWith(ext) }) {
+            error("Data file is required and must have a valid extension: ${datafile}")
+        }
+
+        meta.datatype = meta.datatype.toLowerCase()
+
+        def platform = ""
+        if (meta.datatype == "pacbio") {
+            platform = "PACBIO"
+        }
+        else {
+            error("Unsupported datatype: ${meta.datatype}. Supported datatypes are: pacbio")
+        }
+
+        def sample = meta.sample.toString()
+        def sample_parts = sample.split("/", 2)
+        if (sample.contains("/") && (sample_parts[0] == "" || sample_parts.length < 2 || sample_parts[1] == "")) {
+            error("Sample must be formatted as 'specimen' or 'specimen/run' with non-empty components: ${meta.sample}")
+        }
+        meta.specimen = sample_parts[0]
+        meta.run = sample_parts.length > 1 ? sample_parts[1] : ""
+        meta.id = meta.sample.replace("/",".")
+        meta.basename = datafile.baseName
+        meta.read_group = "\'@RG\\tID:" + datafile.simpleName + "\\tPL:" + platform + "\\tSM:" + meta.specimen + "\'"
+
+        return [meta, datafile]
     }
-
-    return [ metas[0], fastqs ]
 }
+
+
 //
 // Generate methods description for MultiQC
 //
 def toolCitationText() {
-    // TODO nf-core: Optionally add in-text citation tools to this list.
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "Tool (Foo et al. 2023)" : "",
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def citation_text = [
-            "Tools used in the workflow included:",
-            "."
-        ].join(' ').trim()
+        "Tools used in the workflow included:",
+        ".",
+    ].join(' ').trim()
 
     return citation_text
 }
 
 def toolBibliographyText() {
-    // TODO nf-core: Optionally add bibliographic entries to this list.
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "<li>Author (2023) Pub name, Journal, DOI</li>" : "",
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def reference_text = [
-        ].join(' ').trim()
+    ].join(' ').trim()
 
     return reference_text
 }
@@ -216,21 +256,24 @@ def methodsDescriptionText(mqc_methods_yaml) {
             temp_doi_ref += "(doi: <a href=\'https://doi.org/${doi_ref.replace("https://doi.org/", "").replace(" ", "")}\'>${doi_ref.replace("https://doi.org/", "").replace(" ", "")}</a>), "
         }
         meta["doi_text"] = temp_doi_ref.substring(0, temp_doi_ref.length() - 2)
-    } else meta["doi_text"] = ""
+    }
+    else {
+        meta["doi_text"] = ""
+    }
     meta["nodoi_text"] = meta.manifest_map.doi ? "" : "<li>If available, make sure to update the text to include the Zenodo DOI of version of the pipeline used. </li>"
 
     // Tool references
     meta["tool_citations"] = ""
     meta["tool_bibliography"] = ""
 
-    // TODO nf-core: Only uncomment below if logic in toolCitationText/toolBibliographyText has been filled!
+    // Only uncomment below if logic in toolCitationText/toolBibliographyText has been filled!
     // meta["tool_citations"] = toolCitationText().replaceAll(", \\.", ".").replaceAll("\\. \\.", ".").replaceAll(", \\.", ".")
     // meta["tool_bibliography"] = toolBibliographyText()
 
 
     def methods_text = mqc_methods_yaml.text
 
-    def engine =  new groovy.text.SimpleTemplateEngine()
+    def engine = new groovy.text.SimpleTemplateEngine()
     def description_html = engine.createTemplate(methods_text).make(meta)
 
     return description_html.toString()

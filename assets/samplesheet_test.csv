@@ -1,0 +1,6 @@
+sample,datatype,datafile
+SAMEA7521030/ERR10224927_03_cram,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.cram
+SAMEA7521030/ERR10224927_03_bam,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam
+SAMEA7521030_2,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.cram
+SAMEA7521030_2,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam
+SAMEA7521030_X,pacbio,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam
