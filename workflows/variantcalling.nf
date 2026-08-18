@@ -34,8 +34,6 @@ include { BCFTOOLS_VIEW as FLAG_HOM_ALTS } from '../modules/nf-core/bcftools/vie
 workflow VARIANTCALLING {
     take:
     ch_reads // channel: samplesheet read in from --input
-    outdir
-
     ch_fasta // channel: fasta file read in from --fasta
     ch_intervals // channel: intervals file read in from --intervals
 
