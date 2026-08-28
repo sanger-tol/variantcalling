@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded to the nf-core template v4.1.0
 - Slack / Teams functionality now moved to Nextflow plugins ([nf-slack](https://github.com/seqeralabs/nf-slack), [nf-teams](https://github.com/nvnieuwk/nf-teams))
 - Write CRAM version 3.0 after `samtools filter` to be compatible with Deepvariant
+- Regenerated the pipeline diagram with nf-metro
 
 ### Parameters
 
