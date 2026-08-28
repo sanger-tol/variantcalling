@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[2.1.0dev](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.0dev)] - release name - [release date]
+## [[2.1.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.0)] - Han Gaozu - [release date]
 
 ### Enhancements & fixes
 
@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
-## [[2.0.2](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.2)] - Qin Shi Huang (patch 2) - [2026-06-05]
+## [[2.0.2](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.0)] - Qin Shi Huang (patch 2) - [2026-06-05]
 
 ### Enhancements & fixes
 
