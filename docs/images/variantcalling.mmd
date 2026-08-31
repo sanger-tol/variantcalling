@@ -1,0 +1,146 @@
+%%metro title: sanger-tol/variantcalling
+%%metro style: dark
+%%metro font_scale: 0.95
+%%metro directional: true
+%%metro line_order: span
+%%metro compact_offsets: true
+%%metro logo: sanger-tol-variantcalling_logo_light.png
+%%metro legend: bl
+
+%% --- METRO LINES ---
+%%metro line: reference | Reference | #FA6863
+%%metro line: unaligned_reads | Unaligned Reads | #2db572
+%%metro line: aligned_reads | Pre-aligned Reads | #0570b0
+%%metro line: adapterdb | Adapter DB (TAR) | #e6842a
+%%metro line: intervals | Intervals (BED) | #EB7AEB
+
+%% --- INPUT & OUTPUT FILES ---
+%%metro file: input_reference | FASTA
+%%metro file: input_unaligned | BAM
+%%metro file: input_unaligned | CRAM
+%%metro file: input_aligned | BAM
+%%metro file: input_aligned | CRAM
+%%metro file: input_adapterdb | TAR
+%%metro file: input_intervals | BED
+%%metro file: cram_out | CRAM
+%%metro file: stats_out | stats
+%%metro file: flagstats_out | flagstats
+%%metro file: idxstats_out | idxstats
+%%metro file: vcf_out | VCF
+%%metro file: vcf_out | gVCF
+%%metro file: report_out | html
+
+%% --- OFF-TRACK ANCHORS ---
+%%metro off_track: input_reference
+%%metro off_track: input_unaligned
+%%metro off_track: input_aligned
+%%metro off_track: input_adapterdb
+%%metro off_track: input_intervals
+%%metro off_track: cram_out
+%%metro off_track: stats_out
+%%metro off_track: flagstats_out
+%%metro off_track: idxstats_out
+%%metro off_track: vcf_out
+%%metro off_track: report_out
+
+%% --- GRID DEFINITIONS ---
+%%metro grid: inputs_block | 0, 0, 1
+%%metro grid: input_preprocess | 1, 0, 5
+%%metro grid: variant_calling | 2, 0, 10
+
+graph LR
+    %% ==========================================
+    %% 1. BLOCK: INPUT FILES
+    %% ==========================================
+    subgraph inputs_block [1 Input Files]
+        %%metro exit: right | reference,unaligned_reads,aligned_reads
+        input_reference[ ]
+        input_unaligned[ ]
+        input_aligned[ ]
+    end
+
+    %% ==========================================
+    %% 2. BLOCK: INPUT PREPROCESSING
+    %% ==========================================
+    subgraph input_preprocess [2 Input Preprocessing]
+        %%metro entry: left | reference,unaligned_reads,aligned_reads
+        %%metro exit: right | reference,unaligned_reads,aligned_reads
+        faidx1[samtools\nfaidx]
+        seqkit[Seqkit\nsplit]
+        faidx2[samtools\nfaidx]
+        input_adapterdb[ ]
+        collate[samtools\ncollate]
+        fasta[samtools\nfasta]
+        blastn[Blastn]
+        pacbio[pacbio_filter]
+        view1[Samtools\nview]
+        fastq[Samtools\nFastq]
+        minimap2[Minimap2]
+        merge1[Samtools\nmerge]
+        sort[Samtools\nsort]
+        merge2[Samtools\nmerge]
+        view2[Samtools\nview]
+        stats[Samtools\nstats]
+        flagstats[Samtools\nflagstats]
+        idxstats[Samtools\nidxstats]
+
+        cram_out[ ]
+        stats_out[ ]
+        flagstats_out[ ]
+        idxstats_out[ ]
+        faidx1 -->|reference| seqkit
+        seqkit -->|reference| faidx2
+        input_adapterdb -->|adapterdb| blastn
+        collate -->|unaligned_reads| fasta
+        fasta -->|unaligned_reads| blastn
+        blastn -->|unaligned_reads| pacbio
+        pacbio -->|unaligned_reads| view1
+        view1 -->|unaligned_reads| fastq
+        fastq -->|unaligned_reads| minimap2
+        minimap2 -->|unaligned_reads| merge1
+
+        sort -->|aligned_reads| merge2
+
+        merge1 -->|unaligned_reads| view2
+        merge2 -->|aligned_reads| view2
+
+        merge1 -->|unaligned_reads| cram_out
+        merge1 -->|unaligned_reads| stats
+        merge1 -->|unaligned_reads| flagstats
+        merge1 -->|unaligned_reads| idxstats
+        stats -->|unaligned_reads| stats_out
+        flagstats -->|unaligned_reads| flagstats_out
+        idxstats -->|unaligned_reads| idxstats_out
+    end
+
+    %% ==========================================
+    %% 3. BLOCK: VARIANT CALLING & OUTPUTS
+    %% ==========================================
+    subgraph variant_calling [3 Variant Calling & Outputs]
+        %%metro entry: left | reference,unaligned_reads,aligned_reads
+        %%metro entry: bottom | intervals
+        %%metro exit: right | variants
+
+        deepvariant[DeepVariant]
+        concat[BCFtools\nconcat]
+        vcfstats[DeepVariant\nvcfstatsreport]
+
+        input_intervals[ ]
+        vcf_out[ ]
+        report_out[ ]
+        input_intervals -->|intervals| deepvariant
+        deepvariant -->|unaligned_reads,aligned_reads| concat
+        concat -->|unaligned_reads,aligned_reads| vcf_out
+        concat -->|unaligned_reads,aligned_reads| vcfstats
+        vcfstats -->|unaligned_reads,aligned_reads| report_out
+    end
+
+    %% ==========================================
+    %% INTER-BLOCK HIGHWAY
+    %% ==========================================
+    input_reference -->|reference| faidx1
+    input_unaligned -->|unaligned_reads| collate
+    input_aligned -->|aligned_reads| sort
+
+    faidx2 -->|reference| deepvariant
+    view2 -->|unaligned_reads,aligned_reads| deepvariant
