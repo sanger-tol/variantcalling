@@ -80,7 +80,7 @@
                     "deepvariant": "1.10.0"
                 },
                 "Workflow": {
-                    "sanger-tol/variantcalling": "v2.0.2"
+                    "sanger-tol/variantcalling": "v2.1.0"
                 }
             },
             [
