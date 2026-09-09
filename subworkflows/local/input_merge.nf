@@ -41,7 +41,8 @@ workflow INPUT_MERGE {
                 'basename': meta_read.run ? meta_read.basename.replaceAll(meta_read.run, params.merge_output) : meta_read.basename,
             ]
             def new_reads = orig_id_reads
-                .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
+                // sort by id, and then by basename, to ensure consistent order
+                .sort { id_read -> [id_read[0].id, id_read[0].basename] }
                 .collect { id_read -> id_read[1] }
             [meta_read_new, new_reads, []]
         }
