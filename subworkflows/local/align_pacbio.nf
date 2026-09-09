@@ -35,7 +35,7 @@ workflow ALIGN_PACBIO {
 
     // Collect all alignment output by sample name
     ch_bams = MINIMAP2_ALIGN.out.bam
-        .map { meta, bam -> [['id': meta.specimen, 'datatype': meta.datatype], [['id':meta.id, 'specimen': meta.specimen, 'datatype': meta.datatype, 'sample': meta.sample, 'run': meta.run, 'fasta_id': meta.fasta_id], bam]] }
+        .map { meta, bam -> [['id': meta.specimen, 'datatype': meta.datatype], [meta, bam]] }
         .groupTuple(by: [0])
         .branch { _meta, bams ->
             to_merge: bams.size() > 1
