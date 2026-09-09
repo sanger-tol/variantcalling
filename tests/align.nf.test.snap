@@ -163,7 +163,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.flagstat:md5,46d82921bb895f051b6a82658c18286f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.idxstats:md5,7be1ca471671613630279bd5179b558f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030.merge.minimap2.stats.gz:md5,33c9284481eaadf7813857ac32fce4ad",
-                "SOURCE.txt:md5,25c03a093530e61e05211bcf0dda42d6",
+                "SOURCE.txt:md5,3228bb67e7a7edaccb26d0dc7e48c7ca",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.flagstat:md5,46d82921bb895f051b6a82658c18286f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.idxstats:md5,7be1ca471671613630279bd5179b558f",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_2.merge.minimap2.stats.gz:md5,ef4cef251af26e75a9b2a51f02c91a4f",
@@ -192,10 +192,10 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.gzipped.pacbio.SAMEA7521030_X.ERR10224927_02_2.minimap2.cram:md5,49774288f3270c0d31fc7139a1f33a49"
             ]
         ],
-        "timestamp": "2026-06-13T11:34:47.587227567",
+        "timestamp": "2026-09-09T10:31:21.967141102",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.0"
         }
     }
 }
