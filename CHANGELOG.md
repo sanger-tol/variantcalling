@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support gzipped FASTA
 - Added a `--flag_hom_alts` option to flag homozygous alternative genotypes
 - In alignment mode, the SAMTOOLS_STATS output is now compressed in gzip format
-- Upgraded to the nf-core template v4.1.0
+- Upgraded to the nf-core template v4.1.0 and bumped up the nf-schema plugin to ensure
+  seamless compatibility with Nextflow 26.04
 - Slack / Teams functionality now moved to Nextflow plugins ([nf-slack](https://github.com/seqeralabs/nf-slack), [nf-teams](https://github.com/nvnieuwk/nf-teams))
 - Write CRAM version 3.0 after `samtools filter` to be compatible with Deepvariant
 - Regenerated the pipeline diagram with nf-metro
