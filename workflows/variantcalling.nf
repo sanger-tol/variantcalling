@@ -15,11 +15,13 @@ include { DEEPVARIANT_CALLER     } from '../subworkflows/local/deepvariant_calle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_variantcalling_pipeline'
-include { SAMTOOLS_FAIDX         } from '../modules/nf-core/samtools/faidx/main'
-include { UNTAR                  } from '../modules/nf-core/untar/main'
+include { paramsSummaryMap               } from 'plugin/nf-schema'
+include { softwareVersionsToYAML         } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText         } from '../subworkflows/local/utils_nfcore_variantcalling_pipeline'
+include { GUNZIP                         } from '../modules/nf-core/gunzip/main'
+include { SAMTOOLS_FAIDX                 } from '../modules/nf-core/samtools/faidx/main'
+include { UNTAR                          } from '../modules/nf-core/untar/main'
+include { BCFTOOLS_VIEW as FLAG_HOM_ALTS } from '../modules/nf-core/bcftools/view/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,12 +38,12 @@ workflow VARIANTCALLING {
     ch_intervals // channel: intervals file read in from --intervals
 
     main:
-    ch_versions = channel.empty()
+    def ch_versions = channel.empty()
 
     //
-    // Channel for reference genome
+    // Channel for reference genome and uncompress it
     //
-    // Remenber to fix the fasta.size with total_length in the next merge
+    // Remember to fix the fasta.size with total_length in the next merge
     ch_genome = ch_fasta.map { fasta ->
         [
             [
@@ -49,16 +51,22 @@ workflow VARIANTCALLING {
                 'single_end': true,
             ],
             fasta,
-            [],
         ]
+    }.branch { meta, fa ->
+        gzipped: fa.name.endsWith('.gz')
+        unzipped: true
     }
 
+    GUNZIP(ch_genome.gzipped)
+    ch_genome_uncompressed = GUNZIP.out.gunzip
+        .mix(ch_genome.unzipped)
+        .map { meta, fa -> [meta, fa, []] }
 
-    SAMTOOLS_FAIDX(ch_genome, false)
+    SAMTOOLS_FAIDX(ch_genome_uncompressed, false)
 
     // generate fai that is used to determine the maximum length of chromosome
     // also add the gzi if present as it is needed for bgzip-ed genomes
-    ch_genome_info = ch_genome
+    ch_genome_info = ch_genome_uncompressed
        .join( SAMTOOLS_FAIDX.out.fai )
        .join( SAMTOOLS_FAIDX.out.gzi, remainder: true )
        .map { meta, fa, _no_fai, fai, gzi ->
@@ -129,6 +137,22 @@ workflow VARIANTCALLING {
 
 
     //
+    // MODULE: flag homozygous alternative genotypes
+    //
+    if (params.flag_hom_alts) {
+        def sample_vcfs = DEEPVARIANT_CALLER.out.compressed_vcf
+            .filter { meta, vcf, _gzi -> meta.sample == params.flag_hom_alts && !vcf.name.contains(".g.vcf") }
+            .ifEmpty { error("--flag_hom_alts '${params.flag_hom_alts}' did not match any sample in the VCF outputs. Check the sample name.") }
+        FLAG_HOM_ALTS(
+            sample_vcfs,
+            [],
+            [],
+            [],
+        )
+    }
+
+
+    //
     // Collate and save software versions
     //
     def topic_versions = channel.topic("versions")
@@ -148,16 +172,14 @@ workflow VARIANTCALLING {
             "${process}:\n${tool_versions.join('\n')}"
         }
 
-    softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
+    def ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
         .mix(topic_versions_string)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
             name: 'variantcalling_software_'  + 'versions.yml',
             sort: true,
-            newLine: true,
+            newLine: true
         )
-        .set { ch_collated_versions }
-
     emit:
     versions = ch_collated_versions // channel: [ path(versions.yml) ]
 }

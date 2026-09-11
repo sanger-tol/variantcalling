@@ -3,6 +3,27 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[2.1.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.0)] - Han Gaozu - [2026-09-11]
+
+### Enhancements & fixes
+
+- Support gzipped FASTA
+- Added a `--flag_hom_alts` option to flag homozygous alternative genotypes
+- In alignment mode, the SAMTOOLS_STATS output is now compressed in gzip format
+- Upgraded to the nf-core template v4.1.0 and bumped up the nf-schema plugin to ensure
+  seamless compatibility with Nextflow 26.04
+- Slack / Teams functionality now moved to Nextflow plugins ([nf-slack](https://github.com/seqeralabs/nf-slack), [nf-teams](https://github.com/nvnieuwk/nf-teams))
+- Write CRAM version 3.0 after `samtools filter` to be compatible with Deepvariant
+- Regenerated the pipeline diagram with nf-metro
+
+### Parameters
+
+| Old parameter | New parameter   |
+| ------------- | --------------- |
+|               | --flag_hom_alts |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
 ## [[2.0.2](https://github.com/sanger-tol/variantcalling/releases/tag/2.0.2)] - Qin Shi Huang (patch 2) - [2026-06-05]
 
 ### Enhancements & fixes

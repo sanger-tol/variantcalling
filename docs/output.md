@@ -63,6 +63,7 @@ The aligned PacBio read data is used to call variants with DeepVariant. This is 
       - Index of compressed GVCF files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.g.vcf.gz.[tbi|csi]`.
       - `qc`
         - HTML files: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.[vcf|g.vcf].stats.visual_report.html`.
+        - Homozygous alternative genotypes report: `<fasta_basename>.pacbio.<sample>.minimap2.deepvariant.hom_alts.vcf.gz[.tbi]` (optional).
 
 </details>
 
@@ -79,4 +80,4 @@ The aligned PacBio read data is used to call variants with DeepVariant. This is 
 
 </details>
 
-[Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
+[Nextflow](https://docs.seqera.io/platform-cloud/reports/overview) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.

@@ -6,6 +6,7 @@ include { SAMTOOLS_VIEW     } from '../../modules/nf-core/samtools/view/main'
 include { SAMTOOLS_STATS    } from '../../modules/nf-core/samtools/stats/main'
 include { SAMTOOLS_FLAGSTAT } from '../../modules/nf-core/samtools/flagstat/main'
 include { SAMTOOLS_IDXSTATS } from '../../modules/nf-core/samtools/idxstats/main'
+include { PIGZ_COMPRESS     } from '../../modules/nf-core/pigz/compress/main'
 
 
 workflow CONVERT_STATS {
@@ -25,6 +26,7 @@ workflow CONVERT_STATS {
     // Calculate statistics
     SAMTOOLS_STATS(ch_cram_crai, fasta)
 
+    PIGZ_COMPRESS(SAMTOOLS_STATS.out.stats)
 
     // Calculate statistics based on flag values
     SAMTOOLS_FLAGSTAT(ch_cram_crai)

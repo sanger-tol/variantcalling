@@ -2,7 +2,6 @@
 // Split input fasta file by sequence and filter the input reads
 //
 
-include { GUNZIP         } from '../../modules/nf-core/gunzip/main'
 include { SEQKIT_SPLIT2  } from '../../modules/nf-core/seqkit/split2/main'
 include { SAMTOOLS_FAIDX } from '../../modules/nf-core/samtools/faidx/main'
 include { SAMTOOLS_VIEW  } from '../../modules/nf-core/samtools/view/main'
@@ -15,25 +14,10 @@ workflow INPUT_FILTER_SPLIT {
 
     main:
     //
-    // MODULE: Unzip the fasta if zipped
-    //
-    ch_fasta = fasta.branch { meta, fa, _fai ->
-        gzipped: fa.name.endsWith('.gz')
-            [meta, fa]
-        unzipped: true
-            [meta, fa]
-    }
-
-    GUNZIP(
-        ch_fasta.gzipped
-    )
-
-    ch_fasta_to_split = GUNZIP.out.gunzip.mix(ch_fasta.unzipped)
-
-    //
     // MODULE: Split the Fasta file in chunks
     //
-    SEQKIT_SPLIT2(ch_fasta_to_split)
+    ch_fasta_for_split = fasta.map { meta, fa, fai -> [meta, fa] }
+    SEQKIT_SPLIT2(ch_fasta_for_split)
 
     // Add pertinent meta maps to the chunks
     ch_split_fastas = SEQKIT_SPLIT2.out.reads
