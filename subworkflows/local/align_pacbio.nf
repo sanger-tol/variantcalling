@@ -7,7 +7,6 @@ include { MINIMAP2_ALIGN } from '../../modules/nf-core/minimap2/align/main'
 include { SAMTOOLS_MERGE } from '../../modules/nf-core/samtools/merge/main'
 include { CONVERT_STATS  } from '../../subworkflows/local/convert_stats'
 
-
 workflow ALIGN_PACBIO {
     take:
     fasta // channel: [ val(meta), /path/to/fasta[.gz], /path/to/fai ]
@@ -35,7 +34,7 @@ workflow ALIGN_PACBIO {
 
     // Collect all alignment output by sample name
     ch_bams = MINIMAP2_ALIGN.out.bam
-        .map { meta, bam -> [['id': meta.specimen, 'datatype': meta.datatype], [['id':meta.id, 'specimen': meta.specimen, 'datatype': meta.datatype, 'sample': meta.sample, 'run': meta.run, 'fasta_id': meta.fasta_id], bam]] }
+        .map { meta, bam -> [['id': meta.specimen, 'datatype': meta.datatype], [meta, bam]] }
         .groupTuple(by: [0])
         .branch { _meta, bams ->
             to_merge: bams.size() > 1
@@ -49,9 +48,18 @@ workflow ALIGN_PACBIO {
         .map { _meta, orig_id_reads ->
             def meta_read = orig_id_reads[0][0]
             def runs = orig_id_reads.collect { id_read -> id_read[0].run ?: id_read[0].basename }
-            def meta_read_new = meta_read + ['sample': "${meta_read.specimen}/${params.merge_output}", 'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.${params.merge_output}", 'run': "merge", 'merge_source': runs.sort().join("\n")]
+            def meta_read_new = [
+                'datatype': meta_read.datatype,
+                'fasta_id': meta_read.fasta_id,
+                'sample': "${meta_read.specimen}/${params.merge_output}",
+                'id': "${meta_read.fasta_id}.${meta_read.datatype}.${meta_read.specimen}.${params.merge_output}",
+                'run': "merge",
+                'merge_source': runs.sort().join("\n"),
+                // no need to set 'basename' now as it'll be set after merging
+            ]
             def new_reads = orig_id_reads
-                .sort { a, b -> a[0].id <=> b[0].id} // sort by id to ensure consistent order
+                // sort by id, and then by basename, to ensure consistent order
+                .sort { id_read -> [id_read[0].id, id_read[0].basename] }
                 .collect { id_read -> id_read[1] }
             [meta_read_new, new_reads, []]
         }
