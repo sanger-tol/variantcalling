@@ -132,7 +132,7 @@ workflow VARIANTCALLING {
     //
     DEEPVARIANT_CALLER(
         INPUT_FILTER_SPLIT.out.reads_fasta,
-        ch_genome_info.meta.map { meta -> meta.max_length },
+        ch_genome_info.meta.map { meta -> meta.max_length ?: 0},
     )
 
 
