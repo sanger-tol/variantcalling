@@ -1,0 +1,124 @@
+%%metro title: sanger-tol/variantcalling
+%%metro compact_offsets: true
+
+%% --- METRO LINES ---
+%%metro line: reference | Reference | #FA6863
+%%metro line: unaligned_reads | Unaligned Reads | #2db572
+%%metro line: unaligned_reads_no_filtering | Unaligned Reads (no filtering) | #f1c40f
+%%metro line: aligned_reads | Pre-aligned Reads | #0570b0
+%%metro line: adapterdb | Adapter DB (TAR) | #e6842a
+%%metro line: intervals | Intervals (BED) | #EB7AEB
+
+%% --- INPUT & OUTPUT FILES ---
+%%metro file: input_reference | FASTA
+%%metro file: input_reads | BAM
+%%metro file: input_reads | CRAM
+%%metro file: input_adapterdb | TAR
+%%metro file: input_intervals | BED
+%%metro file: cram_out | CRAM
+%%metro file: stats_out | TXT
+%%metro file: flagstats_out | TXT
+%%metro file: idxstats_out | TXT
+%%metro file: vcf_out | VCF
+%%metro file: vcf_out | gVCF
+%%metro file: report_out | HTML
+
+%% --- OFF-TRACK ANCHORS ---
+%%metro off_track: input_adapterdb
+%%metro off_track: input_intervals
+%%metro off_track: cram_out
+
+graph LR
+    %% ==========================================
+    %% 1. BLOCK: INPUT GENOME
+    %% ==========================================
+    subgraph input_genome [Fasta pre-processing]
+        %%metro exit: right | reference
+        input_reference
+        faidx[samtools\nfaidx]
+        seqkit[Seqkit\nsplit]
+        _altern_seqkit[ ]
+        input_reference -->|reference| _altern_seqkit
+        input_reference -->|reference| seqkit
+        seqkit -->|reference| faidx
+        _altern_seqkit -->|reference| faidx
+    end
+
+    %% ==========================================
+    %% 2. BLOCK: INPUT READS
+    %% ==========================================
+    subgraph input_preprocess [Reads Pre-processing]
+        %%metro exit: right | unaligned_reads,aligned_reads
+        input_reads[ ]
+        input_adapterdb[ ]
+        collate[samtools\ncollate]
+        fasta[samtools\nfasta]
+        blastn[Blastn]
+        pacbio[pacbio_filter.sh]
+        view1[Samtools\nview]
+        fastq[Samtools\nFastq]
+        minimap2[Minimap2]
+        merge[Samtools\nmerge]
+        sort[Samtools\nsort]
+        view2[Samtools\nview]
+        stats[Samtools\nstats]
+        flagstats[Samtools\nflagstats]
+        idxstats[Samtools\nidxstats]
+
+        cram_out[ ]
+        stats_out[ ]
+        flagstats_out[ ]
+        idxstats_out[ ]
+        input_adapterdb -->|adapterdb| blastn
+        input_reads -->|unaligned_reads| collate
+        collate -->|unaligned_reads| fasta
+        fasta -->|unaligned_reads| blastn
+        blastn -->|unaligned_reads| pacbio
+        pacbio -->|unaligned_reads| view1
+        view1 -->|unaligned_reads| fastq
+        fastq -->|unaligned_reads| minimap2
+
+        input_reads -->|aligned_reads| sort
+        sort -->|aligned_reads| merge
+
+        input_reads -->|unaligned_reads_no_filtering| minimap2
+        merge -->|unaligned_reads,unaligned_reads_no_filtering| cram_out
+        merge -->|unaligned_reads,unaligned_reads_no_filtering| stats
+        merge -->|unaligned_reads,unaligned_reads_no_filtering| flagstats
+        merge -->|unaligned_reads,unaligned_reads_no_filtering| idxstats
+        stats -->|unaligned_reads,unaligned_reads_no_filtering| stats_out
+        flagstats -->|unaligned_reads,unaligned_reads_no_filtering| flagstats_out
+        idxstats -->|unaligned_reads,unaligned_reads_no_filtering| idxstats_out
+
+        minimap2 -->|unaligned_reads,unaligned_reads_no_filtering| merge
+        merge -->|aligned_reads,unaligned_reads,unaligned_reads_no_filtering| view2
+    end
+
+    %% ==========================================
+    %% 3. BLOCK: VARIANT CALLING & OUTPUTS
+    %% ==========================================
+    subgraph variant_calling [Variant Calling & Outputs]
+        %%metro entry: left | reference,unaligned_reads,unaligned_reads_no_filtering,aligned_reads
+        %%metro entry: bottom | intervals
+        %%metro exit: right | variants
+
+        deepvariant[DeepVariant]
+        concat[BCFtools\nconcat]
+        vcfstats[DeepVariant\nvcfstatsreport]
+
+        input_intervals[ ]
+        vcf_out[ ]
+        report_out[ ]
+        input_intervals -->|intervals| deepvariant
+        deepvariant -->|unaligned_reads,unaligned_reads_no_filtering,aligned_reads| concat
+        concat -->|unaligned_reads,unaligned_reads_no_filtering,aligned_reads| vcf_out
+        concat -->|unaligned_reads,unaligned_reads_no_filtering,aligned_reads| vcfstats
+        vcfstats -->|unaligned_reads,unaligned_reads_no_filtering,aligned_reads| report_out
+    end
+
+    %% ==========================================
+    %% INTER-BLOCK HIGHWAY
+    %% ==========================================
+
+    faidx -->|reference| deepvariant
+    view2 -->|unaligned_reads,unaligned_reads_no_filtering,aligned_reads| deepvariant

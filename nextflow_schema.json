@@ -23,11 +23,36 @@
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
                 },
+                "deepvariant_parameters": {
+                    "type": "string",
+                    "pattern": "^\\s*-.*$",
+                    "description": "Command-line parameters to pass to DeepVariant.",
+                    "fa_icon": "fas fa-scroll"
+                },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "vector_db": {
+                    "type": "string",
+                    "default": "${projectDir}/assets/vectorDB.tar.gz",
+                    "description": "Path to directory or tar.gz archive for pre-built PacBio vector database.",
+                    "format": "path"
+                },
+                "merge_output": {
+                    "type": "string",
+                    "default": "merge",
+                    "pattern": "^[A-Za-z0-9._-]+$",
+                    "description": "Non-empty string used as the suffix and output directory name for merged data files",
+                    "help_text": "Defines the suffix added to merged file names and name of output directory when multiple read files that share the same specimen are merged. Allowed characters are letters, numbers, dot (.), underscore (_), and hyphen (-)."
+                },
+                "flag_hom_alts": {
+                    "type": "string",
+                    "pattern": "^\\S+$",
+                    "description": "Name of the sample, specimen, or run, for which to flag homozygous alternative genotypes. The suffix '/merge' can be used in conjunction with --merge_output.",
+                    "help_text": "When the reads come from the same individual as used to make the genome assembly, we only expect homozygous reference and heterozygous calls. This option writes an extra VCF file with these calls."
                 },
                 "email": {
                     "type": "string",
@@ -37,6 +62,43 @@
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
                 }
             }
+        },
+        "reference_genome_options": {
+            "title": "Reference genome options",
+            "type": "object",
+            "description": "Reference genome related files and options required for the workflow.",
+            "default": "",
+            "properties": {
+                "fasta": {
+                    "type": "string",
+                    "exists": true,
+                    "description": "Path to FASTA genome file, either fasta or fasta.gz.",
+                    "format": "file-path"
+                },
+                "align": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Align the input reads to the reference"
+                },
+                "filter_pacbio": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Filter the PacBio reads for leftover adaptors"
+                },
+                "intervals": {
+                    "type": "string",
+                    "description": "Interval bed file.",
+                    "format": "file-path",
+                    "exists": true
+                },
+                "split_fasta_cutoff": {
+                    "type": "integer",
+                    "default": 100000,
+                    "hidden": true,
+                    "description": "The minimum fasta file size when splitting the input fasta file by sequence."
+                }
+            },
+            "required": ["fasta", "split_fasta_cutoff"]
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -166,6 +228,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/reference_genome_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

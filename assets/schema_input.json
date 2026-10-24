@@ -9,25 +9,25 @@
         "properties": {
             "sample": {
                 "type": "string",
+                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)?$",
+                "errorMessage": "Sample name must be formatted as 'specimen' or 'specimen/run', both starting with a letter, and cannot contain spaces",
+                "meta": ["sample"]
+            },
+            "datatype": {
+                "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
+                "errorMessage": "Data type, and must be 'pacbio'",
+                "enum": ["pacbio"],
+                "meta": ["datatype"]
             },
-            "fastq_1": {
+            "datafile": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
-            },
-            "fastq_2": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+\\.(bam|cram)$",
+                "errorMessage": "Data file for reads cannot contain spaces and must have extension 'cram' or 'bam'"
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["sample", "datatype", "datafile"]
     }
 }

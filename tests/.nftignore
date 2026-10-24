@@ -1,2 +1,8 @@
 .DS_Store
 pipeline_info/*.{html,json,txt,yml}
+**.vcf.gz
+**.vcf.gz.gzi
+**.vcf.gz.tbi
+**.vcf.gz.csi
+**.crai
+**.cram

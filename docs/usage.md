@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+The pipeline takes aligned or unaliged sample reads (CRAM/BAM files) from a CSV file and a reference file in FASTA format, and then use DeepVariant to call variants.
 
 ## Samplesheet input
 
@@ -16,46 +16,71 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Multiple runs of the same sample
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+When a specimen is re-sequenced more than once e.g. to increase sequencing depth,
+the `sample` identifier is highly recommended to be in form of `specimen/run`,
+where `specimen` is the same and `run` is unique across these entries.
+Below is an example for the same sample sequenced across 3 lanes:
 
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+sample,datatype,datafile
+specimen1/run1,pacbio,sample1_1.cram
+specimen1/run2,pacbio,sample1_2.cram
+specimen1/run3,pacbio,sample1_3.cram
+```
+
+However the following simplified samplesheet works too:
+
+```csv title="samplesheet.csv"
+sample,datatype,datafile
+specimen1,pacbio,sample1_1.cram
+specimen1,pacbio,sample1_2.cram
+specimen1,pacbio,sample1_3.cram
 ```
 
 ### Full samplesheet
 
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
-
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
+A final samplesheet file consisting of both BAM or CRAM will look like this. Currently this pipeline only supports Pacbio aligned data.
 
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
+sample,datatype,datafile
+specimen1/run1,pacbio,/path/to/data/file/file1.bam
+specimen2/run2,pacbio,/path/to/data/file/file2.cram
+specimen3/run3,pacbio,/path/to/data/file/file3.bam
 ```
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+| Column     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `sample`   | Custom sample identifier. Spaces are automatically converted to underscores (`_`), so using underscores in the input is recommended for clarity. For specimens sequenced multiple times, use the format `specimen/run` where `specimen` is the same and `run` is unique for each run (e.g., `SAMEA7521030/ERR10224927`). The forward slash (`/`) is converted to a dot (`.`) in downstream processes. The `sample` field is also used to organize output analysis directories. |
+| `datatype` | Sequencing data type. Must be `pacbio`.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `datafile` | The location for either BAM or CRAM file.                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+
+## DeepVariant parameters
+
+Parameters can be passed straight to DeepVariant via the `--deepvariant_parameters` option.
+Note that you will need to add a leading whitespace in front of `--`,
+otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcalling option.
+
+```
+nextflow run ... --deepvariant_parameters " --make_examples_extra_args='small_model_call_multiallelics=false'"
+```
+
+## QC
+
+The pipeline outputs include a HTML report from DeepVariant.
+
+There is also a `--flag_hom_alts` that can be used to generate a VCF file with
+homozygous alternative genotypes for that sample.
+The option is useful when calling variant on the same sample as used for the
+genome assembly, as in theory all its variants should be heterozygous.
 
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run sanger-tol/variantcalling --input ./samplesheet.csv --outdir ./results  -profile docker
+nextflow run sanger-tol/variantcalling --input ./samplesheet.csv --outdir ./results --fasta genome.fasta.gz -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -68,6 +93,8 @@ work                # Directory containing the nextflow working files
 .nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
+
+The pipeline will split the input fasta file into smaller files to run DeepVariant parallel. You can set the minimum split fasta file size from the command line. For example to set the minimum size as 10K using `--split_fasta_cutoff 10000`.
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 
@@ -90,7 +117,11 @@ outdir: './results/'
 <...>
 ```
 
+If the input BAM/CRAM files are not aligned, please add `--align` in your command. Please don't use this flag if the input files are already aligned because the current workflow will not align the aligned PacBio reads.
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
+
+By default, the alignment sub-workflow will filter out adaptors from the reads.
+If this is not desirable, add the `--filter_pacbio false` parameter to your run.
 
 ### Updating the pipeline
 
