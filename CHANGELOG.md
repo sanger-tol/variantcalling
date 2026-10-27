@@ -5,7 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [[2.1.1](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.1)] - Han Gaozu (patch 1) - [2026-10-27]
 
-This is a security upgrade. The nf-cre template was upgraded to v4.2.0
+This is a security upgrade. The nf-core template was upgraded to v4.2.0
 
 ## [[2.1.0](https://github.com/sanger-tol/variantcalling/releases/tag/2.1.0)] - Han Gaozu - [2026-09-11]
 
