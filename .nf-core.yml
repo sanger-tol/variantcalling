@@ -29,7 +29,7 @@ lint:
     - config_defaults:
         - params.vector_db
         - params.tracedir
-nf_core_version: 4.1.0
+nf_core_version: 4.2.0
 repository_type: pipeline
 template:
   author: "@gq1"
@@ -43,4 +43,4 @@ template:
     - igenomes
     - multiqc
     - fastqc
-  version: 2.1.0
+  version: 2.1.1
