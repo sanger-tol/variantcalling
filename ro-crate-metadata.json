@@ -187,10 +187,10 @@
             },
             "url": [
                 "https://github.com/sanger-tol/variantcalling",
-                "https://pipelines.tol.sanger.ac.uk/variantcalling/2.1.0/"
+                "https://pipelines.tol.sanger.ac.uk/variantcalling/2.1.1/"
             ],
             "version": [
-                "2.1.0"
+                "2.1.1"
             ]
         },
         {
